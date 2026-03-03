@@ -6,8 +6,8 @@ import { MetadataTag } from "@/components/MetadataTag";
 const Alphabetical = () => {
   const { data: titles, isLoading } = useTitlesGrouped();
 
-  // Flatten all titles (parents + children) and sort alphabetically
-  const allTitles = titles.flatMap((t) => [t, ...t.children]).sort((a, b) =>
+  // Only parent titles, sorted alphabetically
+  const allTitles = [...titles].sort((a, b) =>
     a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
   );
 
