@@ -9,7 +9,7 @@ import { useInsertTitle, useUpdateTitle, type Title, type TitleInsert } from "@/
 import { searchBluray, getBlurayDetail, type BluraySearchResult } from "@/lib/bluray-api";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Link } from "lucide-react";
 
 type TitleFormDialogProps = {
   open: boolean;
@@ -69,8 +69,63 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
     setSearchQuery("");
   }, [editTitle, open]);
 
+  const isBlurayUrl = (text: string) =>
+    /^https?:\/\/(www\.)?blu-ray\.com\/movies\//i.test(text.trim());
+
+  const handlePasteUrl = async (url: string) => {
+    const trimmed = url.trim();
+    if (!isBlurayUrl(trimmed)) {
+      toast.error("Not a valid blu-ray.com listing URL");
+      return;
+    }
+    setImporting(true);
+    try {
+      // Extract cover URL from the product page URL
+      const idMatch = trimmed.match(/\/(\d+)\//);
+      const coverUrl = idMatch ? `https://images.static-bluray.com/movies/covers/${idMatch[1]}_medium.jpg` : "";
+
+      const detail = await getBlurayDetail(trimmed);
+      if (detail) {
+        setForm({
+          title: detail.title || "",
+          year: detail.year?.toString() ?? "",
+          director: detail.director ?? "",
+          spine_number: "",
+          video_quality: detail.video_quality ?? "",
+          hdr_type: detail.hdr_type ?? "",
+          audio_type: detail.audio_type ?? "",
+          package_type: detail.package_type ?? "",
+          publisher: detail.publisher ?? "",
+          media_type: detail.media_type ?? "Film",
+          region: detail.region ?? "",
+          cover_url: coverUrl,
+        });
+        toast.success("Imported from blu-ray.com — review and save");
+      } else {
+        toast.error("Couldn't extract details from that page");
+      }
+    } catch {
+      toast.error("Failed to scrape — page may be blocked");
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const handleSearchInput = (value: string) => {
+    setSearchQuery(value);
+    // Auto-detect pasted URLs
+    if (isBlurayUrl(value)) {
+      handlePasteUrl(value);
+    }
+  };
+
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
+    // If it's a URL, import directly
+    if (isBlurayUrl(searchQuery)) {
+      handlePasteUrl(searchQuery);
+      return;
+    }
     setSearching(true);
     try {
       const results = await searchBluray(searchQuery, searchCountry);
@@ -106,7 +161,6 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         });
         toast.success("Data imported — review and edit as needed");
       } else {
-        // Fallback: just use basic info from search results
         setForm((prev) => ({
           ...prev,
           title: result.title,
@@ -199,12 +253,12 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
               <div className="relative flex-1">
                 <Input
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search title..."
+                  onChange={(e) => handleSearchInput(e.target.value)}
+                  placeholder="Search or paste blu-ray.com URL..."
                   onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleSearch())}
                 />
               </div>
-              <Button type="button" size="icon" variant="outline" onClick={handleSearch} disabled={searching}>
+              <Button type="button" size="icon" variant="outline" onClick={handleSearch} disabled={searching || importing}>
                 {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
               </Button>
             </div>
