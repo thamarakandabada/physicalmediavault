@@ -198,7 +198,7 @@ const Stats = () => {
               <StatCard title="HDR Type" icon={Monitor} items={stats.hdrTypes} />
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
-              <StatCard title="Region" icon={MapPin} items={stats.regions} />
+              <StatCard title="Disc Region" icon={MapPin} items={stats.regions} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
           </div>
