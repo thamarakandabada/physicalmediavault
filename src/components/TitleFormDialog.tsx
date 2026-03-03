@@ -4,9 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInsertTitle, useUpdateTitle, type Title, type TitleInsert } from "@/hooks/useTitles";
+import { searchBluray, getBlurayDetail, type BluraySearchResult } from "@/lib/bluray-api";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { Search, Loader2, ExternalLink } from "lucide-react";
 
 type TitleFormDialogProps = {
   open: boolean;
@@ -35,6 +38,13 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
   const updateTitle = useUpdateTitle();
   const [form, setForm] = useState(EMPTY_FORM);
 
+  // Blu-ray.com search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchCountry, setSearchCountry] = useState("US");
+  const [searchResults, setSearchResults] = useState<BluraySearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [importing, setImporting] = useState(false);
+
   useEffect(() => {
     if (editTitle) {
       setForm({
@@ -53,7 +63,67 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
     } else {
       setForm(EMPTY_FORM);
     }
+    setSearchResults([]);
+    setSearchQuery("");
   }, [editTitle, open]);
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setSearching(true);
+    try {
+      const results = await searchBluray(searchQuery, searchCountry);
+      setSearchResults(results);
+      if (results.length === 0) {
+        toast.info("No results found on blu-ray.com");
+      }
+    } catch {
+      toast.error("Search failed — blu-ray.com may be blocking requests");
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleImport = async (result: BluraySearchResult) => {
+    setImporting(true);
+    try {
+      const detail = await getBlurayDetail(result.url);
+      if (detail) {
+        setForm({
+          title: detail.title || result.title,
+          year: detail.year?.toString() ?? result.year ?? "",
+          director: detail.director ?? "",
+          spine_number: "",
+          video_quality: detail.video_quality ?? "",
+          hdr_type: detail.hdr_type ?? "",
+          audio_type: detail.audio_type ?? "",
+          package_type: detail.package_type ?? "",
+          publisher: detail.publisher ?? "",
+          media_type: detail.media_type ?? "Film",
+          region: detail.region ?? searchCountry,
+        });
+        toast.success("Data imported — review and edit as needed");
+      } else {
+        // Fallback: just use basic info from search results
+        setForm((prev) => ({
+          ...prev,
+          title: result.title,
+          year: result.year,
+          region: searchCountry,
+        }));
+        toast.info("Basic info imported — detail page may have been blocked");
+      }
+    } catch {
+      setForm((prev) => ({
+        ...prev,
+        title: result.title,
+        year: result.year,
+        region: searchCountry,
+      }));
+      toast.info("Basic info imported — couldn't fetch full details");
+    } finally {
+      setImporting(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +172,75 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
             {editTitle ? "Edit Title" : parentId ? "Add Nested Title" : "Add Title"}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+
+        <Tabs defaultValue={editTitle ? "manual" : "search"} className="w-full">
+          <TabsList className="w-full mb-4">
+            <TabsTrigger value="search" className="flex-1">Search blu-ray.com</TabsTrigger>
+            <TabsTrigger value="manual" className="flex-1">Manual Entry</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="search" className="space-y-3">
+            <div className="flex gap-2">
+              <Select value={searchCountry} onValueChange={setSearchCountry}>
+                <SelectTrigger className="w-20">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="US">🇺🇸 US</SelectItem>
+                  <SelectItem value="UK">🇬🇧 UK</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="relative flex-1">
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search title..."
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleSearch())}
+                />
+              </div>
+              <Button type="button" size="icon" variant="outline" onClick={handleSearch} disabled={searching}>
+                {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+              </Button>
+            </div>
+
+            {searchResults.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+                {searchResults.map((result) => (
+                  <button
+                    key={result.blurayId}
+                    type="button"
+                    onClick={() => handleImport(result)}
+                    disabled={importing}
+                    className="flex flex-col items-center gap-1 p-2 rounded-md border border-border hover:border-gold-dim hover:bg-secondary/50 transition-colors text-center"
+                  >
+                    <img
+                      src={result.coverUrl}
+                      alt={result.title}
+                      className="w-16 h-20 object-cover rounded"
+                      loading="lazy"
+                    />
+                    <span className="text-xs font-medium text-foreground line-clamp-2 leading-tight">
+                      {result.title}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">{result.year}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {importing && (
+              <div className="flex items-center justify-center gap-2 py-3 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" /> Importing details...
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="manual">
+            {/* Empty — form below always shows */}
+          </TabsContent>
+        </Tabs>
+
+        <form onSubmit={handleSubmit} className="space-y-4 border-t border-border pt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <Label>Title *</Label>
