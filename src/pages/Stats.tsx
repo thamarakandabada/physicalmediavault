@@ -130,7 +130,7 @@ const Stats = () => {
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Collection <span className="text-gold">Stats</span>
         </h1>
-        <p className="text-muted-foreground mb-8">A breakdown of your physical media vault</p>
+        <p className="text-muted-foreground mb-8">A breakdown of my physical media vault</p>
 
         {isLoading ? (
           <div className="text-center py-20 text-muted-foreground">Loading...</div>
