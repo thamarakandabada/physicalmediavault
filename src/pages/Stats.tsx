@@ -50,15 +50,15 @@ function StatCard({
 
           <div className="space-y-2">
             {items.map((item) => (
-              <div key={item.label} className="flex items-center gap-3">
-                <span className="text-sm text-foreground w-28 truncate">{item.label}</span>
-                <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
+              <div key={item.label} className="flex items-center gap-2 sm:gap-3">
+                <span className="text-sm text-foreground w-24 sm:w-28 shrink-0 truncate">{item.label}</span>
+                <div className="flex-1 min-w-0 h-2 rounded-full bg-secondary overflow-hidden">
                   <div
                     className="h-full rounded-full bg-gold/70 transition-all duration-500"
                     style={{ width: `${item.percent}%` }}
                   />
                 </div>
-                <span className="text-xs text-muted-foreground w-14 text-right tabular-nums">
+                <span className="text-xs text-muted-foreground shrink-0 text-right tabular-nums whitespace-nowrap">
                   {item.count} ({item.percent}%)
                 </span>
               </div>
