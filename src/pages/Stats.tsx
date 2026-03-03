@@ -72,53 +72,41 @@ function StatCard({
   );
 }
 
-const DIRECTOR_COLORS = [
-  "hsl(145, 100%, 44%)",
-  "hsl(200, 80%, 55%)",
-  "hsl(30, 100%, 50%)",
-  "hsl(265, 50%, 50%)",
-  "hsl(330, 55%, 48%)",
-  "hsl(50, 90%, 50%)",
-  "hsl(180, 60%, 40%)",
-  "hsl(145, 60%, 32%)",
-];
-
 function DirectorTiles({ items }: { items: StatBreakdown[] }) {
   const maxCount = items[0]?.count ?? 1;
+  const visible = items.slice(0, 15);
   return (
-    <div className="bg-card border border-border rounded-lg p-5 col-span-1 md:col-span-2">
-      <div className="flex items-center gap-2 mb-2">
+    <div className="bg-card border border-border rounded-lg p-4 sm:p-5">
+      <div className="flex items-center gap-2 mb-1">
         <Film className="w-4 h-4 text-gold" />
-        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Directors</h3>
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Top Directors</h3>
       </div>
-      <p className="text-xs text-muted-foreground mb-5">
-        {items.length} directors — sized by number of titles
+      <p className="text-xs text-muted-foreground mb-3 sm:mb-4">
+        {items.length} with 2+ titles — sized by count
       </p>
-      <div className="flex flex-wrap gap-2">
-        {items.map((item, i) => {
+      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+        {visible.map((item) => {
           const ratio = item.count / maxCount;
-          const fontSize = 0.72 + ratio * 0.78;
-          const py = 4 + ratio * 8;
-          const px = 8 + ratio * 12;
-          const opacity = 0.55 + ratio * 0.45;
-          const color = DIRECTOR_COLORS[i % DIRECTOR_COLORS.length];
+          const lightness = 28 + ratio * 18;
+          const saturation = 40 + ratio * 60;
+          const bg = `hsl(145, ${saturation}%, ${lightness}%)`;
+          const textL = lightness > 40 ? 7 : 88;
           return (
             <div
               key={item.label}
-              className="rounded-md transition-all hover:scale-105 cursor-default"
+              className="rounded transition-all hover:scale-105 cursor-default"
               style={{
-                fontSize: `${fontSize}rem`,
-                padding: `${py}px ${px}px`,
-                backgroundColor: color,
-                opacity,
-                color: "hsl(210, 20%, 7%)",
-                fontWeight: ratio > 0.4 ? 700 : 500,
-                lineHeight: 1.2,
+                fontSize: `${0.7 + ratio * 0.45}rem`,
+                padding: `${3 + ratio * 4}px ${6 + ratio * 6}px`,
+                backgroundColor: bg,
+                color: `hsl(210, 20%, ${textL}%)`,
+                fontWeight: ratio > 0.5 ? 700 : 500,
+                lineHeight: 1.3,
               }}
               title={`${item.count} title${item.count !== 1 ? "s" : ""}`}
             >
-              <span>{item.label}</span>
-              <span className="ml-1.5 text-[0.65em] opacity-70">{item.count}</span>
+              {item.label}
+              <span className="ml-1 text-[0.65em] opacity-60">{item.count}</span>
             </div>
           );
         })}
