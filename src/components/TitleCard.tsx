@@ -18,11 +18,15 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
 
   return (
     <div className="group animate-fade-in">
-        <div className={cn(
-          "bg-card border border-border rounded-md p-4 hover:border-muted-foreground/30 transition-colors",
-          title.video_quality === "4K" && "border-l-2 border-l-primary/40",
-          title.video_quality === "1080p" && "border-l-2 border-l-[hsl(200,80%,55%)]/40"
-        )}>
+        <div
+          className={cn(
+            "bg-card border border-border rounded-md p-4 hover:border-muted-foreground/30 transition-colors",
+            title.video_quality === "4K" && "border-l-2 border-l-primary/40",
+            title.video_quality === "1080p" && "border-l-2 border-l-[hsl(200,80%,55%)]/40",
+            hasChildren && "cursor-pointer"
+          )}
+          onClick={hasChildren ? () => setExpanded(!expanded) : undefined}
+        >
         <div className="flex items-start gap-4">
           {/* Cover Art */}
           {title.cover_url && (
@@ -68,13 +72,13 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
             {isOwner && (
               <>
                 <button
-                  onClick={() => onEdit?.(title)}
+                  onClick={(e) => { e.stopPropagation(); onEdit?.(title); }}
                   className="p-2 rounded-md text-muted-foreground hover:text-gold transition-colors opacity-0 group-hover:opacity-100"
                 >
                   <Pencil className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => onDelete?.(title.id)}
+                  onClick={(e) => { e.stopPropagation(); onDelete?.(title.id); }}
                   className="p-2 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -83,7 +87,7 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
             )}
             {hasChildren && (
               <button
-                onClick={() => setExpanded(!expanded)}
+                onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
                 className="p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ChevronDown className={cn("w-4 h-4 transition-transform", expanded && "rotate-180")} />
