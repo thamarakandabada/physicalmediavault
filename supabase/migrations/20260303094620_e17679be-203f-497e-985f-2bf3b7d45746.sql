@@ -1,0 +1,2 @@
+ALTER TABLE public.titles DROP CONSTRAINT titles_media_type_check;
+ALTER TABLE public.titles ADD CONSTRAINT titles_media_type_check CHECK (media_type = ANY (ARRAY['Film', 'Film Collection', 'Documentary', 'Concert Film', 'TV']));
