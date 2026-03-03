@@ -28,22 +28,36 @@ const Criterion = () => {
           </div>
         ) : (
           <div className="max-w-3xl">
-            <div className="grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 gap-y-0 items-center text-xs uppercase tracking-widest text-muted-foreground mb-3 px-3">
+            {/* Desktop header */}
+            <div className="hidden sm:grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 items-center text-xs uppercase tracking-widest text-muted-foreground mb-3 px-3">
               <span>Spine</span>
               <span>Title</span>
               <span>Year</span>
-              <span className="hidden sm:block">Director</span>
+              <span>Director</span>
             </div>
             <div className="space-y-1">
               {criterionTitles.map((t) => (
                 <div
                   key={t.id}
-                  className="grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 items-center py-3 px-3 rounded-md hover:bg-secondary/50 transition-colors border-b border-border/50"
+                  className="py-3 px-3 rounded-md hover:bg-secondary/50 transition-colors border-b border-border/50"
                 >
-                  <span className="font-mono text-gold font-bold">#{t.spine_number}</span>
-                  <span className="font-medium text-foreground truncate">{t.title}</span>
-                  <span className="text-sm text-muted-foreground">{t.year}</span>
-                  <span className="text-sm text-muted-foreground truncate hidden sm:block">{t.director}</span>
+                  {/* Desktop row */}
+                  <div className="hidden sm:grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 items-center">
+                    <span className="font-mono text-gold font-bold">#{t.spine_number}</span>
+                    <span className="font-medium text-foreground truncate">{t.title}</span>
+                    <span className="text-sm text-muted-foreground">{t.year}</span>
+                    <span className="text-sm text-muted-foreground truncate">{t.director}</span>
+                  </div>
+                  {/* Mobile row */}
+                  <div className="sm:hidden flex items-start gap-3">
+                    <span className="font-mono text-gold font-bold shrink-0 w-14">#{t.spine_number}</span>
+                    <div className="min-w-0">
+                      <span className="font-medium text-foreground block">{t.title}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t.year}{t.year && t.director ? " · " : ""}{t.director}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
