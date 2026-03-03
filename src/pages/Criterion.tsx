@@ -1,5 +1,5 @@
 import { useTitlesGrouped } from "@/hooks/useTitles";
-import { AppHeader } from "@/components/AppHeader";
+
 import { MetadataTag } from "@/components/MetadataTag";
 
 const Criterion = () => {
@@ -12,9 +12,7 @@ const Criterion = () => {
     .sort((a, b) => (a.spine_number ?? 0) - (b.spine_number ?? 0));
 
   return (
-    <div className="min-h-screen bg-background">
-      <AppHeader />
-      <main className="container py-8">
+    <>
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Criterion <span className="text-gold">Collection</span>
         </h1>
@@ -51,8 +49,7 @@ const Criterion = () => {
             </div>
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 };
 

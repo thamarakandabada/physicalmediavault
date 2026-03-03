@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { AppLayout } from "@/components/AppLayout";
 import Index from "./pages/Index";
 import Alphabetical from "./pages/Alphabetical";
 import Criterion from "./pages/Criterion";
@@ -23,13 +24,15 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/alphabetical" element={<Alphabetical />} />
-            <Route path="/criterion" element={<Criterion />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/wishlist" element={<Wishlist />} />
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/alphabetical" element={<Alphabetical />} />
+              <Route path="/criterion" element={<Criterion />} />
+              <Route path="/stats" element={<Stats />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/manage" element={<Manage />} />
+            </Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/manage" element={<Manage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useTitlesGrouped, useDeleteTitle, type TitleWithChildren, type Title } from "@/hooks/useTitles";
 import { useAuth } from "@/hooks/useAuth";
-import { AppHeader } from "@/components/AppHeader";
+
 import { TitleCard } from "@/components/TitleCard";
 import { TitleFormDialog } from "@/components/TitleFormDialog";
 import { Input } from "@/components/ui/input";
@@ -120,9 +120,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <AppHeader />
-      <main className="container py-8">
+    <>
         {/* Hero */}
         <div className="text-center mb-10">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
@@ -307,7 +305,7 @@ const Index = () => {
             ))}
           </div>
         )}
-      </main>
+      
 
       <TitleFormDialog
         open={formOpen}
@@ -315,7 +313,7 @@ const Index = () => {
         editTitle={editTitle}
         parentId={parentId}
       />
-    </div>
+    </>
   );
 };
 
