@@ -232,7 +232,7 @@ const Stats = () => {
         ) : (
           <div className="space-y-8">
             {/* Headline numbers */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
               <HeadlineStat label="Total Discs" value={stats.totalDiscs} icon={Disc3} />
               <HeadlineStat label="Top-Level Titles" value={stats.totalCollections} icon={BarChart3} />
               <HeadlineStat label="Unique Directors" value={stats.uniqueDirectors} icon={Award} />
