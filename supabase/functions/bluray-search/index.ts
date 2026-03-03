@@ -174,14 +174,16 @@ serve(async (req) => {
 
       // Packaging
       const packSection = html.match(/<span class="subheading">Packaging<\/span><br>([\s\S]*?)(?:<br><br>|<br>\s*<span)/);
-      let packageType = 'Plastic Case';
+      let packageType = 'Keep Case';
       if (packSection) {
         const pt = packSection[1].toLowerCase();
         if (pt.includes('steelbook')) packageType = 'Steelbook';
+        else if (pt.includes('slipbox')) packageType = 'Slipbox';
         else if (pt.includes('slipcover')) packageType = 'Slipcover';
         else if (pt.includes('digipak') || pt.includes('digipack')) packageType = 'Digipak';
         else if (pt.includes('mediabook')) packageType = 'Mediabook';
         else if (pt.includes('box set') || pt.includes('collection')) packageType = 'Box Set';
+        else if (pt.includes('keep case')) packageType = 'Keep Case';
       }
 
       // Region from flag
