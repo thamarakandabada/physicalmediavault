@@ -72,6 +72,17 @@ function StatCard({
   );
 }
 
+const DIRECTOR_PALETTE = [
+  { bg: "hsl(145, 100%, 44%)", text: "hsl(210, 20%, 7%)" },   // Letterboxd green
+  { bg: "hsl(200, 70%, 45%)", text: "hsl(210, 20%, 98%)" },    // Blue
+  { bg: "hsl(30, 90%, 52%)", text: "hsl(210, 20%, 7%)" },      // Orange
+  { bg: "hsl(340, 65%, 50%)", text: "hsl(0, 0%, 98%)" },       // Pink/red
+  { bg: "hsl(270, 50%, 55%)", text: "hsl(0, 0%, 98%)" },       // Purple
+  { bg: "hsl(50, 85%, 50%)", text: "hsl(210, 20%, 7%)" },      // Yellow
+  { bg: "hsl(170, 60%, 40%)", text: "hsl(210, 20%, 98%)" },    // Teal
+  { bg: "hsl(15, 75%, 50%)", text: "hsl(0, 0%, 98%)" },        // Burnt orange
+];
+
 function DirectorTiles({ items }: { items: StatBreakdown[] }) {
   const maxCount = items[0]?.count ?? 1;
   const visible = items.slice(0, 15);
@@ -85,12 +96,10 @@ function DirectorTiles({ items }: { items: StatBreakdown[] }) {
         {items.length} with 2+ titles — sized by count
       </p>
       <div className="flex flex-wrap gap-1.5 sm:gap-2">
-        {visible.map((item) => {
+        {visible.map((item, i) => {
           const ratio = item.count / maxCount;
-          const lightness = 28 + ratio * 18;
-          const saturation = 40 + ratio * 60;
-          const bg = `hsl(145, ${saturation}%, ${lightness}%)`;
-          const textL = lightness > 40 ? 7 : 88;
+          const palette = DIRECTOR_PALETTE[i % DIRECTOR_PALETTE.length];
+          const opacity = 0.65 + ratio * 0.35;
           return (
             <div
               key={item.label}
@@ -98,15 +107,16 @@ function DirectorTiles({ items }: { items: StatBreakdown[] }) {
               style={{
                 fontSize: `${0.7 + ratio * 0.45}rem`,
                 padding: `${3 + ratio * 4}px ${6 + ratio * 6}px`,
-                backgroundColor: bg,
-                color: `hsl(210, 20%, ${textL}%)`,
+                backgroundColor: palette.bg,
+                color: palette.text,
+                opacity,
                 fontWeight: ratio > 0.5 ? 700 : 500,
                 lineHeight: 1.3,
               }}
               title={`${item.count} title${item.count !== 1 ? "s" : ""}`}
             >
               {item.label}
-              <span className="ml-1 text-[0.65em] opacity-60">{item.count}</span>
+              <span className="ml-1 text-[0.65em] opacity-70">{item.count}</span>
             </div>
           );
         })}
