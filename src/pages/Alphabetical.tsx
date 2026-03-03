@@ -1,16 +1,24 @@
+import { useState } from "react";
 import { useTitlesGrouped } from "@/hooks/useTitles";
 
-import { MediaBadge } from "@/components/MediaBadge";
+import { MediaBadge, MEDIA_TYPES } from "@/components/MediaBadge";
 import { MetadataTag } from "@/components/MetadataTag";
 import { sortableTitle } from "@/lib/utils";
 
+const FILTER_TABS = ["All", ...MEDIA_TYPES];
+
 const Alphabetical = () => {
   const { data: titles, isLoading } = useTitlesGrouped();
+  const [activeFilter, setActiveFilter] = useState("All");
 
   // Only parent titles, sorted alphabetically (ignoring leading articles)
-  const allTitles = [...titles].sort((a, b) =>
+  const sorted = [...titles].sort((a, b) =>
     sortableTitle(a.title).localeCompare(sortableTitle(b.title), undefined, { sensitivity: "base" })
   );
+
+  const allTitles = activeFilter === "All"
+    ? sorted
+    : sorted.filter((t) => t.media_type === activeFilter);
 
   // Group by first letter of sortable title
   const grouped = allTitles.reduce<Record<string, typeof allTitles>>((acc, t) => {
@@ -29,6 +37,23 @@ const Alphabetical = () => {
           Alphabetical <span className="text-gold">Index</span>
         </h1>
         <p className="text-muted-foreground mb-8">How my shelves are currently organised — {allTitles.length} titles</p>
+
+        {/* Media type filter tabs */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {FILTER_TABS.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveFilter(tab)}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                activeFilter === tab
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              }`}
+            >
+              {tab === "Film Collection" ? "Collection" : tab}
+            </button>
+          ))}
+        </div>
 
         {/* Letter nav */}
         <div className="flex flex-wrap gap-1 mb-8">
