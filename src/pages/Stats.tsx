@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 
 import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 type StatBreakdown = { label: string; count: number; percent: number };
 
@@ -166,6 +167,83 @@ function DecadeChart({ data }: { data: StatBreakdown[] }) {
   );
 }
 
+const PIE_COLORS = [
+  "hsl(145, 100%, 44%)",
+  "hsl(200, 70%, 45%)",
+  "hsl(30, 90%, 52%)",
+  "hsl(340, 65%, 50%)",
+  "hsl(270, 50%, 55%)",
+  "hsl(50, 85%, 50%)",
+  "hsl(170, 60%, 40%)",
+  "hsl(15, 75%, 50%)",
+];
+
+function PieBreakdown({ data }: { data: StatBreakdown[] }) {
+  return (
+    <div className="flex flex-col sm:flex-row items-center gap-4">
+      <div className="w-48 h-48 shrink-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="count"
+              nameKey="label"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              innerRadius={30}
+              strokeWidth={1}
+              stroke="hsl(210, 18%, 11%)"
+            >
+              {data.map((_, i) => (
+                <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} fillOpacity={0.85} />
+              ))}
+            </Pie>
+            <Tooltip
+              contentStyle={{ backgroundColor: 'hsl(210, 18%, 11%)', border: '1px solid hsl(210, 14%, 20%)', borderRadius: 8, color: 'hsl(210, 10%, 88%)' }}
+              formatter={(value: number, name: string) => [`${value}`, name]}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="flex-1 space-y-1.5 min-w-0">
+        {data.map((item, i) => (
+          <div key={item.label} className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
+            <span className="text-sm text-foreground truncate">{item.label}</span>
+            <span className="text-xs text-muted-foreground ml-auto shrink-0 tabular-nums">{item.count} ({item.percent}%)</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AVTabs({ videoData, audioData }: { videoData: StatBreakdown[]; audioData: StatBreakdown[] }) {
+  return (
+    <div className="bg-card border border-border rounded-lg p-5">
+      <Tabs defaultValue="video">
+        <div className="flex items-center gap-3 mb-4">
+          <TabsList>
+            <TabsTrigger value="video" className="gap-1.5">
+              <Monitor className="w-3.5 h-3.5" /> Video Quality
+            </TabsTrigger>
+            <TabsTrigger value="audio" className="gap-1.5">
+              <Volume2 className="w-3.5 h-3.5" /> Audio Format
+            </TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="video">
+          {videoData.length > 0 ? <PieBreakdown data={videoData} /> : <p className="text-sm text-muted-foreground">No data yet</p>}
+        </TabsContent>
+        <TabsContent value="audio">
+          {audioData.length > 0 ? <PieBreakdown data={audioData} /> : <p className="text-sm text-muted-foreground">No data yet</p>}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
 
@@ -248,10 +326,11 @@ const Stats = () => {
               <DirectorTiles items={stats.directors.filter((d) => d.count >= 2)} />
             )}
 
+            {/* Video & Audio combined */}
+            <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} />
+
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <StatCard title="Video Quality" icon={Monitor} items={stats.videoQualities} />
-              <StatCard title="Audio Format" icon={Volume2} items={stats.audioTypes} />
               <StatCard title="HDR Type" icon={Monitor} items={stats.hdrTypes} />
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
