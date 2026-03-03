@@ -18,7 +18,7 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
 
   return (
     <div className="group animate-fade-in">
-      <div className="bg-card border border-border rounded-lg p-4 hover:border-gold-dim transition-colors">
+      <div className="bg-card border border-border rounded-md p-4 hover:border-muted-foreground/30 transition-colors">
         <div className="flex items-start gap-4">
           {/* Cover Art */}
           {title.cover_url && (
@@ -90,7 +90,7 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
       </div>
 
       {hasChildren && expanded && (
-        <div className="ml-6 mt-1 space-y-1 border-l-2 border-gold-dim pl-4">
+        <div className="ml-6 mt-1 space-y-1 border-l-2 border-border pl-4">
           {title.children.map((child) => (
             <div key={child.id} className="bg-card/50 border border-border rounded-lg p-3 group/child">
               <div className="flex items-start gap-3">
