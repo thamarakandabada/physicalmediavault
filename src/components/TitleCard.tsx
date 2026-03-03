@@ -91,7 +91,7 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
 
       {hasChildren && expanded && (
         <div className="ml-6 mt-1 space-y-1 border-l-2 border-border pl-4">
-          {title.children.map((child) => (
+          {[...title.children].sort((a, b) => (a.year ?? 0) - (b.year ?? 0)).map((child) => (
             <div key={child.id} className="bg-card/50 border border-border rounded-lg p-3 group/child">
               <div className="flex items-start gap-3">
                 {/* Child Cover Art */}
