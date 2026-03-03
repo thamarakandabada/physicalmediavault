@@ -188,6 +188,10 @@ serve(async (req) => {
       const flagMatch = html.match(/<h1>[^<]+<\/h1><img[^>]*src="[^"]*flags\/(US|UK)\.png"/);
       const region = flagMatch ? flagMatch[1] : '';
 
+      // Director
+      const directorMatch = html.match(/Director:\s*<a[^>]*>([^<]+)<\/a>/);
+      const director = directorMatch ? directorMatch[1].trim() : '';
+
       const result = {
         title, year, publisher,
         video_quality: videoQuality,
@@ -196,7 +200,7 @@ serve(async (req) => {
         package_type: packageType,
         region,
         media_type: 'Film',
-        director: '',
+        director,
       };
 
       return new Response(JSON.stringify({ success: true, data: result }), {
