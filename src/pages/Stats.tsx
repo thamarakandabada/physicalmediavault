@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 import { AppHeader } from "@/components/AppHeader";
 import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
 type StatBreakdown = { label: string; count: number; percent: number };
 
@@ -81,6 +82,36 @@ function HeadlineStat({ label, value, icon: Icon }: { label: string; value: stri
   );
 }
 
+function DecadeChart({ data }: { data: StatBreakdown[] }) {
+  const sorted = [...data].sort((a, b) => a.label.localeCompare(b.label));
+  return (
+    <div className="bg-card border border-border rounded-lg p-5 col-span-1 md:col-span-2">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 className="w-4 h-4 text-gold" />
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Titles by Decade</h3>
+      </div>
+      <div className="h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={sorted} margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
+            <XAxis dataKey="label" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
+            <Tooltip
+              contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, color: 'hsl(var(--foreground))' }}
+              cursor={{ fill: 'hsl(var(--secondary))' }}
+              formatter={(value: number) => [`${value} title${value !== 1 ? 's' : ''}`, 'Count']}
+            />
+            <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+              {sorted.map((_, i) => (
+                <Cell key={i} fill="hsl(var(--gold))" fillOpacity={0.8} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
 
@@ -153,6 +184,11 @@ const Stats = () => {
               <HeadlineStat label="Unique Directors" value={stats.uniqueDirectors} icon={Award} />
             </div>
 
+            {/* Decade chart */}
+            {stats.decades.length > 0 && (
+              <DecadeChart data={stats.decades} />
+            )}
+
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StatCard title="Top Directors" icon={Film} items={stats.directors.slice(0, 8)} />
@@ -163,7 +199,6 @@ const Stats = () => {
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
               <StatCard title="Region" icon={MapPin} items={stats.regions} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
-              <StatCard title="Decade" icon={BarChart3} items={stats.decades} />
             </div>
           </div>
         )}
