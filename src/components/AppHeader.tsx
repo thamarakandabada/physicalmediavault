@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { path: "/", label: "Collection" },
   { path: "/alphabetical", label: "A–Z" },
   { path: "/criterion", label: "Criterion" },
+  { path: "/stats", label: "Stats" },
 ];
 
 export function AppHeader() {
