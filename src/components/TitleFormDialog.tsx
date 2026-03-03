@@ -266,6 +266,9 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Film">Film</SelectItem>
+                  <SelectItem value="Film Collection">Film Collection</SelectItem>
+                  <SelectItem value="Documentary">Documentary</SelectItem>
+                  <SelectItem value="Concert Film">Concert Film</SelectItem>
                   <SelectItem value="TV">TV</SelectItem>
                 </SelectContent>
               </Select>

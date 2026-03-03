@@ -49,6 +49,9 @@
     --gold: 40 85% 55%;
     --gold-dim: 40 60% 35%;
     --film-badge: 210 80% 55%;
+    --film-collection-badge: 30 80% 50%;
+    --documentary-badge: 145 60% 42%;
+    --concert-badge: 330 70% 55%;
     --tv-badge: 280 70% 55%;
     --surface-elevated: 220 18% 12%;
   }
@@ -94,6 +97,21 @@
 
   .badge-film {
     background-color: hsl(var(--film-badge));
+    color: white;
+  }
+
+  .badge-film-collection {
+    background-color: hsl(var(--film-collection-badge));
+    color: white;
+  }
+
+  .badge-documentary {
+    background-color: hsl(var(--documentary-badge));
+    color: white;
+  }
+
+  .badge-concert {
+    background-color: hsl(var(--concert-badge));
     color: white;
   }
 

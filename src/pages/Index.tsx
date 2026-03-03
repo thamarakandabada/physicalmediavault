@@ -92,7 +92,7 @@ const Index = () => {
     return result;
   }, [titles, search, filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType, sortBy]);
 
-  const filmCount = titles.filter((t) => t.media_type === "Film").length;
+  const filmCount = titles.filter((t) => ["Film", "Film Collection", "Documentary", "Concert Film"].includes(t.media_type)).length;
   const tvCount = titles.filter((t) => t.media_type === "TV").length;
   const totalDiscs = titles.reduce((acc, t) => acc + 1 + t.children.length, 0);
 
@@ -203,6 +203,9 @@ const Index = () => {
                     <SelectContent>
                       <SelectItem value="all">All types</SelectItem>
                       <SelectItem value="Film">Film</SelectItem>
+                      <SelectItem value="Film Collection">Film Collection</SelectItem>
+                      <SelectItem value="Documentary">Documentary</SelectItem>
+                      <SelectItem value="Concert Film">Concert Film</SelectItem>
                       <SelectItem value="TV">TV</SelectItem>
                     </SelectContent>
                   </Select>
