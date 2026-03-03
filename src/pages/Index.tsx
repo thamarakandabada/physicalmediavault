@@ -94,9 +94,7 @@ const Index = () => {
     return result;
   }, [titles, search, filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType, sortBy]);
 
-  const totalTitles = titles.reduce((acc, t) => acc + 1 + t.children.length, 0);
-
-  // Count leaf titles: standalone films + children of collections, plus other types
+  // Count leaf titles only (children of collections + standalone non-collection parents)
   const allLeaves = titles.flatMap((t) =>
     t.children.length > 0 ? t.children : [t]
   );
@@ -104,6 +102,7 @@ const Index = () => {
   const docCount = allLeaves.filter((t) => t.media_type === "Documentary").length;
   const concertCount = allLeaves.filter((t) => t.media_type === "Concert Film").length;
   const tvCount = allLeaves.filter((t) => t.media_type === "TV").length;
+  const totalTitles = filmCount + docCount + concertCount + tvCount;
 
   const handleEdit = (title: TitleWithChildren) => {
     setEditTitle(title);
@@ -137,11 +136,11 @@ const Index = () => {
           <div className="flex items-center justify-center gap-6 mt-5 text-sm text-muted-foreground flex-wrap">
             <span className="flex items-center gap-1.5"><Disc3 className="w-4 h-4 text-gold" />{totalTitles} titles</span>
             <span className="text-border">•</span>
-            <span>{filmCount} films</span>
+            <span>{filmCount} {filmCount === 1 ? "film" : "films"}</span>
             <span className="text-border">•</span>
-            <span>{docCount} docs</span>
+            <span>{docCount} {docCount === 1 ? "doc" : "docs"}</span>
             <span className="text-border">•</span>
-            <span>{concertCount} concerts</span>
+            <span>{concertCount} {concertCount === 1 ? "concert" : "concerts"}</span>
             <span className="text-border">•</span>
             <span>{tvCount} TV</span>
           </div>
