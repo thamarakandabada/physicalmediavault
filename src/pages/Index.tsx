@@ -94,9 +94,16 @@ const Index = () => {
     return result;
   }, [titles, search, filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType, sortBy]);
 
-  const filmCount = titles.filter((t) => ["Film", "Film Collection", "Documentary", "Concert Film"].includes(t.media_type)).length;
-  const tvCount = titles.filter((t) => t.media_type === "TV").length;
-  const totalDiscs = titles.reduce((acc, t) => acc + 1 + t.children.length, 0);
+  const totalTitles = titles.reduce((acc, t) => acc + 1 + t.children.length, 0);
+
+  // Count leaf titles: standalone films + children of collections, plus other types
+  const allLeaves = titles.flatMap((t) =>
+    t.children.length > 0 ? t.children : [t]
+  );
+  const filmCount = allLeaves.filter((t) => t.media_type === "Film").length;
+  const docCount = allLeaves.filter((t) => t.media_type === "Documentary").length;
+  const concertCount = allLeaves.filter((t) => t.media_type === "Concert Film").length;
+  const tvCount = allLeaves.filter((t) => t.media_type === "TV").length;
 
   const handleEdit = (title: TitleWithChildren) => {
     setEditTitle(title);
@@ -127,10 +134,14 @@ const Index = () => {
             Physical Media <span className="text-gold">Vault</span>
           </h1>
           <p className="text-muted-foreground text-base max-w-lg mx-auto">A showcase of my small but growing physical media collection. Includes both films and TV.</p>
-          <div className="flex items-center justify-center gap-6 mt-5 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5"><Disc3 className="w-4 h-4 text-gold" />{totalDiscs} discs</span>
+          <div className="flex items-center justify-center gap-6 mt-5 text-sm text-muted-foreground flex-wrap">
+            <span className="flex items-center gap-1.5"><Disc3 className="w-4 h-4 text-gold" />{totalTitles} titles</span>
             <span className="text-border">•</span>
             <span>{filmCount} films</span>
+            <span className="text-border">•</span>
+            <span>{docCount} docs</span>
+            <span className="text-border">•</span>
+            <span>{concertCount} concerts</span>
             <span className="text-border">•</span>
             <span>{tvCount} TV</span>
           </div>
