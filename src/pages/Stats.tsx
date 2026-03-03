@@ -219,17 +219,20 @@ function PieBreakdown({ data }: { data: StatBreakdown[] }) {
   );
 }
 
-function AVTabs({ videoData, audioData }: { videoData: StatBreakdown[]; audioData: StatBreakdown[] }) {
+function AVTabs({ videoData, audioData, hdrData }: { videoData: StatBreakdown[]; audioData: StatBreakdown[]; hdrData: StatBreakdown[] }) {
   return (
     <div className="bg-card border border-border rounded-lg p-5">
       <Tabs defaultValue="video">
         <div className="flex items-center gap-3 mb-4">
           <TabsList>
             <TabsTrigger value="video" className="gap-1.5">
-              <Monitor className="w-3.5 h-3.5" /> Video Quality
+              <Monitor className="w-3.5 h-3.5" /> Video
             </TabsTrigger>
             <TabsTrigger value="audio" className="gap-1.5">
-              <Volume2 className="w-3.5 h-3.5" /> Audio Format
+              <Volume2 className="w-3.5 h-3.5" /> Audio
+            </TabsTrigger>
+            <TabsTrigger value="hdr" className="gap-1.5">
+              <Monitor className="w-3.5 h-3.5" /> HDR
             </TabsTrigger>
           </TabsList>
         </div>
@@ -238,6 +241,9 @@ function AVTabs({ videoData, audioData }: { videoData: StatBreakdown[]; audioDat
         </TabsContent>
         <TabsContent value="audio">
           {audioData.length > 0 ? <PieBreakdown data={audioData} /> : <p className="text-sm text-muted-foreground">No data yet</p>}
+        </TabsContent>
+        <TabsContent value="hdr">
+          {hdrData.length > 0 ? <PieBreakdown data={hdrData} /> : <p className="text-sm text-muted-foreground">No data yet</p>}
         </TabsContent>
       </Tabs>
     </div>
@@ -327,11 +333,11 @@ const Stats = () => {
             )}
 
             {/* Video & Audio combined */}
-            <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} />
+            <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} hdrData={stats.hdrTypes} />
 
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <StatCard title="HDR Type" icon={Monitor} items={stats.hdrTypes} />
+              <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
               <StatCard title="Disc Region" icon={MapPin} items={stats.regions} />
