@@ -18,7 +18,10 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
 
   return (
     <div className="group animate-fade-in">
-      <div className="bg-card border border-border rounded-md p-4 hover:border-muted-foreground/30 transition-colors">
+        <div className={cn(
+          "bg-card border border-border rounded-md p-4 hover:border-muted-foreground/30 transition-colors",
+          title.video_quality === "4K" && "border-l-2 border-l-primary/40"
+        )}>
         <div className="flex items-start gap-4">
           {/* Cover Art */}
           {title.cover_url && (
