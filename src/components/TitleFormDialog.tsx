@@ -335,6 +335,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
                   <SelectItem value="UK">UK</SelectItem>
                   <SelectItem value="US">US</SelectItem>
                   <SelectItem value="UK/US">UK/US</SelectItem>
+                  <SelectItem value="France">France</SelectItem>
                 </SelectContent>
               </Select>
             </div>
