@@ -10,7 +10,7 @@ function detectRetailer(url: string): string {
   if (u.includes('amazon.co.uk') || u.includes('amazon.com')) return 'Amazon';
   if (u.includes('arrowfilms.com') || u.includes('arrowvideo.com')) return 'Arrow';
   if (u.includes('criterion.com') || u.includes('criterionstore')) return 'Criterion';
-  if (u.includes('IndicatorSeries') || u.includes('powerhousefilms.co.uk')) return 'Indicator';
+  if (u.includes('indicatorseries') || u.includes('powerhousefilms.co.uk')) return 'Indicator';
   if (u.includes('eurekavideo.co.uk')) return 'Eureka';
   if (u.includes('secondsightfilms.co.uk')) return 'Second Sight';
   if (u.includes('88films.tv')) return '88 Films';
@@ -20,6 +20,33 @@ function detectRetailer(url: string): string {
   } catch {
     return 'Unknown';
   }
+}
+
+function extractPrice(markdown: string, title: string): string | null {
+  // Strategy: find the product price, not promotional banner prices.
+  // Look for the price that appears right after the product title/heading.
+  
+  // 1. Try to find price after the title heading (# Title\n\nPrice pattern)
+  if (title) {
+    const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const afterTitlePattern = new RegExp(escapedTitle + '[\\s\\S]{0,200}?([£$€]\\d+[.,]\\d{2})', 'i');
+    const afterTitleMatch = markdown.match(afterTitlePattern);
+    if (afterTitleMatch) return afterTitleMatch[1];
+  }
+
+  // 2. Look for a price that follows a markdown heading (# ... \n\n £XX.XX)
+  const headingPriceMatch = markdown.match(/^#{1,3}\s+.+\n\n\s*([£$€]\d+[.,]\d{2})/m);
+  if (headingPriceMatch) return headingPriceMatch[1];
+
+  // 3. Look for prices with decimal places (more likely to be real product prices)
+  const decimalPriceMatch = markdown.match(/([£$€]\d+[.,]\d{2})/);
+  if (decimalPriceMatch) return decimalPriceMatch[1];
+
+  // 4. Fallback: any price pattern
+  const anyPriceMatch = markdown.match(/([£$€]\d+(?:[.,]\d{2})?)/);
+  if (anyPriceMatch) return anyPriceMatch[1];
+
+  return null;
 }
 
 Deno.serve(async (req) => {
@@ -76,24 +103,18 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Extract info from metadata and markdown
     const metadata = data.data?.metadata || data.metadata || {};
     const markdown = data.data?.markdown || data.markdown || '';
 
     // Title: use og:title or page title
     let title = metadata.ogTitle || metadata.title || '';
-    // Clean common retailer suffixes
     title = title
       .replace(/\s*[-|–]\s*(HMV|Zavvi|Amazon\.co\.uk|Amazon\.com|Arrow|Criterion).*$/i, '')
       .replace(/\s*\[.*?\]\s*$/, '')
       .trim();
 
-    // Price: find first price pattern in markdown
-    let price: string | null = null;
-    const priceMatch = markdown.match(/[£$€]\d+[\.,]?\d{0,2}/);
-    if (priceMatch) {
-      price = priceMatch[0];
-    }
+    // Price: smart extraction
+    const price = extractPrice(markdown, title);
 
     // Image: og:image
     const imageUrl = metadata.ogImage || metadata.image || null;

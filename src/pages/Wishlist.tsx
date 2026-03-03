@@ -161,10 +161,10 @@ const Wishlist = () => {
             {user ? "Your wishlist is empty — paste a link above to get started." : "Log in to manage your wishlist."}
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Active items */}
             {activeItems.length > 0 && (
-              <div className="space-y-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {activeItems.map((item) => (
                   <WishlistCard
                     key={item.id}
@@ -184,7 +184,7 @@ const Wishlist = () => {
                 <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Purchased ({purchasedItems.length})
                 </h2>
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {purchasedItems.map((item) => (
                     <WishlistCard
                       key={item.id}
@@ -226,84 +226,92 @@ function WishlistCard({
   return (
     <div
       className={cn(
-        "group bg-card border border-border rounded-md p-4 transition-all duration-500 flex items-start gap-4",
+        "group bg-card border border-border rounded-md overflow-hidden transition-all duration-500 flex flex-col",
         item.purchased && "opacity-40"
       )}
     >
       {/* Image */}
-      {item.image_url && (
-        <img
-          src={item.image_url}
-          alt={item.title || ""}
-          className="w-14 h-20 rounded object-cover shrink-0 shadow-sm"
-          loading="lazy"
-        />
+      {item.image_url ? (
+        <a href={item.url} target="_blank" rel="noopener noreferrer" className="block">
+          <img
+            src={item.image_url}
+            alt={item.title || ""}
+            className="w-full aspect-[3/4] object-cover"
+            loading="lazy"
+          />
+        </a>
+      ) : (
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full aspect-[3/4] bg-secondary flex items-center justify-center"
+        >
+          <ExternalLink className="w-6 h-6 text-muted-foreground" />
+        </a>
       )}
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
+      <div className="p-3 flex-1 flex flex-col gap-1.5">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {item.retailer && (
-            <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
               {item.retailer}
             </span>
           )}
           {item.price && (
-            <span className="text-sm font-mono text-gold">{item.price}</span>
+            <span className="text-xs font-mono text-gold">{item.price}</span>
           )}
         </div>
+
         <h3
           className={cn(
-            "font-display text-base font-semibold text-foreground truncate",
+            "font-display text-sm font-semibold text-foreground line-clamp-2 leading-tight",
             item.purchased && "line-through"
           )}
         >
-          {item.title || item.url}
+          {item.title || "Untitled"}
         </h3>
-        {!item.title && (
-          <p className="text-xs text-muted-foreground truncate">{item.url}</p>
-        )}
 
         {/* Similarity warning */}
         {similar.length > 0 && !item.purchased && (
-          <div className="flex items-center gap-1.5 mt-1.5 text-xs text-destructive/80">
-            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-            <span>
-              Similar to <span className="font-medium">"{similar[0]}"</span> in your collection
-            </span>
+          <div className="flex items-start gap-1 text-[10px] text-destructive/80 leading-tight">
+            <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
+            <span>Already own "{similar[0]}"</span>
+          </div>
+        )}
+
+        {/* Actions */}
+        {isOwner && (
+          <div className="flex items-center gap-1 mt-auto pt-1.5 border-t border-border">
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <button
+              onClick={onToggle}
+              className={cn(
+                "p-1.5 rounded-md transition-colors",
+                item.purchased
+                  ? "text-gold hover:text-foreground"
+                  : "text-muted-foreground hover:text-gold"
+              )}
+              title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}
+            >
+              <Check className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={onDelete}
+              className="p-1.5 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100 ml-auto"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
           </div>
         )}
       </div>
-
-      {isOwner && (
-        <div className="flex items-center gap-1 shrink-0">
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <button
-            onClick={onToggle}
-            className={cn(
-              "p-2 rounded-md transition-colors",
-              item.purchased
-                ? "text-gold hover:text-foreground"
-                : "text-muted-foreground hover:text-gold"
-            )}
-            title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}
-          >
-            <Check className="w-4 h-4" />
-          </button>
-          <button
-            onClick={onDelete}
-            className="p-2 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
-      )}
     </div>
   );
 }
