@@ -14,8 +14,16 @@ function detectRetailer(url: string): string {
   if (u.includes('eurekavideo.co.uk')) return 'Eureka';
   if (u.includes('secondsightfilms.co.uk')) return 'Second Sight';
   if (u.includes('88films.tv')) return '88 Films';
+  if (u.includes('shop.bfi.org.uk') || u.includes('bfi.org.uk/shop')) return 'BFI';
+  if (u.includes('terracottadistribution.com')) return 'Terracotta';
+  if (u.includes('mundaymondaystudios.com') || u.includes('mundaymonday')) return 'Munday Monday';
+  if (u.includes('vinegarsyndrome.com')) return 'Vinegar Syndrome';
+  if (u.includes('imprint-films.com.au') || u.includes('imprintfilms')) return 'Imprint';
+  if (u.includes('kinolorber.com')) return 'Kino Lorber';
+  if (u.includes('shoutfactory.com')) return 'Shout Factory';
+  if (u.includes('bluray.com')) return 'Blu-ray.com';
   try {
-    const hostname = new URL(url).hostname.replace('www.', '');
+    const hostname = new URL(url).hostname.replace('www.', '').replace('shop.', '');
     return hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
   } catch {
     return 'Unknown';
