@@ -85,6 +85,48 @@ export type Database = {
           },
         ]
       }
+      wishlist: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          price: string | null
+          purchased: boolean
+          purchased_at: string | null
+          retailer: string | null
+          title: string | null
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price?: string | null
+          purchased?: boolean
+          purchased_at?: string | null
+          retailer?: string | null
+          title?: string | null
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price?: string | null
+          purchased?: boolean
+          purchased_at?: string | null
+          retailer?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

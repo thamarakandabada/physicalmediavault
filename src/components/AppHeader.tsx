@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { path: "/alphabetical", label: "A–Z" },
   { path: "/criterion", label: "Criterion" },
   { path: "/stats", label: "Stats" },
+  { path: "/wishlist", label: "Wishlist" },
 ];
 
 export function AppHeader() {
