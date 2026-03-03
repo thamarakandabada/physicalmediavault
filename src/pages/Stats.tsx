@@ -152,6 +152,8 @@ function DecadeChart({ data }: { data: StatBreakdown[] }) {
             <YAxis tick={{ fill: 'hsl(210, 8%, 50%)', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
             <Tooltip
               contentStyle={{ backgroundColor: 'hsl(210, 18%, 11%)', border: '1px solid hsl(210, 14%, 20%)', borderRadius: 8, color: 'hsl(210, 10%, 88%)' }}
+              labelStyle={{ color: 'hsl(210, 10%, 88%)' }}
+              itemStyle={{ color: 'hsl(210, 10%, 88%)' }}
               cursor={{ fill: 'hsl(210, 14%, 16%)' }}
               formatter={(value: number) => [`${value} title${value !== 1 ? 's' : ''}`, 'Count']}
             />
@@ -201,6 +203,8 @@ function PieBreakdown({ data }: { data: StatBreakdown[] }) {
             </Pie>
             <Tooltip
               contentStyle={{ backgroundColor: 'hsl(210, 18%, 11%)', border: '1px solid hsl(210, 14%, 20%)', borderRadius: 8, color: 'hsl(210, 10%, 88%)' }}
+              labelStyle={{ color: 'hsl(210, 10%, 88%)' }}
+              itemStyle={{ color: 'hsl(210, 10%, 88%)' }}
               formatter={(value: number, name: string) => [`${value}`, name]}
             />
           </PieChart>
