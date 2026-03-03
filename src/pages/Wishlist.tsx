@@ -164,12 +164,13 @@ const Wishlist = () => {
           <div className="space-y-8">
             {/* Active items */}
             {activeItems.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
                 {activeItems.map((item) => (
                   <WishlistCard
                     key={item.id}
                     item={item}
                     collectionTitles={collectionTitleNames}
+                    wishlistItems={activeItems}
                     onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
                     onDelete={() => deleteItem.mutate(item.id)}
                     isOwner={!!user}
@@ -184,12 +185,13 @@ const Wishlist = () => {
                 <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Purchased ({purchasedItems.length})
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
                   {purchasedItems.map((item) => (
                     <WishlistCard
                       key={item.id}
                       item={item}
                       collectionTitles={collectionTitleNames}
+                      wishlistItems={activeItems}
                       onToggle={() => togglePurchased.mutate({ id: item.id, purchased: false })}
                       onDelete={() => deleteItem.mutate(item.id)}
                       isOwner={!!user}
@@ -208,20 +210,33 @@ const Wishlist = () => {
 function WishlistCard({
   item,
   collectionTitles,
+  wishlistItems,
   onToggle,
   onDelete,
   isOwner,
 }: {
   item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;
   collectionTitles: string[];
+  wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;
   onToggle: () => void;
   onDelete: () => void;
   isOwner: boolean;
 }) {
-  const similar = useMemo(
+  const collectionMatch = useMemo(
     () => (item.title ? findSimilarTitles(item.title, collectionTitles) : []),
     [item.title, collectionTitles]
   );
+
+  const wishlistDupes = useMemo(() => {
+    if (!item.title) return [];
+    return wishlistItems
+      .filter((w) => w.id !== item.id && w.title)
+      .filter((w) => {
+        const similar = findSimilarTitles(item.title!, [w.title!]);
+        return similar.length > 0;
+      })
+      .map((w) => w.title!);
+  }, [item.id, item.title, wishlistItems]);
 
   return (
     <div
@@ -236,7 +251,7 @@ function WishlistCard({
           <img
             src={item.image_url}
             alt={item.title || ""}
-            className="w-full aspect-[3/4] object-cover"
+            className="w-full aspect-[3/4] object-contain bg-secondary"
             loading="lazy"
           />
         </a>
@@ -251,7 +266,7 @@ function WishlistCard({
         </a>
       )}
 
-      <div className="p-3 flex-1 flex flex-col gap-1.5">
+      <div className="p-2.5 flex-1 flex flex-col gap-1">
         <div className="flex items-center gap-1.5 flex-wrap">
           {item.retailer && (
             <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
@@ -265,18 +280,24 @@ function WishlistCard({
 
         <h3
           className={cn(
-            "font-display text-sm font-semibold text-foreground line-clamp-2 leading-tight",
+            "font-display text-xs font-semibold text-foreground line-clamp-2 leading-tight",
             item.purchased && "line-through"
           )}
         >
           {item.title || "Untitled"}
         </h3>
 
-        {/* Similarity warning */}
-        {similar.length > 0 && !item.purchased && (
+        {/* Warnings — owner only */}
+        {isOwner && !item.purchased && collectionMatch.length > 0 && (
           <div className="flex items-start gap-1 text-[10px] text-destructive/80 leading-tight">
             <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
-            <span>Already own "{similar[0]}"</span>
+            <span>Already own "{collectionMatch[0]}"</span>
+          </div>
+        )}
+        {isOwner && !item.purchased && wishlistDupes.length > 0 && (
+          <div className="flex items-start gap-1 text-[10px] text-muted-foreground leading-tight">
+            <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
+            <span>Also in wishlist as "{wishlistDupes[0]}"</span>
           </div>
         )}
 
