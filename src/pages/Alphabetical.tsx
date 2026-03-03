@@ -30,7 +30,7 @@ const Alphabetical = () => {
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Alphabetical <span className="text-gold">Index</span>
         </h1>
-        <p className="text-muted-foreground mb-8">Organise your shelves — {allTitles.length} titles</p>
+        <p className="text-muted-foreground mb-8">How my shelves are currently organised — {allTitles.length} titles</p>
 
         {/* Letter nav */}
         <div className="flex flex-wrap gap-1 mb-8">
