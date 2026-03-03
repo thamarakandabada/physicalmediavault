@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
-import { AppHeader } from "@/components/AppHeader";
+
 import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
@@ -167,9 +167,7 @@ const Stats = () => {
   }, [allTitles]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <AppHeader />
-      <main className="container py-8">
+    <>
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Collection <span className="text-gold">Stats</span>
         </h1>
@@ -206,8 +204,7 @@ const Stats = () => {
             </div>
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 };
 

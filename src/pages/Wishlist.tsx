@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { AppHeader } from "@/components/AppHeader";
+
 import { useAuth } from "@/hooks/useAuth";
 import { useTitles } from "@/hooks/useTitles";
 import { useWishlist, useAddWishlistItem, useTogglePurchased, useDeleteWishlistItem } from "@/hooks/useWishlist";
@@ -128,9 +128,7 @@ const Wishlist = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <AppHeader />
-      <main className="container py-8">
+    <>
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           <span className="text-gold">Wishlist</span>
         </h1>
@@ -202,8 +200,7 @@ const Wishlist = () => {
           }
           </div>
         }
-      </main>
-    </div>);
+    </>);
 
 };
 
