@@ -331,12 +331,13 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
               <Select value={form.package_type} onValueChange={(v) => set("package_type", v)}>
                 <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Plastic Case">Plastic Case</SelectItem>
+                  <SelectItem value="Keep Case">Keep Case</SelectItem>
                   <SelectItem value="Steelbook">Steelbook</SelectItem>
                   <SelectItem value="Slipcover">Slipcover</SelectItem>
-                  <SelectItem value="Box Set">Box Set</SelectItem>
+                  <SelectItem value="Slipbox">Slipbox</SelectItem>
                   <SelectItem value="Digipak">Digipak</SelectItem>
                   <SelectItem value="Mediabook">Mediabook</SelectItem>
+                  <SelectItem value="Box Set">Box Set</SelectItem>
                 </SelectContent>
               </Select>
             </div>
