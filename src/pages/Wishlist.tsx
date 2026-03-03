@@ -135,7 +135,7 @@ const Wishlist = () => {
           <span className="text-gold">Wishlist</span>
         </h1>
         <p className="text-muted-foreground mb-8">
-          Paste retailer links to track titles you want to pick up
+          Titles I want to pick up
         </p>
 
         {/* URL input */}
