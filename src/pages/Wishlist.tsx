@@ -64,7 +64,7 @@ const Wishlist = () => {
     setScraping(true);
     try {
       const { data, error } = await supabase.functions.invoke("scrape-wishlist-url", {
-        body: { url: trimmed },
+        body: { url: trimmed }
       });
 
       if (error) throw error;
@@ -81,7 +81,7 @@ const Wishlist = () => {
         title,
         price,
         retailer,
-        image_url,
+        image_url
       });
 
       // Check for similar titles in collection
@@ -106,7 +106,7 @@ const Wishlist = () => {
       try {
         await addItem.mutateAsync({
           user_id: user.id,
-          url: trimmed,
+          url: trimmed
         });
         toast.info("Added to wishlist (couldn't fetch details)");
         setUrl("");
@@ -134,77 +134,77 @@ const Wishlist = () => {
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           <span className="text-gold">Wishlist</span>
         </h1>
-        <p className="text-muted-foreground mb-8">
-          Titles I want to pick up
+        <p className="text-muted-foreground mb-8">Titles I want to pick up in the near future
+
         </p>
 
         {/* URL input */}
-        {user && (
-          <div className="flex gap-2 mb-8 max-w-2xl">
+        {user &&
+        <div className="flex gap-2 mb-8 max-w-2xl">
             <Input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste a link from HMV, Zavvi, Arrow, Amazon…"
-              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAdd())}
-              disabled={scraping}
-            />
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Paste a link from HMV, Zavvi, Arrow, Amazon…"
+            onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAdd())}
+            disabled={scraping} />
+          
             <Button onClick={handleAdd} disabled={scraping || !url.trim()}>
               {scraping ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add"}
             </Button>
           </div>
-        )}
+        }
 
-        {isLoading ? (
-          <div className="text-center py-20 text-muted-foreground">Loading...</div>
-        ) : !wishlist || wishlist.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">
+        {isLoading ?
+        <div className="text-center py-20 text-muted-foreground">Loading...</div> :
+        !wishlist || wishlist.length === 0 ?
+        <div className="text-center py-20 text-muted-foreground">
             {user ? "Your wishlist is empty — paste a link above to get started." : "Log in to manage your wishlist."}
-          </div>
-        ) : (
-          <div className="space-y-8">
+          </div> :
+
+        <div className="space-y-8">
             {/* Active items */}
-            {activeItems.length > 0 && (
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                {activeItems.map((item) => (
-                  <WishlistCard
-                    key={item.id}
-                    item={item}
-                    collectionTitles={collectionTitleNames}
-                    wishlistItems={activeItems}
-                    onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
-                    onDelete={() => deleteItem.mutate(item.id)}
-                    isOwner={!!user}
-                  />
-                ))}
-              </div>
+            {activeItems.length > 0 &&
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
+                {activeItems.map((item) =>
+            <WishlistCard
+              key={item.id}
+              item={item}
+              collectionTitles={collectionTitleNames}
+              wishlistItems={activeItems}
+              onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
+              onDelete={() => deleteItem.mutate(item.id)}
+              isOwner={!!user} />
+
             )}
+              </div>
+          }
 
             {/* Purchased items */}
-            {purchasedItems.length > 0 && (
-              <div>
+            {purchasedItems.length > 0 &&
+          <div>
                 <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Purchased ({purchasedItems.length})
                 </h2>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                  {purchasedItems.map((item) => (
-                    <WishlistCard
-                      key={item.id}
-                      item={item}
-                      collectionTitles={collectionTitleNames}
-                      wishlistItems={activeItems}
-                      onToggle={() => togglePurchased.mutate({ id: item.id, purchased: false })}
-                      onDelete={() => deleteItem.mutate(item.id)}
-                      isOwner={!!user}
-                    />
-                  ))}
+                  {purchasedItems.map((item) =>
+              <WishlistCard
+                key={item.id}
+                item={item}
+                collectionTitles={collectionTitleNames}
+                wishlistItems={activeItems}
+                onToggle={() => togglePurchased.mutate({ id: item.id, purchased: false })}
+                onDelete={() => deleteItem.mutate(item.id)}
+                isOwner={!!user} />
+
+              )}
                 </div>
               </div>
-            )}
+          }
           </div>
-        )}
+        }
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 function WishlistCard({
@@ -213,29 +213,29 @@ function WishlistCard({
   wishlistItems,
   onToggle,
   onDelete,
-  isOwner,
-}: {
-  item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;
-  collectionTitles: string[];
-  wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;
-  onToggle: () => void;
-  onDelete: () => void;
-  isOwner: boolean;
-}) {
+  isOwner
+
+
+
+
+
+
+
+}: {item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;collectionTitles: string[];wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;onToggle: () => void;onDelete: () => void;isOwner: boolean;}) {
   const collectionMatch = useMemo(
-    () => (item.title ? findSimilarTitles(item.title, collectionTitles) : []),
+    () => item.title ? findSimilarTitles(item.title, collectionTitles) : [],
     [item.title, collectionTitles]
   );
 
   const wishlistDupes = useMemo(() => {
     if (!item.title) return [];
-    return wishlistItems
-      .filter((w) => w.id !== item.id && w.title)
-      .filter((w) => {
-        const similar = findSimilarTitles(item.title!, [w.title!]);
-        return similar.length > 0;
-      })
-      .map((w) => w.title!);
+    return wishlistItems.
+    filter((w) => w.id !== item.id && w.title).
+    filter((w) => {
+      const similar = findSimilarTitles(item.title!, [w.title!]);
+      return similar.length > 0;
+    }).
+    map((w) => w.title!);
   }, [item.id, item.title, wishlistItems]);
 
   return (
@@ -243,98 +243,98 @@ function WishlistCard({
       className={cn(
         "group bg-card border border-border rounded-md overflow-hidden transition-all duration-500 flex flex-col",
         item.purchased && "opacity-40"
-      )}
-    >
+      )}>
+      
       {/* Image */}
-      {item.image_url ? (
-        <a href={item.url} target="_blank" rel="noopener noreferrer" className="block">
+      {item.image_url ?
+      <a href={item.url} target="_blank" rel="noopener noreferrer" className="block">
           <img
-            src={item.image_url}
-            alt={item.title || ""}
-            className="w-full aspect-[3/4] object-contain bg-secondary"
-            loading="lazy"
-          />
-        </a>
-      ) : (
-        <a
-          href={item.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full aspect-[3/4] bg-secondary flex items-center justify-center"
-        >
+          src={item.image_url}
+          alt={item.title || ""}
+          className="w-full aspect-[3/4] object-contain bg-secondary"
+          loading="lazy" />
+        
+        </a> :
+
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full aspect-[3/4] bg-secondary flex items-center justify-center">
+        
           <ExternalLink className="w-6 h-6 text-muted-foreground" />
         </a>
-      )}
+      }
 
       <div className="p-2.5 flex-1 flex flex-col gap-1">
         <div className="flex items-center gap-1.5 flex-wrap">
-          {item.retailer && (
-            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+          {item.retailer &&
+          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
               {item.retailer}
             </span>
-          )}
-          {item.price && (
-            <span className="text-xs font-mono text-gold">{item.price}</span>
-          )}
+          }
+          {item.price &&
+          <span className="text-xs font-mono text-gold">{item.price}</span>
+          }
         </div>
 
         <h3
           className={cn(
             "font-display text-xs font-semibold text-foreground line-clamp-2 leading-tight",
             item.purchased && "line-through"
-          )}
-        >
+          )}>
+          
           {item.title || "Untitled"}
         </h3>
 
         {/* Warnings — owner only */}
-        {isOwner && !item.purchased && collectionMatch.length > 0 && (
-          <div className="flex items-start gap-1 text-[10px] text-destructive/80 leading-tight">
+        {isOwner && !item.purchased && collectionMatch.length > 0 &&
+        <div className="flex items-start gap-1 text-[10px] text-destructive/80 leading-tight">
             <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
             <span>Already own "{collectionMatch[0]}"</span>
           </div>
-        )}
-        {isOwner && !item.purchased && wishlistDupes.length > 0 && (
-          <div className="flex items-start gap-1 text-[10px] text-muted-foreground leading-tight">
+        }
+        {isOwner && !item.purchased && wishlistDupes.length > 0 &&
+        <div className="flex items-start gap-1 text-[10px] text-muted-foreground leading-tight">
             <AlertTriangle className="w-3 h-3 shrink-0 mt-0.5" />
             <span>Also in wishlist as "{wishlistDupes[0]}"</span>
           </div>
-        )}
+        }
 
         {/* Actions */}
-        {isOwner && (
-          <div className="flex items-center gap-1 mt-auto pt-1.5 border-t border-border">
+        {isOwner &&
+        <div className="flex items-center gap-1 mt-auto pt-1.5 border-t border-border">
             <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors"
-            >
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors">
+            
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
             <button
-              onClick={onToggle}
-              className={cn(
-                "p-1.5 rounded-md transition-colors",
-                item.purchased
-                  ? "text-gold hover:text-foreground"
-                  : "text-muted-foreground hover:text-gold"
-              )}
-              title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}
-            >
+            onClick={onToggle}
+            className={cn(
+              "p-1.5 rounded-md transition-colors",
+              item.purchased ?
+              "text-gold hover:text-foreground" :
+              "text-muted-foreground hover:text-gold"
+            )}
+            title={item.purchased ? "Mark as not purchased" : "Mark as purchased"}>
+            
               <Check className="w-3.5 h-3.5" />
             </button>
             <button
-              onClick={onDelete}
-              className="p-1.5 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100 ml-auto"
-            >
+            onClick={onDelete}
+            className="p-1.5 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100 ml-auto">
+            
               <Trash2 className="w-3.5 h-3.5" />
             </button>
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 export default Wishlist;
