@@ -180,8 +180,8 @@ const PIE_COLORS = [
 
 function PieBreakdown({ data }: { data: StatBreakdown[] }) {
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4">
-      <div className="w-48 h-48 shrink-0">
+    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-center gap-6">
+      <div className="w-full aspect-square max-w-[280px] md:max-w-[320px] mx-auto">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -190,8 +190,8 @@ function PieBreakdown({ data }: { data: StatBreakdown[] }) {
               nameKey="label"
               cx="50%"
               cy="50%"
-              outerRadius={80}
-              innerRadius={30}
+              outerRadius="80%"
+              innerRadius="30%"
               strokeWidth={1}
               stroke="hsl(210, 18%, 11%)"
             >
@@ -206,7 +206,7 @@ function PieBreakdown({ data }: { data: StatBreakdown[] }) {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex-1 space-y-1.5 min-w-0">
+      <div className="space-y-1.5 min-w-0">
         {data.map((item, i) => (
           <div key={item.label} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
