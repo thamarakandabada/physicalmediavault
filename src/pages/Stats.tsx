@@ -73,6 +73,113 @@ function StatCard({
   );
 }
 
+const PUBLISHER_COLORS: Record<string, string> = {
+  "Warner Bros.": "hsl(210, 70%, 50%)",
+  "Criterion": "hsl(40, 90%, 50%)",
+  "Paramount Pictures": "hsl(220, 60%, 45%)",
+  "Arrow": "hsl(0, 70%, 50%)",
+  "Sony Pictures": "hsl(200, 50%, 40%)",
+  "20th Century Fox": "hsl(45, 85%, 48%)",
+  "Universal Studios": "hsl(260, 50%, 50%)",
+  "Studio Canal": "hsl(170, 55%, 40%)",
+  "Disney / Buena Vista": "hsl(210, 80%, 55%)",
+  "BFI Video": "hsl(340, 60%, 45%)",
+  "Lionsgate Films": "hsl(30, 80%, 50%)",
+  "Curzon Film World": "hsl(280, 45%, 50%)",
+  "MUBI": "hsl(145, 70%, 42%)",
+  "A24": "hsl(0, 0%, 40%)",
+  "Second Sight": "hsl(15, 65%, 48%)",
+  "Metro-Goldwyn-Mayer": "hsl(48, 90%, 50%)",
+};
+
+function getPublisherInitials(name: string): string {
+  const map: Record<string, string> = {
+    "Warner Bros.": "WB",
+    "Criterion": "CC",
+    "Paramount Pictures": "PP",
+    "Arrow": "AV",
+    "Sony Pictures": "SP",
+    "20th Century Fox": "FX",
+    "Universal Studios": "UN",
+    "Studio Canal": "SC",
+    "Disney / Buena Vista": "DI",
+    "BFI Video": "BFI",
+    "Lionsgate Films": "LG",
+    "Curzon Film World": "CU",
+    "MUBI": "MU",
+    "A24": "A24",
+    "Second Sight": "SS",
+    "101 Films": "101",
+    "Metro-Goldwyn-Mayer": "MGM",
+    "Elevation": "EL",
+  };
+  return map[name] || name.slice(0, 2).toUpperCase();
+}
+
+function getPublisherColor(name: string): string {
+  if (PUBLISHER_COLORS[name]) return PUBLISHER_COLORS[name];
+  // Deterministic fallback based on string hash
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return `hsl(${Math.abs(hash) % 360}, 55%, 48%)`;
+}
+
+function PublisherCard({ items }: { items: StatBreakdown[] }) {
+  const top = items[0];
+  return (
+    <div className="bg-card border border-border rounded-lg p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <Building2 className="w-4 h-4 text-gold" />
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Publisher</h3>
+      </div>
+
+      {top ? (
+        <>
+          <div className="mb-4 flex items-center gap-2.5">
+            <div
+              className="w-8 h-8 rounded flex items-center justify-center text-xs font-bold shrink-0"
+              style={{ backgroundColor: getPublisherColor(top.label), color: "hsl(0, 0%, 100%)" }}
+            >
+              {getPublisherInitials(top.label)}
+            </div>
+            <div>
+              <span className="text-2xl font-display text-foreground">{top.label}</span>
+              <span className="text-sm text-muted-foreground ml-2">
+                {top.count} title{top.count !== 1 ? "s" : ""} · {top.percent}%
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {items.map((item) => (
+              <div key={item.label} className="flex items-center gap-2 sm:gap-3">
+                <div
+                  className="w-5 h-5 rounded flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: getPublisherColor(item.label), color: "hsl(0, 0%, 100%)" }}
+                >
+                  <span className="text-[0.5rem] font-bold leading-none">{getPublisherInitials(item.label)}</span>
+                </div>
+                <span className="text-sm text-foreground w-20 sm:w-24 shrink-0 truncate">{item.label}</span>
+                <div className="flex-1 min-w-0 h-2 rounded-full bg-secondary overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gold/70 transition-all duration-500"
+                    style={{ width: `${item.percent}%` }}
+                  />
+                </div>
+                <span className="text-xs text-muted-foreground shrink-0 text-right tabular-nums whitespace-nowrap">
+                  {item.count} ({item.percent}%)
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <p className="text-sm text-muted-foreground">No data yet</p>
+      )}
+    </div>
+  );
+}
+
 const DIRECTOR_PALETTE = [
   { bg: "hsl(145, 100%, 44%)", text: "hsl(210, 20%, 7%)" },   // Letterboxd green
   { bg: "hsl(200, 70%, 45%)", text: "hsl(210, 20%, 98%)" },    // Blue
@@ -338,7 +445,7 @@ const Stats = () => {
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
-              <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
+              <PublisherCard items={stats.publishers.slice(0, 8)} />
               <StatCard title="Disc Region" icon={MapPin} items={stats.regions} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
