@@ -1,0 +1,2 @@
+ALTER TABLE public.titles DROP CONSTRAINT titles_region_check;
+ALTER TABLE public.titles ADD CONSTRAINT titles_region_check CHECK (region = ANY (ARRAY['UK'::text, 'US'::text, 'UK/US'::text, 'France'::text]));
