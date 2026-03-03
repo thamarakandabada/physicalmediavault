@@ -91,7 +91,11 @@ const Stats = () => {
     const totalDiscs = allTitles.length;
     const totalCollections = parents.length;
 
-    const directors = computeBreakdown(allTitles.map((t) => t.director));
+    const directors = computeBreakdown(
+      allTitles.flatMap((t) =>
+        t.director ? t.director.split(/,\s*/).map((d) => d.trim()).filter(Boolean) : []
+      )
+    );
     const videoQualities = computeBreakdown(allTitles.map((t) => t.video_quality));
     const audioTypes = computeBreakdown(allTitles.map((t) => t.audio_type));
     const packageTypes = computeBreakdown(allTitles.map((t) => t.package_type));
@@ -105,7 +109,11 @@ const Stats = () => {
       years.map((y) => `${Math.floor(y / 10) * 10}s`)
     );
 
-    const uniqueDirectors = new Set(allTitles.map((t) => t.director).filter(Boolean)).size;
+    const uniqueDirectors = new Set(
+      allTitles.flatMap((t) =>
+        t.director ? t.director.split(/,\s*/).map((d) => d.trim()).filter(Boolean) : []
+      )
+    ).size;
 
     return {
       totalDiscs,
