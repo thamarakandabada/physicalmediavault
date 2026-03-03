@@ -5,34 +5,53 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-const FETCH_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  'Accept': 'text/html,application/xhtml+xml',
-};
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
+    if (!apiKey) {
+      return new Response(JSON.stringify({ success: false, error: 'Firecrawl not configured' }), {
+        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const { action, keyword, country, url } = await req.json();
 
     if (action === 'search') {
       const countryParam = country === 'UK' ? 'UK' : 'US';
       const searchUrl = `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_country=${countryParam}&quicksearch_keyword=${encodeURIComponent(keyword)}&section=bluraymovies`;
 
-      const response = await fetch(searchUrl, { headers: FETCH_HEADERS });
-      const html = await response.text();
-      console.log('Search URL:', searchUrl);
+      console.log('Scraping search URL via Firecrawl:', searchUrl);
+
+      const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: searchUrl,
+          formats: ['html'],
+          onlyMainContent: false,
+          waitFor: 2000,
+        }),
+      });
+
+      const scrapeData = await response.json();
+
+      if (!response.ok || !scrapeData.success) {
+        console.error('Firecrawl scrape error:', scrapeData);
+        return new Response(JSON.stringify({ success: false, error: 'Scrape failed', results: [] }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const html = scrapeData.data?.html || '';
       console.log('HTML length:', html.length);
       console.log('Contains hoverlink:', html.includes('hoverlink'));
-      console.log('Contains data-productid:', html.includes('data-productid'));
-      // Log a snippet around hoverlink if found
-      const idx = html.indexOf('hoverlink');
-      if (idx > -1) {
-        console.log('Hoverlink context:', html.substring(idx - 10, idx + 200));
-      }
 
       const results: Array<{
         title: string;
@@ -56,11 +75,13 @@ serve(async (req) => {
         results.push({
           title: cleanTitle,
           year: yearMatch ? yearMatch[1] : '',
-          url: href,
+          url: href.startsWith('http') ? href : `https://www.blu-ray.com${href}`,
           coverUrl: `https://images.static-bluray.com/movies/covers/${productId}_medium.jpg`,
           blurayId: productId,
         });
       }
+
+      console.log('Found results:', results.length);
 
       return new Response(JSON.stringify({ success: true, results }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -74,8 +95,32 @@ serve(async (req) => {
         });
       }
 
-      const response = await fetch(url, { headers: FETCH_HEADERS });
-      const html = await response.text();
+      console.log('Scraping detail URL via Firecrawl:', url);
+
+      const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+          formats: ['html'],
+          onlyMainContent: false,
+          waitFor: 2000,
+        }),
+      });
+
+      const scrapeData = await response.json();
+
+      if (!response.ok || !scrapeData.success) {
+        console.error('Firecrawl detail scrape error:', scrapeData);
+        return new Response(JSON.stringify({ success: false, error: 'Detail scrape failed' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const html = scrapeData.data?.html || '';
 
       // Title from h1
       const h1Match = html.match(/<h1>([^<]+)<\/h1>/);
