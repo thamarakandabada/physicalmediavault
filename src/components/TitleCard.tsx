@@ -51,7 +51,7 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
               {title.director && <span>{title.director}</span>}
             </div>
 
-            <div className="flex flex-wrap gap-4 mt-3">
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-6 gap-y-2 mt-3">
               <MetadataTag label="Video" value={title.video_quality} />
               <MetadataTag label="HDR" value={title.hdr_type} />
               <MetadataTag label="Audio" value={title.audio_type} />
