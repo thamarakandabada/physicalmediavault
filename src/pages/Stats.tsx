@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 
 import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
+import { RegionIcon } from "@/components/RegionIcon";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
@@ -26,11 +27,13 @@ function StatCard({
   icon: Icon,
   items,
   accentClass = "text-gold",
+  renderItemIcon,
 }: {
   title: string;
   icon: React.ElementType;
   items: StatBreakdown[];
   accentClass?: string;
+  renderItemIcon?: (label: string) => React.ReactNode;
 }) {
   const top = items[0];
   return (
@@ -52,7 +55,10 @@ function StatCard({
           <div className="space-y-2">
             {items.map((item) => (
               <div key={item.label} className="flex items-center gap-2 sm:gap-3">
-                <span className="text-sm text-foreground w-24 sm:w-28 shrink-0 truncate">{item.label}</span>
+                <span className="text-sm text-foreground w-24 sm:w-28 shrink-0 truncate flex items-center gap-1.5">
+                  {renderItemIcon?.(item.label)}
+                  {item.label}
+                </span>
                 <div className="flex-1 min-w-0 h-2 rounded-full bg-secondary overflow-hidden">
                   <div
                     className="h-full rounded-full bg-gold/70 transition-all duration-500"
@@ -343,7 +349,7 @@ const Stats = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
-              <StatCard title="Disc Region" icon={MapPin} items={stats.regions} />
+              <StatCard title="Disc Region" icon={MapPin} items={stats.regions} renderItemIcon={(label) => <RegionIcon region={label} />} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
           </div>
