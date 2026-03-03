@@ -31,27 +31,27 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
           )}
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-2 mb-1.5">
               <MediaBadge type={title.media_type} />
               {title.region && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded bg-secondary text-secondary-foreground">
+                <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
                   {title.region}
                 </span>
               )}
               {title.spine_number && (
-                <span className="text-xs font-mono text-gold">#{title.spine_number}</span>
+                <span className="text-[11px] font-mono text-gold">#{title.spine_number}</span>
               )}
             </div>
-            <h3 className="font-display text-lg font-semibold text-foreground truncate">
+            <h3 className="font-display text-base sm:text-lg font-semibold text-foreground truncate">
               {title.title}
             </h3>
-            <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 mt-0.5 text-xs sm:text-sm text-muted-foreground">
               {title.year && <span>{title.year}</span>}
               {title.year && title.director && <span>·</span>}
-              {title.director && <span>{title.director}</span>}
+              {title.director && <span className="truncate">{title.director}</span>}
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-x-6 gap-y-2 mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-1.5 mt-2.5">
               <MetadataTag label="Video" value={title.video_quality} />
               <MetadataTag label="HDR" value={title.hdr_type} />
               <MetadataTag label="Audio" value={title.audio_type} />
