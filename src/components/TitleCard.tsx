@@ -19,7 +19,17 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
   return (
     <div className="group animate-fade-in">
       <div className="bg-card border border-border rounded-lg p-4 hover:border-gold-dim transition-colors">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-4">
+          {/* Cover Art */}
+          {title.cover_url && (
+            <img
+              src={title.cover_url}
+              alt={title.title}
+              className="w-16 h-22 rounded object-cover shrink-0 shadow-md"
+              loading="lazy"
+            />
+          )}
+
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <MediaBadge type={title.media_type} />
@@ -83,7 +93,16 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
         <div className="ml-6 mt-1 space-y-1 border-l-2 border-gold-dim pl-4">
           {title.children.map((child) => (
             <div key={child.id} className="bg-card/50 border border-border rounded-lg p-3 group/child">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                {/* Child Cover Art */}
+                {child.cover_url && (
+                  <img
+                    src={child.cover_url}
+                    alt={child.title}
+                    className="w-12 h-16 rounded object-cover shrink-0 shadow-sm"
+                    loading="lazy"
+                  />
+                )}
                 <div className="flex-1 min-w-0">
                   <h4 className="font-display text-base font-medium text-foreground truncate">
                     {child.title}

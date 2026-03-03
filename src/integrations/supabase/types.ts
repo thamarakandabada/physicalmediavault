@@ -17,6 +17,7 @@ export type Database = {
       titles: {
         Row: {
           audio_type: string | null
+          cover_url: string | null
           created_at: string
           director: string | null
           hdr_type: string | null
@@ -36,6 +37,7 @@ export type Database = {
         }
         Insert: {
           audio_type?: string | null
+          cover_url?: string | null
           created_at?: string
           director?: string | null
           hdr_type?: string | null
@@ -55,6 +57,7 @@ export type Database = {
         }
         Update: {
           audio_type?: string | null
+          cover_url?: string | null
           created_at?: string
           director?: string | null
           hdr_type?: string | null

@@ -9,7 +9,7 @@ import { useInsertTitle, useUpdateTitle, type Title, type TitleInsert } from "@/
 import { searchBluray, getBlurayDetail, type BluraySearchResult } from "@/lib/bluray-api";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { Search, Loader2, ExternalLink } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 
 type TitleFormDialogProps = {
   open: boolean;
@@ -30,6 +30,7 @@ const EMPTY_FORM = {
   publisher: "",
   media_type: "Film",
   region: "",
+  cover_url: "",
 };
 
 export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: TitleFormDialogProps) {
@@ -59,6 +60,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         publisher: editTitle.publisher ?? "",
         media_type: editTitle.media_type,
         region: editTitle.region ?? "",
+        cover_url: (editTitle as any).cover_url ?? "",
       });
     } else {
       setForm(EMPTY_FORM);
@@ -100,6 +102,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           publisher: detail.publisher ?? "",
           media_type: detail.media_type ?? "Film",
           region: detail.region ?? searchCountry,
+          cover_url: result.coverUrl ?? "",
         });
         toast.success("Data imported — review and edit as needed");
       } else {
@@ -109,6 +112,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           title: result.title,
           year: result.year,
           region: searchCountry,
+          cover_url: result.coverUrl ?? "",
         }));
         toast.info("Basic info imported — detail page may have been blocked");
       }
@@ -118,6 +122,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         title: result.title,
         year: result.year,
         region: searchCountry,
+        cover_url: result.coverUrl ?? "",
       }));
       toast.info("Basic info imported — couldn't fetch full details");
     } finally {
@@ -145,6 +150,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
       publisher: form.publisher || null,
       media_type: form.media_type,
       region: form.region || null,
+      cover_url: form.cover_url || null,
       parent_id: parentId ?? null,
     };
 
