@@ -376,6 +376,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
                   <SelectItem value="DTS:X">DTS:X</SelectItem>
                   <SelectItem value="7.1">7.1</SelectItem>
                   <SelectItem value="5.1">5.1</SelectItem>
+                  <SelectItem value="5.0">5.0</SelectItem>
                   <SelectItem value="Stereo">Stereo</SelectItem>
                   <SelectItem value="Mono">Mono</SelectItem>
                 </SelectContent>
