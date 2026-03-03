@@ -84,25 +84,26 @@ function HeadlineStat({ label, value, icon: Icon }: { label: string; value: stri
 
 function DecadeChart({ data }: { data: StatBreakdown[] }) {
   const sorted = [...data].sort((a, b) => a.label.localeCompare(b.label));
+  const ACCENT = "hsl(145, 100%, 44%)";
   return (
     <div className="bg-card border border-border rounded-lg p-5 col-span-1 md:col-span-2">
       <div className="flex items-center gap-2 mb-4">
         <BarChart3 className="w-4 h-4 text-gold" />
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Titles by Decade</h3>
       </div>
-      <div className="h-64">
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={sorted} margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
-            <XAxis dataKey="label" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
+          <BarChart data={sorted} margin={{ top: 20, right: 8, bottom: 4, left: 8 }}>
+            <XAxis dataKey="label" tick={{ fill: 'hsl(210, 8%, 50%)', fontSize: 12 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: 'hsl(210, 8%, 50%)', fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
             <Tooltip
-              contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, color: 'hsl(var(--foreground))' }}
-              cursor={{ fill: 'hsl(var(--secondary))' }}
+              contentStyle={{ backgroundColor: 'hsl(210, 18%, 11%)', border: '1px solid hsl(210, 14%, 20%)', borderRadius: 8, color: 'hsl(210, 10%, 88%)' }}
+              cursor={{ fill: 'hsl(210, 14%, 16%)' }}
               formatter={(value: number) => [`${value} title${value !== 1 ? 's' : ''}`, 'Count']}
             />
-            <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+            <Bar dataKey="count" radius={[4, 4, 0, 0]} label={{ position: 'top', fill: 'hsl(210, 8%, 50%)', fontSize: 11 }}>
               {sorted.map((_, i) => (
-                <Cell key={i} fill="hsl(var(--gold))" fillOpacity={0.8} />
+                <Cell key={i} fill={ACCENT} fillOpacity={0.85} />
               ))}
             </Bar>
           </BarChart>
