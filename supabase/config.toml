@@ -1,1 +1,7 @@
 project_id = "astusawubuzqrfcemgfy"
+
+[functions.bluray-search]
+verify_jwt = false
+
+[functions.scrape-wishlist-url]
+verify_jwt = false
