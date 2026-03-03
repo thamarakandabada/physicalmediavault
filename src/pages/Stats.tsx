@@ -119,30 +119,33 @@ const Stats = () => {
   const stats = useMemo(() => {
     if (!allTitles || allTitles.length === 0) return null;
 
+    const parentIds = new Set(allTitles.filter((t) => t.parent_id).map((t) => t.parent_id));
+    // Leaf titles: children + parents that have no children (avoids double-counting collections)
+    const leafTitles = allTitles.filter((t) => t.parent_id || !parentIds.has(t.id));
     const parents = allTitles.filter((t) => !t.parent_id);
-    const totalDiscs = allTitles.length;
+    const totalDiscs = leafTitles.length;
     const totalCollections = parents.length;
 
     const directors = computeBreakdown(
-      allTitles.flatMap((t) =>
+      leafTitles.flatMap((t) =>
         t.director ? t.director.split(/,\s*/).map((d) => d.trim()).filter(Boolean) : []
       )
     );
-    const videoQualities = computeBreakdown(allTitles.map((t) => t.video_quality));
-    const audioTypes = computeBreakdown(allTitles.map((t) => t.audio_type));
-    const packageTypes = computeBreakdown(allTitles.map((t) => t.package_type));
-    const publishers = computeBreakdown(allTitles.map((t) => t.publisher));
-    const regions = computeBreakdown(allTitles.map((t) => t.region));
-    const mediaTypes = computeBreakdown(allTitles.map((t) => t.media_type));
-    const hdrTypes = computeBreakdown(allTitles.map((t) => t.hdr_type));
+    const videoQualities = computeBreakdown(leafTitles.map((t) => t.video_quality));
+    const audioTypes = computeBreakdown(leafTitles.map((t) => t.audio_type));
+    const packageTypes = computeBreakdown(leafTitles.map((t) => t.package_type));
+    const publishers = computeBreakdown(leafTitles.map((t) => t.publisher));
+    const regions = computeBreakdown(leafTitles.map((t) => t.region));
+    const mediaTypes = computeBreakdown(leafTitles.map((t) => t.media_type));
+    const hdrTypes = computeBreakdown(leafTitles.map((t) => t.hdr_type));
 
-    const years = allTitles.map((t) => t.year).filter(Boolean) as number[];
+    const years = leafTitles.map((t) => t.year).filter(Boolean) as number[];
     const decades = computeBreakdown(
       years.map((y) => `${Math.floor(y / 10) * 10}s`)
     );
 
     const uniqueDirectors = new Set(
-      allTitles.flatMap((t) =>
+      leafTitles.flatMap((t) =>
         t.director ? t.director.split(/,\s*/).map((d) => d.trim()).filter(Boolean) : []
       )
     ).size;
