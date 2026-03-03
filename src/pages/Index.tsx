@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Search, Disc3, SlidersHorizontal, X } from "lucide-react";
 import { toast } from "sonner";
+import { sortableTitle } from "@/lib/utils";
 
 type SortOption = "title-asc" | "title-desc" | "year-asc" | "year-desc" | "newest" | "oldest";
 
@@ -78,9 +79,10 @@ const Index = () => {
 
     // Sort
     result = [...result].sort((a, b) => {
+      const sa = sortableTitle(a.title), sb = sortableTitle(b.title);
       switch (sortBy) {
-        case "title-asc": return a.title.localeCompare(b.title);
-        case "title-desc": return b.title.localeCompare(a.title);
+        case "title-asc": return sa.localeCompare(sb);
+        case "title-desc": return sb.localeCompare(sa);
         case "year-asc": return (a.year ?? 0) - (b.year ?? 0);
         case "year-desc": return (b.year ?? 0) - (a.year ?? 0);
         case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();

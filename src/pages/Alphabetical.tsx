@@ -2,18 +2,20 @@ import { useTitlesGrouped } from "@/hooks/useTitles";
 import { AppHeader } from "@/components/AppHeader";
 import { MediaBadge } from "@/components/MediaBadge";
 import { MetadataTag } from "@/components/MetadataTag";
+import { sortableTitle } from "@/lib/utils";
 
 const Alphabetical = () => {
   const { data: titles, isLoading } = useTitlesGrouped();
 
-  // Only parent titles, sorted alphabetically
+  // Only parent titles, sorted alphabetically (ignoring leading articles)
   const allTitles = [...titles].sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+    sortableTitle(a.title).localeCompare(sortableTitle(b.title), undefined, { sensitivity: "base" })
   );
 
-  // Group by first letter
+  // Group by first letter of sortable title
   const grouped = allTitles.reduce<Record<string, typeof allTitles>>((acc, t) => {
-    const letter = t.title[0]?.toUpperCase().match(/[A-Z]/) ? t.title[0].toUpperCase() : "#";
+    const st = sortableTitle(t.title);
+    const letter = st[0]?.toUpperCase().match(/[A-Z]/) ? st[0].toUpperCase() : "#";
     if (!acc[letter]) acc[letter] = [];
     acc[letter].push(t);
     return acc;
