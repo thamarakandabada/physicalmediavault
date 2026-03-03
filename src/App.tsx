@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Alphabetical from "./pages/Alphabetical";
 import Criterion from "./pages/Criterion";
 import Stats from "./pages/Stats";
+import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
 import Manage from "./pages/Manage";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/alphabetical" element={<Alphabetical />} />
             <Route path="/criterion" element={<Criterion />} />
             <Route path="/stats" element={<Stats />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/login" element={<Login />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="*" element={<NotFound />} />
