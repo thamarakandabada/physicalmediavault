@@ -338,7 +338,6 @@ const Stats = () => {
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
-              <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
               <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
               <StatCard title="Disc Region" icon={MapPin} items={stats.regions} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
