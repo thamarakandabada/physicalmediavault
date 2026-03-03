@@ -7,7 +7,7 @@ import { TitleFormDialog } from "@/components/TitleFormDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Disc3, SlidersHorizontal, X, Download } from "lucide-react";
+import { Plus, Search, Disc3, SlidersHorizontal, X, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { sortableTitle } from "@/lib/utils";
 
@@ -30,7 +30,8 @@ const Index = () => {
   const [filterPackage, setFilterPackage] = useState<string>("all");
   const [filterMediaType, setFilterMediaType] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortOption>("title-asc");
-
+  const [perPage, setPerPage] = useState<number>(25);
+  const [currentPage, setCurrentPage] = useState(1);
   // Derive unique filter options from the data
   const filterOptions = useMemo(() => {
     const publishers = new Set<string>();
@@ -62,6 +63,7 @@ const Index = () => {
     setFilterRegion("all");
     setFilterPackage("all");
     setFilterMediaType("all");
+    setCurrentPage(1);
   };
 
   const filtered = useMemo(() => {
@@ -93,6 +95,13 @@ const Index = () => {
 
     return result;
   }, [titles, search, filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType, sortBy]);
+
+  // Reset page when filters/search change
+  const filterKey = `${search}-${filterPublisher}-${filterVideoQuality}-${filterRegion}-${filterPackage}-${filterMediaType}-${sortBy}`;
+  useMemo(() => setCurrentPage(1), [filterKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+  const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
   // Count leaf titles only (children of collections + standalone non-collection parents)
   const allLeaves = titles.flatMap((t) =>
@@ -324,7 +333,7 @@ const Index = () => {
           </div>
         ) : (
           <div className="space-y-3 max-w-3xl mx-auto">
-            {filtered.map((title) => (
+            {paginated.map((title) => (
               <div key={title.id}>
                 <TitleCard
                   title={title}
@@ -342,6 +351,48 @@ const Index = () => {
                 )}
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {filtered.length > 0 && (
+          <div className="flex items-center justify-between max-w-3xl mx-auto mt-6">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Show</span>
+              <Select value={String(perPage)} onValueChange={(v) => { setPerPage(Number(v)); setCurrentPage(1); }}>
+                <SelectTrigger className="h-8 w-[70px] text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="25">25</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="text-xs text-muted-foreground">per page</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <span className="text-xs text-muted-foreground px-2 tabular-nums">
+                {currentPage} / {totalPages}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         )}
       
