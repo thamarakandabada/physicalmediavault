@@ -55,7 +55,7 @@ const Alphabetical = () => {
                 <div className="space-y-1">
                   {grouped[letter].map((t) => (
                     <div key={t.id} className="flex items-center gap-4 py-2 px-3 rounded-md hover:bg-secondary/50 transition-colors">
-                      <MediaBadge type={t.media_type} className="w-[110px] justify-center" />
+                      <MediaBadge type={t.media_type} className="shrink-0" />
                       <span className="font-medium text-foreground flex-1 truncate">{t.title}</span>
                       <span className="text-sm text-muted-foreground w-12 text-right tabular-nums">{t.year}</span>
                       <span className="text-sm text-muted-foreground w-40 truncate hidden sm:block">{t.director}</span>
