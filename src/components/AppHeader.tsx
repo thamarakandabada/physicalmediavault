@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Disc3, LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import tkLogo from "@/assets/tk-logo.png";
 
 const NAV_ITEMS = [
   { path: "/", label: "Collection" },
@@ -20,8 +21,8 @@ export function AppHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="px-3 sm:px-6 lg:container flex items-center justify-between h-14 sm:h-16">
         <div className="flex items-center gap-2 sm:gap-6 min-w-0">
-          <Link to="/" className="flex items-center gap-1.5 text-gold shrink-0">
-            <Disc3 className="w-5 h-5 sm:w-6 sm:h-6" />
+          <Link to="/" className="flex items-center gap-1.5 shrink-0">
+            <img src={tkLogo} alt="TK" className="w-5 h-5 sm:w-6 sm:h-6 rounded" />
             <span className="font-display text-base sm:text-xl font-bold hidden sm:inline">Physical Media Vault</span>
           </Link>
           <nav className="flex items-center gap-0.5 sm:gap-1">

@@ -4,8 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Disc3 } from "lucide-react";
 import { toast } from "sonner";
+import tkLogo from "@/assets/tk-logo.png";
 
 const Login = () => {
   const { signIn } = useAuth();
@@ -32,7 +32,7 @@ const Login = () => {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="w-full max-w-sm mx-auto p-8">
         <div className="text-center mb-8">
-          <Disc3 className="w-10 h-10 text-gold mx-auto mb-3" />
+          <img src={tkLogo} alt="TK" className="w-12 h-12 mx-auto mb-3 rounded-lg" />
           <h1 className="font-display text-2xl font-bold text-foreground">Physical Media Vault</h1>
           <p className="text-muted-foreground text-sm mt-1">Owner access only</p>
         </div>
