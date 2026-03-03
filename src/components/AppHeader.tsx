@@ -44,7 +44,7 @@ export function AppHeader() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {user ? (
+          {user && (
             <>
               <Link to="/manage">
                 <Button variant="outline" size="sm" className="border-gold-dim text-gold hover:bg-gold/10 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3">
@@ -55,13 +55,6 @@ export function AppHeader() {
                 <LogOut className="w-4 h-4" />
               </Button>
             </>
-          ) : (
-            <Link to="/login">
-              <Button variant="ghost" size="sm" className="text-muted-foreground text-xs sm:text-sm h-8 sm:h-9">
-                <LogIn className="w-4 h-4 mr-1" />
-                Login
-              </Button>
-            </Link>
           )}
         </div>
       </div>
