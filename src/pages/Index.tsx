@@ -124,9 +124,9 @@ const Index = () => {
         {/* Hero */}
         <div className="text-center mb-10">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
-            The <span className="text-gold">Vault</span>
+            Physical Media <span className="text-gold">Vault</span>
           </h1>
-          <p className="text-muted-foreground text-lg">A curated physical media collection</p>
+          <p className="text-muted-foreground text-lg">A showcase of my small but growing physical media collection. Includes both films and TV.</p>
           <div className="flex items-center justify-center gap-6 mt-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1"><Disc3 className="w-4 h-4 text-gold" />{totalDiscs} discs</span>
             <span>🎬 {filmCount} films</span>

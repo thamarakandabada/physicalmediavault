@@ -20,7 +20,7 @@ export function AppHeader() {
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center gap-2 text-gold">
             <Disc3 className="w-6 h-6" />
-            <span className="font-display text-xl font-bold hidden sm:inline">The Vault</span>
+            <span className="font-display text-xl font-bold hidden sm:inline">Physical Media Vault</span>
           </Link>
           <nav className="flex items-center gap-1">
             {NAV_ITEMS.map((item) => (

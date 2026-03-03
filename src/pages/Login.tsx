@@ -33,7 +33,7 @@ const Login = () => {
       <div className="w-full max-w-sm mx-auto p-8">
         <div className="text-center mb-8">
           <Disc3 className="w-10 h-10 text-gold mx-auto mb-3" />
-          <h1 className="font-display text-2xl font-bold text-foreground">The Vault</h1>
+          <h1 className="font-display text-2xl font-bold text-foreground">Physical Media Vault</h1>
           <p className="text-muted-foreground text-sm mt-1">Owner access only</p>
         </div>
 
