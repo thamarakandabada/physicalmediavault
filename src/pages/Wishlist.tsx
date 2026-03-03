@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Loader2, Trash2, ExternalLink, Check, AlertTriangle } from "lucide-react";
+import { Loader2, Trash2, ExternalLink, Check, AlertTriangle, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function findSimilarTitles(wishlistTitle: string, collectionTitles: string[]): string[] {
@@ -148,6 +148,32 @@ const Wishlist = () => {
           
             <Button onClick={handleAdd} disabled={scraping || !url.trim()}>
               {scraping ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add"}
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                const items = wishlist || [];
+                const rows = items.map((w) => ({
+                  title: w.title ?? "",
+                  url: w.url,
+                  price: w.price ?? "",
+                  retailer: w.retailer ?? "",
+                  purchased: w.purchased ? "Yes" : "No",
+                }));
+                const headers = Object.keys(rows[0] || {});
+                const csv = [headers.join(","), ...rows.map((r) => headers.map((h) => `"${String((r as any)[h]).replace(/"/g, '""')}"`).join(","))].join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "wishlist.csv";
+                a.click();
+                toast.success("Wishlist exported");
+              }}
+              title="Export wishlist as CSV"
+              disabled={!wishlist || wishlist.length === 0}
+            >
+              <Download className="w-4 h-4" />
             </Button>
           </div>
         }

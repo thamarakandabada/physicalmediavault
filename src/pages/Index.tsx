@@ -7,7 +7,7 @@ import { TitleFormDialog } from "@/components/TitleFormDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Disc3, SlidersHorizontal, X } from "lucide-react";
+import { Plus, Search, Disc3, SlidersHorizontal, X, Download } from "lucide-react";
 import { toast } from "sonner";
 import { sortableTitle } from "@/lib/utils";
 
@@ -161,12 +161,41 @@ const Index = () => {
             )}
           </Button>
           {user && (
-            <Button
-              onClick={() => { setEditTitle(null); setParentId(null); setFormOpen(true); }}
-              className="shrink-0"
-            >
-              <Plus className="w-4 h-4 mr-1" /> Add
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  const rows = titles.map((t) => ({
+                    title: t.title,
+                    year: t.year ?? "",
+                    director: t.director ?? "",
+                    media_type: t.media_type,
+                    video_quality: t.video_quality ?? "",
+                    publisher: t.publisher ?? "",
+                    region: t.region ?? "",
+                    package_type: t.package_type ?? "",
+                  }));
+                  const headers = Object.keys(rows[0] || {});
+                  const csv = [headers.join(","), ...rows.map((r) => headers.map((h) => `"${String((r as any)[h]).replace(/"/g, '""')}"`).join(","))].join("\n");
+                  const blob = new Blob([csv], { type: "text/csv" });
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = "collection.csv";
+                  a.click();
+                  toast.success("Collection exported");
+                }}
+                title="Export collection as CSV"
+              >
+                <Download className="w-4 h-4" />
+              </Button>
+              <Button
+                onClick={() => { setEditTitle(null); setParentId(null); setFormOpen(true); }}
+                className="shrink-0"
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add
+              </Button>
+            </>
           )}
         </div>
 
