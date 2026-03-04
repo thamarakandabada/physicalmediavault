@@ -34,7 +34,7 @@ const Criterion = () => {
               <span>Year</span>
               <span>Director</span>
             </div>
-            <div className="md:columns-2 md:gap-x-6">
+            <div className="space-y-0.5">
               {criterionTitles.map((t) => (
                 <div
                   key={t.id}
