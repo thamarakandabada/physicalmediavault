@@ -14,7 +14,7 @@ const GITHUB_REPO = "https://github.com/thamarakandabada/physical-media-vault";
 export function AppFooter() {
   return (
     <footer className="border-t border-border bg-background mt-auto">
-      <div className="container py-8 flex flex-col gap-5">
+      <div className="container py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <a href="https://thamara.co.uk" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img src={tkLogo} alt="TK" className="w-6 h-6 rounded" />
@@ -37,7 +37,10 @@ export function AppFooter() {
             ))}
           </nav>
         </div>
-        <div className="border-t border-border pt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+      </div>
+      <div className="border-t border-border" />
+      <div className="container py-6">
+        <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
           <Github className="w-3.5 h-3.5" />
           <span>Open source —</span>
           <a
