@@ -87,9 +87,44 @@ Deno.serve(async (req) => {
     }
 
     const { url } = await req.json();
-    if (!url) {
+    if (!url || typeof url !== 'string' || url.trim().length > 2048) {
       return new Response(
-        JSON.stringify({ success: false, error: 'URL is required' }),
+        JSON.stringify({ success: false, error: 'A valid URL is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate URL is from a supported retailer domain
+    let formattedUrl = url.trim();
+    if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+      formattedUrl = `https://${formattedUrl}`;
+    }
+
+    const ALLOWED_DOMAINS = [
+      'hmv.com', 'zavvi.com', 'amazon.co.uk', 'amazon.com',
+      'arrowfilms.com', 'arrowvideo.com', 'criterion.com', 'criterionstore.com',
+      'indicatorseries.com', 'powerhousefilms.co.uk', 'eurekavideo.co.uk',
+      'secondsightfilms.co.uk', '88films.tv', 'bfi.org.uk',
+      'terracottadistribution.com', 'mundaymondaystudios.com',
+      'vinegarsyndrome.com', 'imprint-films.com.au', 'imprintfilms.com.au',
+      'kinolorber.com', 'shoutfactory.com', 'blu-ray.com',
+    ];
+
+    try {
+      const parsedUrl = new URL(formattedUrl);
+      if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') {
+        throw new Error('Invalid protocol');
+      }
+      const hostname = parsedUrl.hostname.replace(/^(www|shop)\./i, '');
+      if (!ALLOWED_DOMAINS.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'URL must be from a supported retailer' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    } catch {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid URL format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -97,17 +132,12 @@ Deno.serve(async (req) => {
     const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
     if (!apiKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Firecrawl not configured' }),
+        JSON.stringify({ success: false, error: 'Scraping service not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const retailer = detectRetailer(url);
-
-    let formattedUrl = url.trim();
-    if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
-      formattedUrl = `https://${formattedUrl}`;
-    }
 
     console.log('Scraping wishlist URL:', formattedUrl, 'retailer:', retailer);
 
@@ -160,9 +190,9 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error processing wishlist URL:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Failed to scrape' }),
+      JSON.stringify({ success: false, error: 'An error occurred processing your request' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
