@@ -87,6 +87,10 @@ supabase/
 ├── migrations/      # Database schema migrations
 ```
 
+## Data Privacy
+
+Your personal collection data is stored securely in the database and is **not** included in this repository. Only the source code, configuration, and database schema (table structure) are committed to version control.
+
 ## Contributing
 
 This app was built for my own personal collection needs, so it may not cover every use case. You're welcome to fork it, adapt it to your own workflow, and submit improvements back via PR. Contributions are welcome! Please:
