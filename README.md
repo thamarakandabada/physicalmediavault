@@ -4,6 +4,12 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+## Screenshots
+
+| Collection View | Stats Dashboard |
+|---|---|
+| ![Collection](docs/screenshots/collection.png) | ![Stats](docs/screenshots/stats.png) |
+
 ## Features
 
 - 📀 Track your physical media collection with rich metadata (director, year, audio, HDR, region, etc.)
