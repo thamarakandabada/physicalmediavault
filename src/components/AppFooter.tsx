@@ -14,8 +14,8 @@ const GITHUB_REPO = "https://github.com/thamarakandabada/physical-media-vault";
 export function AppFooter() {
   return (
     <footer className="border-t border-border bg-background mt-auto">
-      <div className="container py-8 flex flex-col gap-6">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col gap-2">
           <a href="https://thamara.co.uk" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img src={tkLogo} alt="TK" className="w-6 h-6 rounded" />
             <div className="text-sm">
@@ -23,32 +23,29 @@ export function AppFooter() {
               <span className="text-muted-foreground ml-2">Generalist. Tinkerer.</span>
             </div>
           </a>
-          <nav className="flex items-center gap-4">
-            {SITE_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-          <Github className="w-4 h-4" />
-          <span>Open source — </span>
           <a
             href={GITHUB_REPO}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline font-medium"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors sm:ml-9"
           >
-            clone it, make it yours
+            <Github className="w-3.5 h-3.5" />
+            <span>Open source — clone it, make it yours</span>
           </a>
         </div>
+        <nav className="flex items-center gap-4">
+          {SITE_LINKS.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </footer>
   );
