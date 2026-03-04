@@ -50,12 +50,12 @@ const Index = () => {
       publishers: Array.from(publishers).sort(),
       videoQualities: Array.from(videoQualities).sort(),
       regions: Array.from(regions).sort(),
-      packages: Array.from(packages).sort(),
+      packages: Array.from(packages).sort()
     };
   }, [titles]);
 
-  const activeFilterCount = [filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType]
-    .filter((f) => f !== "all").length;
+  const activeFilterCount = [filterPublisher, filterVideoQuality, filterRegion, filterPackage, filterMediaType].
+  filter((f) => f !== "all").length;
 
   const clearFilters = () => {
     setFilterPublisher("all");
@@ -68,9 +68,9 @@ const Index = () => {
 
   const filtered = useMemo(() => {
     let result = titles.filter((t) =>
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.director?.toLowerCase().includes(search.toLowerCase()) ||
-      t.publisher?.toLowerCase().includes(search.toLowerCase())
+    t.title.toLowerCase().includes(search.toLowerCase()) ||
+    t.director?.toLowerCase().includes(search.toLowerCase()) ||
+    t.publisher?.toLowerCase().includes(search.toLowerCase())
     );
 
     if (filterPublisher !== "all") result = result.filter((t) => t.publisher === filterPublisher);
@@ -81,15 +81,15 @@ const Index = () => {
 
     // Sort
     result = [...result].sort((a, b) => {
-      const sa = sortableTitle(a.title), sb = sortableTitle(b.title);
+      const sa = sortableTitle(a.title),sb = sortableTitle(b.title);
       switch (sortBy) {
-        case "title-asc": return sa.localeCompare(sb);
-        case "title-desc": return sb.localeCompare(sa);
-        case "year-asc": return (a.year ?? 0) - (b.year ?? 0);
-        case "year-desc": return (b.year ?? 0) - (a.year ?? 0);
-        case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        case "oldest": return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-        default: return 0;
+        case "title-asc":return sa.localeCompare(sb);
+        case "title-desc":return sb.localeCompare(sa);
+        case "year-asc":return (a.year ?? 0) - (b.year ?? 0);
+        case "year-desc":return (b.year ?? 0) - (a.year ?? 0);
+        case "newest":return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "oldest":return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        default:return 0;
       }
     });
 
@@ -105,7 +105,7 @@ const Index = () => {
 
   // Count leaf titles only (children of collections + standalone non-collection parents)
   const allLeaves = titles.flatMap((t) =>
-    t.children.length > 0 ? t.children : [t]
+  t.children.length > 0 ? t.children : [t]
   );
   const filmCount = allLeaves.filter((t) => t.media_type === "Film").length;
   const docCount = allLeaves.filter((t) => t.media_type === "Documentary").length;
@@ -141,7 +141,10 @@ const Index = () => {
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
             Physical Media <span className="text-gold">Vault</span>
           </h1>
-          <p className="text-muted-foreground text-base max-w-lg mx-auto">A showcase of my small but growing physical media collection. Includes both films and TV.</p>
+          <p className="text-muted-foreground text-base max-w-lg mx-auto">A showcase for my small but growing physical media collection. Includes both films and TV.
+
+
+Click tiles with "Collection" badges to expand nested titles.</p>
           <div className="flex items-center justify-center gap-6 mt-5 text-sm text-muted-foreground flex-wrap">
             <span className="flex items-center gap-1.5"><Disc3 className="w-4 h-4 text-gold" />{totalTitles} titles</span>
             <span className="text-border">•</span>
@@ -159,76 +162,73 @@ const Index = () => {
         <div className="flex items-center gap-3 mb-4 max-w-3xl mx-auto">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search titles, directors, publishers..."
-              className="pl-10"
-            />
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search titles, directors, publishers..."
+            className="pl-10" />
+          
           </div>
           <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setShowFilters(!showFilters)}
-            className={activeFilterCount > 0 ? "border-gold text-gold" : ""}
-          >
+          variant="outline"
+          size="icon"
+          onClick={() => setShowFilters(!showFilters)}
+          className={activeFilterCount > 0 ? "border-gold text-gold" : ""}>
+          
             <SlidersHorizontal className="w-4 h-4" />
-            {activeFilterCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-gold text-background text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            {activeFilterCount > 0 &&
+          <span className="absolute -top-1.5 -right-1.5 bg-gold text-background text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {activeFilterCount}
               </span>
-            )}
+          }
           </Button>
-          {user && (
-            <>
+          {user &&
+        <>
               <Button
-                variant="outline"
-                size="icon"
-                onClick={() => {
-                  const rows = titles.map((t) => ({
-                    title: t.title,
-                    year: t.year ?? "",
-                    director: t.director ?? "",
-                    media_type: t.media_type,
-                    video_quality: t.video_quality ?? "",
-                    publisher: t.publisher ?? "",
-                    region: t.region ?? "",
-                    package_type: t.package_type ?? "",
-                  }));
-                  const headers = Object.keys(rows[0] || {});
-                  const csv = [headers.join(","), ...rows.map((r) => headers.map((h) => `"${String((r as any)[h]).replace(/"/g, '""')}"`).join(","))].join("\n");
-                  const blob = new Blob([csv], { type: "text/csv" });
-                  const a = document.createElement("a");
-                  a.href = URL.createObjectURL(blob);
-                  a.download = "collection.csv";
-                  a.click();
-                  toast.success("Collection exported");
-                }}
-                title="Export collection as CSV"
-              >
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              const rows = titles.map((t) => ({
+                title: t.title,
+                year: t.year ?? "",
+                director: t.director ?? "",
+                media_type: t.media_type,
+                video_quality: t.video_quality ?? "",
+                publisher: t.publisher ?? "",
+                region: t.region ?? "",
+                package_type: t.package_type ?? ""
+              }));
+              const headers = Object.keys(rows[0] || {});
+              const csv = [headers.join(","), ...rows.map((r) => headers.map((h) => `"${String((r as any)[h]).replace(/"/g, '""')}"`).join(","))].join("\n");
+              const blob = new Blob([csv], { type: "text/csv" });
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = "collection.csv";
+              a.click();
+              toast.success("Collection exported");
+            }}
+            title="Export collection as CSV">
+            
                 <Download className="w-4 h-4" />
               </Button>
               <Button
-                onClick={() => { setEditTitle(null); setParentId(null); setFormOpen(true); }}
-                className="shrink-0"
-              >
+            onClick={() => {setEditTitle(null);setParentId(null);setFormOpen(true);}}
+            className="shrink-0">
+            
                 <Plus className="w-4 h-4 mr-1" /> Add
               </Button>
             </>
-          )}
+        }
         </div>
 
         {/* Filter Bar */}
-        {showFilters && (
-          <div className="max-w-3xl mx-auto mb-6 animate-fade-in">
+        {showFilters &&
+      <div className="max-w-3xl mx-auto mb-6 animate-fade-in">
             <div className="bg-card border border-border rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-foreground">Filters & Sort</span>
-                {activeFilterCount > 0 && (
-                  <button onClick={clearFilters} className="text-xs text-muted-foreground hover:text-gold transition-colors flex items-center gap-1">
+                {activeFilterCount > 0 &&
+            <button onClick={clearFilters} className="text-xs text-muted-foreground hover:text-gold transition-colors flex items-center gap-1">
                     <X className="w-3 h-3" /> Clear all
                   </button>
-                )}
+            }
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <div>
@@ -267,9 +267,9 @@ const Index = () => {
                     <SelectTrigger className="h-9 text-sm"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All qualities</SelectItem>
-                      {filterOptions.videoQualities.map((v) => (
-                        <SelectItem key={v} value={v}>{v}</SelectItem>
-                      ))}
+                      {filterOptions.videoQualities.map((v) =>
+                  <SelectItem key={v} value={v}>{v}</SelectItem>
+                  )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -280,9 +280,9 @@ const Index = () => {
                     <SelectTrigger className="h-9 text-sm"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All regions</SelectItem>
-                      {filterOptions.regions.map((r) => (
-                        <SelectItem key={r} value={r}>{r}</SelectItem>
-                      ))}
+                      {filterOptions.regions.map((r) =>
+                  <SelectItem key={r} value={r}>{r}</SelectItem>
+                  )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -293,9 +293,9 @@ const Index = () => {
                     <SelectTrigger className="h-9 text-sm"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All packages</SelectItem>
-                      {filterOptions.packages.map((p) => (
-                        <SelectItem key={p} value={p}>{p}</SelectItem>
-                      ))}
+                      {filterOptions.packages.map((p) =>
+                  <SelectItem key={p} value={p}>{p}</SelectItem>
+                  )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -306,60 +306,60 @@ const Index = () => {
                     <SelectTrigger className="h-9 text-sm"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All publishers</SelectItem>
-                      {filterOptions.publishers.map((p) => (
-                        <SelectItem key={p} value={p}>{p}</SelectItem>
-                      ))}
+                      {filterOptions.publishers.map((p) =>
+                  <SelectItem key={p} value={p}>{p}</SelectItem>
+                  )}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
             </div>
           </div>
-        )}
+      }
 
         {/* Results count when filtered */}
-        {(activeFilterCount > 0 || search) && !isLoading && (
-          <div className="mb-3 text-sm text-muted-foreground">
+        {(activeFilterCount > 0 || search) && !isLoading &&
+      <div className="mb-3 text-sm text-muted-foreground">
             {filtered.length} {filtered.length === 1 ? "title" : "titles"} found
           </div>
-        )}
+      }
 
         {/* List */}
-        {isLoading ? (
-          <div className="text-center py-20 text-muted-foreground">Loading collection...</div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">
+        {isLoading ?
+      <div className="text-center py-20 text-muted-foreground">Loading collection...</div> :
+      filtered.length === 0 ?
+      <div className="text-center py-20 text-muted-foreground">
             {search || activeFilterCount > 0 ? "No titles match your filters." : "No titles yet. Add your first disc!"}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-            {paginated.map((title) => (
-              <div key={title.id}>
+          </div> :
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {paginated.map((title) =>
+        <div key={title.id}>
                 <TitleCard
-                  title={title}
-                  isOwner={!!user}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-                {user && (
-                  <button
-                    onClick={() => handleAddChild(title.id)}
-                    className="ml-6 mt-1 text-xs text-muted-foreground hover:text-gold transition-colors"
-                  >
+            title={title}
+            isOwner={!!user}
+            onEdit={handleEdit}
+            onDelete={handleDelete} />
+          
+                {user &&
+          <button
+            onClick={() => handleAddChild(title.id)}
+            className="ml-6 mt-1 text-xs text-muted-foreground hover:text-gold transition-colors">
+            
                     + Add nested title
                   </button>
-                )}
+          }
               </div>
-            ))}
-          </div>
         )}
+          </div>
+      }
 
         {/* Pagination */}
-        {filtered.length > 0 && (
-          <div className="flex items-center justify-between mt-6">
+        {filtered.length > 0 &&
+      <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">Show</span>
-              <Select value={String(perPage)} onValueChange={(v) => { setPerPage(Number(v)); setCurrentPage(1); }}>
+              <Select value={String(perPage)} onValueChange={(v) => {setPerPage(Number(v));setCurrentPage(1);}}>
                 <SelectTrigger className="h-8 w-[70px] text-xs"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="30">30</SelectItem>
@@ -372,39 +372,39 @@ const Index = () => {
 
             <div className="flex items-center gap-1">
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                disabled={currentPage <= 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-              >
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage((p) => p - 1)}>
+            
                 <ChevronLeft className="w-4 h-4" />
               </Button>
               <span className="text-xs text-muted-foreground px-2 tabular-nums">
                 {currentPage} / {totalPages}
               </span>
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                disabled={currentPage >= totalPages}
-                onClick={() => setCurrentPage((p) => p + 1)}
-              >
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            disabled={currentPage >= totalPages}
+            onClick={() => setCurrentPage((p) => p + 1)}>
+            
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
           </div>
-        )}
+      }
       
 
       <TitleFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
         editTitle={editTitle}
-        parentId={parentId}
-      />
-    </>
-  );
+        parentId={parentId} />
+      
+    </>);
+
 };
 
 export default Index;
