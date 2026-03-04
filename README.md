@@ -105,6 +105,58 @@ npm run dev
 
 The app will be available at `http://localhost:5173`.
 
+## Design Language
+
+The UI takes inspiration from [Letterboxd](https://letterboxd.com/) — a dark, cinematic aesthetic built for browsing media collections.
+
+### Typography
+
+- **Primary typeface:** [Rig Sans](https://fonts.adobe.com/) (via Adobe Fonts)
+- Used for all body text, headings, and UI elements
+- Headings use `font-weight: 700`
+
+### Colour Palette
+
+| Role | Hex | HSL | Usage |
+|---|---|---|---|
+| **Background** | `#101519` | `210 20% 7%` | Page background |
+| **Foreground** | `#D8DCE0` | `210 10% 88%` | Primary text |
+| **Card** | `#181D23` | `210 18% 11%` | Card / panel surfaces |
+| **Surface Elevated** | `#1C2129` | `210 16% 13%` | Raised surface elements |
+| **Muted** | `#1F2429` | `210 14% 14%` | Subdued backgrounds |
+| **Muted Foreground** | `#737A80` | `210 8% 50%` | Secondary / placeholder text |
+| **Border** | `#262C33` | `210 12% 17%` | Borders and dividers |
+
+### Accent Colours
+
+| Role | Hex | HSL | Usage |
+|---|---|---|---|
+| **Primary (Green)** | `#00E054` | `145 100% 44%` | Primary actions, links, active states |
+| **Green Dim** | `#1B7237` | `145 60% 28%` | Subtle green borders and accents |
+| **Orange** | `#FF8000` | `30 100% 50%` | Secondary accent, warnings |
+| **Destructive** | `#E03E3E` | `0 72% 50%` | Delete actions, errors |
+
+### Media Type Badges
+
+| Type | Hex | HSL |
+|---|---|---|
+| Film | `#3D6DB8` | `210 50% 45%` |
+| Film Collection | `#CC7A1A` | `30 80% 50%` |
+| Documentary | `#30994D` | `145 50% 38%` |
+| Concert Film | `#B83D78` | `330 55% 48%` |
+| TV | `#6633CC` | `265 50% 50%` |
+
+### Video Quality Accents
+
+Collection cards use a subtle **2px left-border** to indicate video quality:
+
+- **4K UHD:** Green (`#00E054`)
+- **1080p:** Blue (`#3D6DB8`)
+
+### Design Tokens
+
+All colours are defined as HSL CSS custom properties in `src/index.css` and mapped to Tailwind classes in `tailwind.config.ts`. Components use semantic tokens (`bg-primary`, `text-foreground`, `bg-card`, etc.) rather than hardcoded values — see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ## Project Structure
 
 ```
