@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useTitlesGrouped, useDeleteTitle, type TitleWithChildren, type Title } from "@/hooks/useTitles";
 import { useAuth } from "@/hooks/useAuth";
+import { PageMeta } from "@/components/PageMeta";
 
 import { TitleCard } from "@/components/TitleCard";
 import { TitleFormDialog } from "@/components/TitleFormDialog";
@@ -136,6 +137,11 @@ const Index = () => {
 
   return (
     <>
+      <PageMeta
+        title="Thamara's Physical Media Vault"
+        description="A showcase of my small but growing physical media collection. Includes both films and TV."
+        path="/"
+      />
         {/* Hero */}
         <div className="text-center mb-10">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">

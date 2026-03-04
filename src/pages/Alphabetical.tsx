@@ -4,6 +4,7 @@ import { useTitlesGrouped } from "@/hooks/useTitles";
 import { MediaBadge, MEDIA_TYPES } from "@/components/MediaBadge";
 import { MetadataTag } from "@/components/MetadataTag";
 import { sortableTitle } from "@/lib/utils";
+import { PageMeta } from "@/components/PageMeta";
 
 const FILTER_TABS = ["All", ...MEDIA_TYPES];
 
@@ -33,6 +34,11 @@ const Alphabetical = () => {
 
   return (
     <div>
+        <PageMeta
+          title="Alphabetical Index — Physical Media Vault"
+          description="Browse Thamara's physical media collection alphabetically. Criterion titles sorted by spine number."
+          path="/alphabetical"
+        />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Alphabetical <span className="text-gold">Index</span>
         </h1>

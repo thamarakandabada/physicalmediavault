@@ -1,5 +1,6 @@
 import { useTitlesGrouped } from "@/hooks/useTitles";
 import { cn } from "@/lib/utils";
+import { PageMeta } from "@/components/PageMeta";
 
 const Criterion = () => {
   const { data: titles, isLoading } = useTitlesGrouped();
@@ -12,6 +13,11 @@ const Criterion = () => {
 
   return (
     <>
+        <PageMeta
+          title="Criterion Collection — Physical Media Vault"
+          description="Criterion Collection titles sorted by spine number from Thamara's physical media collection."
+          path="/criterion"
+        />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Criterion <span className="text-gold">Collection</span>
         </h1>
