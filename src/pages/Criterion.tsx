@@ -43,12 +43,14 @@ const Criterion = () => {
                   {/* Desktop row */}
                   <div className="hidden sm:grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 items-center">
                     <span className="font-mono text-gold font-bold">#{t.spine_number}</span>
-                    <span className="font-medium text-foreground truncate">{t.title}</span>
-                    {t.video_quality && (
-                      <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
-                        {t.video_quality}
-                      </span>
-                    )}
+                    <span className="font-medium text-foreground truncate">
+                      {t.title}
+                      {t.video_quality && (
+                        <span className={cn("text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                          {t.video_quality}
+                        </span>
+                      )}
+                    </span>
                     <span className="text-sm text-muted-foreground">{t.year}</span>
                     <span className="text-sm text-muted-foreground truncate">{t.director}</span>
                   </div>
@@ -59,7 +61,7 @@ const Criterion = () => {
                       <span className="font-medium text-foreground">
                         {t.title}
                         {t.video_quality && (
-                          <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded ml-2", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                          <span className={cn("text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
                             {t.video_quality}
                           </span>
                         )}
