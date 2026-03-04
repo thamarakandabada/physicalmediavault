@@ -9,7 +9,7 @@ Physical Media Vault is a curated catalogue of a personal film and TV physical m
 ## Pages
 
 - [Collection](https://physicalmedia.thamara.co.uk/): Browse the full collection with filters for publisher, video quality, region, package type, and media type.
-- [Alphabetical Index](https://physicalmedia.thamara.co.uk/alphabetical): All titles listed A–Z.
+- [Alphabetical Index](https://physicalmedia.thamara.co.uk/alphabetical): All titles listed A-Z.
 - [Criterion](https://physicalmedia.thamara.co.uk/criterion): Criterion Collection titles sorted by spine number.
 - [Stats](https://physicalmedia.thamara.co.uk/stats): Collection statistics and breakdowns.
 - [Wishlist](https://physicalmedia.thamara.co.uk/wishlist): Upcoming titles of interest.
