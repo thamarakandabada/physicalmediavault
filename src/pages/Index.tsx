@@ -319,7 +319,7 @@ const Index = () => {
 
         {/* Results count when filtered */}
         {(activeFilterCount > 0 || search) && !isLoading && (
-          <div className="max-w-3xl mx-auto mb-3 text-sm text-muted-foreground">
+          <div className="mb-3 text-sm text-muted-foreground">
             {filtered.length} {filtered.length === 1 ? "title" : "titles"} found
           </div>
         )}
@@ -332,7 +332,7 @@ const Index = () => {
             {search || activeFilterCount > 0 ? "No titles match your filters." : "No titles yet. Add your first disc!"}
           </div>
         ) : (
-          <div className="space-y-3 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {paginated.map((title) => (
               <div key={title.id}>
                 <TitleCard
@@ -356,7 +356,7 @@ const Index = () => {
 
         {/* Pagination */}
         {filtered.length > 0 && (
-          <div className="flex items-center justify-between max-w-3xl mx-auto mt-6">
+          <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">Show</span>
               <Select value={String(perPage)} onValueChange={(v) => { setPerPage(Number(v)); setCurrentPage(1); }}>
