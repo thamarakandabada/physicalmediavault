@@ -10,6 +10,7 @@ import { searchBluray, getBlurayDetail, type BluraySearchResult } from "@/lib/bl
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { Search, Loader2, Link } from "lucide-react";
+import { CoverUpload } from "./CoverUpload";
 
 type TitleFormDialogProps = {
   open: boolean;
@@ -400,6 +401,16 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
             <div className="col-span-2">
               <Label>Publisher</Label>
               <Input value={form.publisher} onChange={(e) => set("publisher", e.target.value)} placeholder="e.g. Criterion, Arrow, Sony" />
+            </div>
+            <div className="col-span-2">
+              <Label>Cover Image</Label>
+              {user && (
+                <CoverUpload
+                  coverUrl={form.cover_url}
+                  onCoverChange={(url) => set("cover_url", url)}
+                  userId={user.id}
+                />
+              )}
             </div>
           </div>
 
