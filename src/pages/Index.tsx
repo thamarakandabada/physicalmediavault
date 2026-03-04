@@ -30,7 +30,7 @@ const Index = () => {
   const [filterPackage, setFilterPackage] = useState<string>("all");
   const [filterMediaType, setFilterMediaType] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortOption>("title-asc");
-  const [perPage, setPerPage] = useState<number>(25);
+  const [perPage, setPerPage] = useState<number>(30);
   const [currentPage, setCurrentPage] = useState(1);
   // Derive unique filter options from the data
   const filterOptions = useMemo(() => {
@@ -362,7 +362,7 @@ const Index = () => {
               <Select value={String(perPage)} onValueChange={(v) => { setPerPage(Number(v)); setCurrentPage(1); }}>
                 <SelectTrigger className="h-8 w-[70px] text-xs"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="25">25</SelectItem>
+                  <SelectItem value="30">30</SelectItem>
                   <SelectItem value="50">50</SelectItem>
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
