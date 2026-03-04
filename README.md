@@ -14,9 +14,13 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 
 ### Stats
 
-| Overview | Decade Breakdown | Media Breakdown |
+| Overview | Decade Breakdown | Top Directors |
 |---|---|---|
-| ![Stats Overview](docs/screenshots/stats-overview.png) | ![Decades](docs/screenshots/stats-decades.png) | ![Media](docs/screenshots/stats-media.png) |
+| ![Stats Overview](docs/screenshots/stats-overview.png) | ![Decades](docs/screenshots/stats-decades.png) | ![Top Directors](docs/screenshots/stats-directors.png) |
+
+| Audio, Video & HDR | Other |
+|---|---|
+| ![AV & HDR](docs/screenshots/stats-av-hdr.png) | ![Other Stats](docs/screenshots/stats-other.png) |
 
 ### Wishlist
 
