@@ -22,12 +22,12 @@ const NotFound = () => {
       <div className="text-7xl mb-8 opacity-60 select-none">🗺️</div>
 
       {/* Headline */}
-      <h1 className="font-display text-4xl md:text-5xl italic text-foreground mb-4 text-center">
+      <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4 text-center">
         Hic Sunt Dracones.
       </h1>
 
       {/* Subtitle */}
-      <p className="text-lg md:text-xl italic text-muted-foreground max-w-lg text-center leading-relaxed mb-12">
+      <p className="text-lg md:text-xl text-muted-foreground max-w-lg text-center leading-relaxed mb-12">
         You have reached the edge of the map. It's not safe here. Turn back, before it's too late.
       </p>
 
