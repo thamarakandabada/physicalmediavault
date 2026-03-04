@@ -99,13 +99,9 @@ Your personal collection data is stored securely in the database and is **not** 
 
 ## Contributing
 
-This app was built for my own personal collection needs, so it may not cover every use case. You're welcome to fork it, adapt it to your own workflow, and submit improvements back via PR. Contributions are welcome! Please:
+This app was built for my own personal collection needs, so it may not cover every use case. You're welcome to fork it, adapt it to your own workflow, and submit improvements back via PR.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feat/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feat/amazing-feature`)
-5. Open a Pull Request
+Please read **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed guidelines on setup, code style, and the PR process.
 
 ## License
 
