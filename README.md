@@ -89,7 +89,7 @@ supabase/
 
 ## Contributing
 
-Contributions are welcome! Please:
+This app was built for my own personal collection needs, so it may not cover every use case. You're welcome to fork it, adapt it to your own workflow, and submit improvements back via PR. Contributions are welcome! Please:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/amazing-feature`)
