@@ -1,73 +1,102 @@
-# Welcome to your Lovable project
+# Physical Media Vault
 
-## Project info
+A personal catalogue app for tracking physical media collections — Blu-ray, 4K UHD, DVD, and more. Built with React, TypeScript, and Supabase.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 📀 Track your physical media collection with rich metadata (director, year, audio, HDR, region, etc.)
+- 🔍 Search and browse by title, alphabetically, or by Criterion spine number
+- 📊 Collection statistics and breakdowns
+- 🎯 Wishlist management with URL scraping
+- 🖼️ Cover art via Blu-ray.com API integration
+- 🔐 Per-user authentication and row-level security
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Supabase (Postgres, Auth, Edge Functions, Storage)
+- **State:** TanStack React Query
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- [Node.js](https://nodejs.org/) 18+ (recommend using [nvm](https://github.com/nvm-sh/nvm))
+- A [Supabase](https://supabase.com/) project (free tier works fine)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 1. Clone the repo
 
-Follow these steps:
+```bash
+git clone https://github.com/YOUR_USERNAME/physical-media-vault.git
+cd physical-media-vault
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 2. Install dependencies
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 3. Configure environment
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Copy the example env file and fill in your Supabase credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your Supabase project URL and anon key (both are safe to expose client-side).
+
+### 4. Set up the database
+
+Run the SQL migrations in `supabase/migrations/` against your Supabase project, either via the Supabase dashboard SQL editor or the Supabase CLI:
+
+```bash
+npx supabase db push
+```
+
+### 5. Configure secrets
+
+The following secrets need to be set in your Supabase project's Edge Function secrets (via the dashboard or CLI):
+
+| Secret              | Purpose                          |
+| ------------------- | -------------------------------- |
+| `FIRECRAWL_API_KEY` | URL scraping for wishlist items  |
+
+### 6. Start the dev server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/      # Reusable UI components
+├── hooks/           # Custom React hooks (auth, data fetching)
+├── integrations/    # Supabase client & generated types
+├── lib/             # Utilities and API helpers
+├── pages/           # Route-level page components
+supabase/
+├── functions/       # Edge Functions (bluray-search, scrape-wishlist-url)
+├── migrations/      # Database schema migrations
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Contributing
 
-## What technologies are used for this project?
+Contributions are welcome! Please:
 
-This project is built with:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
