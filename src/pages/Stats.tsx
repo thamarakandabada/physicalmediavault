@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
+import { PageMeta } from "@/components/PageMeta";
 
 import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
 import { RegionIcon } from "@/components/RegionIcon";
@@ -314,6 +315,11 @@ const Stats = () => {
 
   return (
     <>
+        <PageMeta
+          title="Collection Stats — Physical Media Vault"
+          description="Statistics and breakdowns of Thamara's physical media collection by format, publisher, region, and more."
+          path="/stats"
+        />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Collection <span className="text-gold">Stats</span>
         </h1>
