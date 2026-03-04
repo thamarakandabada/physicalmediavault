@@ -46,7 +46,7 @@ const Criterion = () => {
                     <span className="font-medium text-foreground truncate">
                       {t.title}
                       {t.video_quality && (
-                        <span className={cn("text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                        <span className="text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle bg-secondary text-muted-foreground">
                           {t.video_quality}
                         </span>
                       )}
@@ -61,7 +61,7 @@ const Criterion = () => {
                       <span className="font-medium text-foreground">
                         {t.title}
                         {t.video_quality && (
-                          <span className={cn("text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                          <span className="text-[9px] font-bold px-1 py-px rounded ml-1.5 align-middle bg-secondary text-muted-foreground">
                             {t.video_quality}
                           </span>
                         )}
