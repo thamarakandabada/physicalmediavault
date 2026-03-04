@@ -1,6 +1,5 @@
 import { useTitlesGrouped } from "@/hooks/useTitles";
-
-import { MetadataTag } from "@/components/MetadataTag";
+import { cn } from "@/lib/utils";
 
 const Criterion = () => {
   const { data: titles, isLoading } = useTitlesGrouped();
@@ -45,6 +44,11 @@ const Criterion = () => {
                   <div className="hidden sm:grid grid-cols-[60px_1fr_80px_1fr] gap-x-4 items-center">
                     <span className="font-mono text-gold font-bold">#{t.spine_number}</span>
                     <span className="font-medium text-foreground truncate">{t.title}</span>
+                    {t.video_quality && (
+                      <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                        {t.video_quality}
+                      </span>
+                    )}
                     <span className="text-sm text-muted-foreground">{t.year}</span>
                     <span className="text-sm text-muted-foreground truncate">{t.director}</span>
                   </div>
@@ -52,7 +56,14 @@ const Criterion = () => {
                   <div className="sm:hidden flex items-start gap-3">
                     <span className="font-mono text-gold font-bold shrink-0 w-14">#{t.spine_number}</span>
                     <div className="min-w-0">
-                      <span className="font-medium text-foreground block">{t.title}</span>
+                      <span className="font-medium text-foreground">
+                        {t.title}
+                        {t.video_quality && (
+                          <span className={cn("text-[10px] font-bold px-1.5 py-0.5 rounded ml-2", t.video_quality === "4K" ? "bg-primary/15 text-primary" : "bg-[hsl(200,80%,55%)]/15 text-[hsl(200,80%,55%)]")}>
+                            {t.video_quality}
+                          </span>
+                        )}
+                      </span>
                       <span className="text-sm text-muted-foreground">
                         {t.year}{t.year && t.director ? " · " : ""}{t.director}
                       </span>
