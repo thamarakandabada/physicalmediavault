@@ -6,9 +6,31 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 
 ## Screenshots
 
-| Collection View | Stats Dashboard |
-|---|---|
-| ![Collection](docs/screenshots/collection.png) | ![Stats](docs/screenshots/stats.png) |
+### Collection
+
+| Main View | Nested Titles | Add New Title |
+|---|---|---|
+| ![Collection](docs/screenshots/collection.png) | ![Nested Titles](docs/screenshots/collection-nested.png) | ![Add Title](docs/screenshots/collection-add-title.png) |
+
+### Stats
+
+| Overview | Decade Breakdown | Media Breakdown |
+|---|---|---|
+| ![Stats Overview](docs/screenshots/stats-overview.png) | ![Decades](docs/screenshots/stats-decades.png) | ![Media](docs/screenshots/stats-media.png) |
+
+### Wishlist
+
+| Wishlist | Add Item | Purchased |
+|---|---|---|
+| ![Wishlist](docs/screenshots/wishlist.png) | ![Add Wishlist Item](docs/screenshots/wishlist-add.png) | ![Purchased](docs/screenshots/wishlist-purchased.png) |
+
+### Criterion
+
+![Criterion Collection](docs/screenshots/criterion.png)
+
+### Alphabetical
+
+![Alphabetical View](docs/screenshots/alphabetical.png)
 
 ## Features
 
