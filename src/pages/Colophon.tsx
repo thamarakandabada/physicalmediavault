@@ -176,6 +176,18 @@ const Colophon = () => {
         <Separator />
 
         {/* Source */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-display">Blog Post</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Read about how this project was built:{" "}
+            <ExtLink href="https://thamara.co.uk/building-a-physical-media-showcase-with-lovable/">
+              Building a Physical Media Showcase with Lovable
+            </ExtLink>
+          </p>
+        </section>
+
+        <Separator />
+
         <section className="space-y-4 pb-4">
           <h2 className="text-xl font-display">Source Code</h2>
           <p className="text-muted-foreground leading-relaxed">
