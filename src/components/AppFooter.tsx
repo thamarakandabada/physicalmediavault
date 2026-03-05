@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import tkLogo from "@/assets/tk-logo.png";
 import { Github } from "lucide-react";
 
@@ -40,17 +41,26 @@ export function AppFooter() {
       </div>
       <div className="border-t border-border" />
       <div className="container py-6">
-        <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-          <Github className="w-3.5 h-3.5" />
-          <span>Open source —</span>
-          <a
-            href={GITHUB_REPO}
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <Github className="w-3.5 h-3.5" />
+            <span>Open source —</span>
+            <a
+              href={GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors underline underline-offset-2"
+            >
+              clone it, make it yours
+            </a>
+          </div>
+          <span className="text-border">·</span>
+          <Link
+            to="/colophon"
             className="hover:text-primary transition-colors underline underline-offset-2"
           >
-            clone it, make it yours
-          </a>
+            Colophon
+          </Link>
         </div>
       </div>
     </footer>
