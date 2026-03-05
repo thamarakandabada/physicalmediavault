@@ -14,6 +14,7 @@ import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
 import Manage from "./pages/Manage";
 import NotFound from "./pages/NotFound";
+import Colophon from "./pages/Colophon";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
                 <Route path="/stats" element={<Stats />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/manage" element={<Manage />} />
+                <Route path="/colophon" element={<Colophon />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
