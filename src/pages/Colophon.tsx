@@ -39,10 +39,10 @@ function ExtLink({ href, children }: { href: string; children: React.ReactNode }
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1"
+      className="text-primary hover:text-primary/80 transition-colors"
     >
       {children}
-      <ExternalLink className="w-3 h-3" />
+      <ExternalLink className="w-3 h-3 inline-block ml-1 align-baseline" />
     </a>
   );
 }
