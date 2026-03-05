@@ -316,8 +316,8 @@ const Stats = () => {
   return (
     <>
         <PageMeta
-          title="Collection Stats — Physical Media Vault"
-          description="Statistics and breakdowns of Thamara's physical media collection by format, publisher, region, and more."
+          title="Thamara's Physical Media Vault - Stats"
+          description="Collection statistics and breakdown."
           path="/stats"
         />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">

@@ -14,8 +14,8 @@ const Criterion = () => {
   return (
     <>
         <PageMeta
-          title="Criterion Collection — Physical Media Vault"
-          description="Criterion Collection titles sorted by spine number from Thamara's physical media collection."
+          title="Thamara's Physical Media Vault - Criterion Collection"
+          description="Index of currently owned Criterion titles, sorted by spine number."
           path="/criterion"
         />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
