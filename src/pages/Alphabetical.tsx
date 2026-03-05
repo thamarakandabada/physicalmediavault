@@ -35,8 +35,8 @@ const Alphabetical = () => {
   return (
     <div>
         <PageMeta
-          title="Alphabetical Index — Physical Media Vault"
-          description="Browse Thamara's physical media collection alphabetically. Criterion titles sorted by spine number."
+          title="Thamara's Physical Media Vault - Index"
+          description="Alphabetical index of currently owned titles."
           path="/alphabetical"
         />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">

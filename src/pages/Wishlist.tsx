@@ -130,8 +130,8 @@ const Wishlist = () => {
   return (
     <>
         <PageMeta
-          title="Wishlist — Physical Media Vault"
-          description="Titles Thamara wants to pick up next for the physical media collection."
+          title="Thamara's Physical Media Vault - Wishlist"
+          description="Titles I want to pick up in the near future."
           path="/wishlist"
         />
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
