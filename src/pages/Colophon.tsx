@@ -164,7 +164,7 @@ const Colophon = () => {
             {STACK_ITEMS.map((item) => (
               <div
                 key={item.name}
-                className="flex items-baseline justify-between bg-card border border-border rounded-md px-4 py-3"
+                className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-4 bg-card border border-border rounded-md px-4 py-3"
               >
                 <ExtLink href={item.url}>{item.name}</ExtLink>
                 <span className="text-xs text-muted-foreground">{item.desc}</span>
