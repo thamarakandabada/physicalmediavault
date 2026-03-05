@@ -9,7 +9,7 @@ const SITE_LINKS = [
   { label: "Contact", href: "https://thamara.co.uk/contact/" },
 ];
 
-const GITHUB_REPO = "https://github.com/thamarakandabada/physical-media-vault";
+const GITHUB_REPO = "https://github.com/thamarakandabada/physicalmediavault";
 
 export function AppFooter() {
   return (
