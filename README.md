@@ -36,6 +36,10 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 
 ![Alphabetical View](docs/screenshots/alphabetical.png)
 
+## Blog Post
+
+📝 [Building a Physical Media Showcase with Lovable](https://thamara.co.uk/building-a-physical-media-showcase-with-lovable/)
+
 ## Features
 
 - 📀 Track your physical media collection with rich metadata (director, year, audio, HDR, region, etc.)
