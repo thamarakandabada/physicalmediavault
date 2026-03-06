@@ -54,6 +54,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         title: editTitle.title,
         year: editTitle.year?.toString() ?? "",
         director: editTitle.director ?? "",
+        runtime: (editTitle as any).runtime?.toString() ?? "",
         spine_number: editTitle.spine_number?.toString() ?? "",
         video_quality: editTitle.video_quality ?? "",
         hdr_type: editTitle.hdr_type ?? "",
