@@ -216,9 +216,15 @@ serve(async (req) => {
       const directorMatch = html.match(/Director:\s*<a[^>]*>([^<]+)<\/a>/);
       const director = directorMatch ? directorMatch[1].trim() : '';
 
-      // Runtime (in minutes)
-      const runtimeMatch = html.match(/(\d+)\s*min/i);
-      const runtime = runtimeMatch ? parseInt(runtimeMatch[1]) : null;
+      // Runtime (in minutes) — handles "1hr 20min", "1 hr 20 min", "80 min", etc.
+      let runtime: number | null = null;
+      const hrMinMatch = html.match(/(\d+)\s*hr\s*(\d+)\s*min/i);
+      if (hrMinMatch) {
+        runtime = parseInt(hrMinMatch[1]) * 60 + parseInt(hrMinMatch[2]);
+      } else {
+        const minMatch = html.match(/(\d+)\s*min/i);
+        if (minMatch) runtime = parseInt(minMatch[1]);
+      }
 
       const result = {
         title, year, publisher,
