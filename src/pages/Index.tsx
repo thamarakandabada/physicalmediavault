@@ -34,6 +34,20 @@ const Index = () => {
   const [sortBy, setSortBy] = useState<SortOption>("title-asc");
   const [perPage, setPerPage] = useState<number>(30);
   const [currentPage, setCurrentPage] = useState(1);
+  const [backfilling, setBackfilling] = useState(false);
+
+  const handleBackfillRuntime = async () => {
+    setBackfilling(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('backfill-runtime');
+      if (error) throw error;
+      toast.success(`Backfill complete: ${data.updated} updated, ${data.failed} failed out of ${data.total}`);
+    } catch {
+      toast.error("Backfill failed");
+    } finally {
+      setBackfilling(false);
+    }
+  };
   // Derive unique filter options from the data
   const filterOptions = useMemo(() => {
     const publishers = new Set<string>();
