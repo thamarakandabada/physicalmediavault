@@ -144,7 +144,7 @@ const Index = () => {
       />
         {/* Hero */}
         <div className="text-center mb-10">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2 group cursor-default inline-flex items-center justify-center w-full gap-2">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2 group cursor-default inline-flex items-start md:items-center justify-center w-full gap-2">
             <Disc3 className="w-8 h-8 md:w-10 md:h-10 shrink-0 text-gold transition-transform duration-700 group-hover:animate-spin" />
             <span>Physical Media <span className="text-gold">Vault</span></span>
           </h1>
