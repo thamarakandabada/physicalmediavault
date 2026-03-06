@@ -8,9 +8,10 @@ import { TitleFormDialog } from "@/components/TitleFormDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Disc3, SlidersHorizontal, X, Download, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, Disc3, SlidersHorizontal, X, Download, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { sortableTitle } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 type SortOption = "title-asc" | "title-desc" | "year-asc" | "year-desc" | "newest" | "oldest";
 
