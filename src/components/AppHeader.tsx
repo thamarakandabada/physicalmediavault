@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { path: "/criterion", label: "Criterion" },
   { path: "/stats", label: "Stats" },
   { path: "/wishlist", label: "Wishlist" },
+  { path: "/oracle", label: "Oracle", icon: true },
 ];
 
 export function AppHeader() {
