@@ -6,13 +6,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+const BATCH_SIZE = 20;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Authenticate the caller
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -42,30 +43,41 @@ serve(async (req) => {
       });
     }
 
-    // Use service role to update titles
     const adminClient = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
 
-    // Get all non-TV titles without runtime that belong to this user
+    // Count total remaining
+    const { count: totalRemaining, error: countError } = await adminClient
+      .from('titles')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .neq('media_type', 'TV')
+      .is('runtime', null);
+
+    if (countError) throw countError;
+
+    // Fetch only a batch
     const { data: titles, error: fetchError } = await adminClient
       .from('titles')
       .select('id, title, year, director')
       .eq('user_id', user.id)
       .neq('media_type', 'TV')
-      .is('runtime', null);
+      .is('runtime', null)
+      .order('title', { ascending: true })
+      .limit(BATCH_SIZE);
 
     if (fetchError) throw fetchError;
 
-    console.log(`Found ${titles?.length ?? 0} titles to backfill`);
+    const batchCount = titles?.length ?? 0;
+    console.log(`Processing batch of ${batchCount} (${totalRemaining ?? 0} total remaining)`);
 
     let updated = 0;
     let failed = 0;
 
     for (const title of (titles ?? [])) {
       try {
-        // Search blu-ray.com for this title
         const searchTerm = `${title.title} ${title.year ?? ''}`.trim();
         const searchUrl = `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_country=US&quicksearch_keyword=${encodeURIComponent(searchTerm)}&section=bluraymovies`;
 
@@ -95,7 +107,6 @@ serve(async (req) => {
 
         const detailUrl = hoverMatch[1].startsWith('http') ? hoverMatch[1] : `https://www.blu-ray.com${hoverMatch[1]}`;
 
-        // Scrape detail page for runtime
         const detailResp = await fetch('https://api.firecrawl.dev/v1/scrape', {
           method: 'POST',
           headers: {
@@ -114,7 +125,6 @@ serve(async (req) => {
 
         const detailHtml = detailData.data?.html || '';
         
-        // Parse runtime — handles "1hr 20min", "1 hr 20 min", "80 min", etc.
         let runtime: number | null = null;
         const hrMinMatch = detailHtml.match(/(\d+)\s*hr\s*(\d+)\s*min/i);
         if (hrMinMatch) {
@@ -142,7 +152,6 @@ serve(async (req) => {
           failed++;
         }
 
-        // Rate limit: wait between requests
         await new Promise((r) => setTimeout(r, 1500));
       } catch (err) {
         console.error(`Error processing "${title.title}":`, err);
@@ -150,11 +159,15 @@ serve(async (req) => {
       }
     }
 
+    const remaining = (totalRemaining ?? 0) - updated;
+
     return new Response(JSON.stringify({
       success: true,
-      total: titles?.length ?? 0,
+      batch: batchCount,
       updated,
       failed,
+      remaining: Math.max(0, remaining),
+      done: remaining <= 0,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
