@@ -113,10 +113,18 @@ serve(async (req) => {
         }
 
         const detailHtml = detailData.data?.html || '';
-        const runtimeMatch = detailHtml.match(/(\d+)\s*min/i);
+        
+        // Parse runtime — handles "1hr 20min", "1 hr 20 min", "80 min", etc.
+        let runtime: number | null = null;
+        const hrMinMatch = detailHtml.match(/(\d+)\s*hr\s*(\d+)\s*min/i);
+        if (hrMinMatch) {
+          runtime = parseInt(hrMinMatch[1]) * 60 + parseInt(hrMinMatch[2]);
+        } else {
+          const minMatch = detailHtml.match(/(\d+)\s*min/i);
+          if (minMatch) runtime = parseInt(minMatch[1]);
+        }
 
-        if (runtimeMatch) {
-          const runtime = parseInt(runtimeMatch[1]);
+        if (runtime) {
           const { error: updateError } = await adminClient
             .from('titles')
             .update({ runtime })
