@@ -231,6 +231,14 @@ Click tiles with "Collection" badges to expand nested titles.</p>
                 <Download className="w-4 h-4" />
               </Button>
               <Button
+            variant="outline"
+            size="icon"
+            onClick={handleBackfillRuntime}
+            disabled={backfilling}
+            title="Backfill runtime data from blu-ray.com">
+                <RefreshCw className={`w-4 h-4 ${backfilling ? 'animate-spin' : ''}`} />
+              </Button>
+              <Button
             onClick={() => {setEditTitle(null);setParentId(null);setFormOpen(true);}}
             className="shrink-0">
             
