@@ -23,6 +23,7 @@ const EMPTY_FORM = {
   title: "",
   year: "",
   director: "",
+  runtime: "",
   spine_number: "",
   video_quality: "",
   hdr_type: "",
@@ -53,6 +54,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         title: editTitle.title,
         year: editTitle.year?.toString() ?? "",
         director: editTitle.director ?? "",
+        runtime: (editTitle as any).runtime?.toString() ?? "",
         spine_number: editTitle.spine_number?.toString() ?? "",
         video_quality: editTitle.video_quality ?? "",
         hdr_type: editTitle.hdr_type ?? "",
@@ -91,6 +93,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           title: detail.title || "",
           year: detail.year?.toString() ?? "",
           director: detail.director ?? "",
+          runtime: detail.runtime?.toString() ?? "",
           spine_number: "",
           video_quality: detail.video_quality ?? "",
           hdr_type: detail.hdr_type ?? "",
@@ -150,6 +153,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           title: detail.title || result.title,
           year: detail.year?.toString() ?? result.year ?? "",
           director: detail.director ?? "",
+          runtime: detail.runtime?.toString() ?? "",
           spine_number: "",
           video_quality: detail.video_quality ?? "",
           hdr_type: detail.hdr_type ?? "",
@@ -197,6 +201,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
       title: form.title.trim(),
       year: form.year ? parseInt(form.year) : null,
       director: form.director || null,
+      runtime: form.runtime ? parseInt(form.runtime) : null,
       spine_number: form.spine_number ? parseInt(form.spine_number) : null,
       video_quality: form.video_quality || null,
       hdr_type: form.hdr_type || null,
@@ -314,6 +319,10 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
             <div>
               <Label>Director(s)</Label>
               <Input value={form.director} onChange={(e) => set("director", e.target.value)} placeholder="e.g. Joel Coen, Ethan Coen" />
+            </div>
+            <div>
+              <Label>Runtime (min)</Label>
+              <Input value={form.runtime} onChange={(e) => set("runtime", e.target.value)} placeholder="148" type="number" />
             </div>
             <div>
               <Label>Type</Label>

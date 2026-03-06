@@ -27,6 +27,7 @@ export type Database = {
           parent_id: string | null
           publisher: string | null
           region: string | null
+          runtime: number | null
           sort_order: number | null
           spine_number: number | null
           title: string
@@ -47,6 +48,7 @@ export type Database = {
           parent_id?: string | null
           publisher?: string | null
           region?: string | null
+          runtime?: number | null
           sort_order?: number | null
           spine_number?: number | null
           title: string
@@ -67,6 +69,7 @@ export type Database = {
           parent_id?: string | null
           publisher?: string | null
           region?: string | null
+          runtime?: number | null
           sort_order?: number | null
           spine_number?: number | null
           title?: string

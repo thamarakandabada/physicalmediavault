@@ -19,6 +19,7 @@ export type BlurayDetail = {
   package_type: string;
   region: string;
   media_type: string;
+  runtime: number | null;
 };
 
 export async function searchBluray(keyword: string, country: string = 'US'): Promise<BluraySearchResult[]> {

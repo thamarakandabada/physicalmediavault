@@ -1,0 +1,1 @@
+ALTER TABLE public.titles ADD COLUMN runtime integer NULL;
