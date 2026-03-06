@@ -27,17 +27,18 @@ export function AppHeader() {
             <span className="font-display text-base sm:text-xl font-bold hidden sm:inline">Physical Media Vault</span>
           </Link>
           <nav className="flex items-center gap-0.5 sm:gap-1">
-            {NAV_ITEMS.map((item) => (
+              {NAV_ITEMS.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap",
+                  "px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap inline-flex items-center gap-1",
                   location.pathname === item.path
                     ? "bg-secondary text-gold"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
+                {"icon" in item && <Sparkles className="w-3 h-3" />}
                 {item.label}
               </Link>
             ))}
