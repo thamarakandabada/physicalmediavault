@@ -23,6 +23,7 @@ const EMPTY_FORM = {
   title: "",
   year: "",
   director: "",
+  runtime: "",
   spine_number: "",
   video_quality: "",
   hdr_type: "",
