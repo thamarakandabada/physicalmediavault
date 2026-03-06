@@ -144,7 +144,8 @@ const Index = () => {
       />
         {/* Hero */}
         <div className="text-center mb-10">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2 group cursor-default">
+            <Disc3 className="w-8 h-8 md:w-10 md:h-10 inline-block align-middle mr-2 text-gold transition-transform duration-700 group-hover:animate-spin" />
             Physical Media <span className="text-gold">Vault</span>
           </h1>
           <p className="text-muted-foreground text-base max-w-lg mx-auto">A showcase for my small but growing physical media collection. Includes both films and TV.
