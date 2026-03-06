@@ -321,6 +321,10 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
               <Input value={form.director} onChange={(e) => set("director", e.target.value)} placeholder="e.g. Joel Coen, Ethan Coen" />
             </div>
             <div>
+              <Label>Runtime (min)</Label>
+              <Input value={form.runtime} onChange={(e) => set("runtime", e.target.value)} placeholder="148" type="number" />
+            </div>
+            <div>
               <Label>Type</Label>
               <Select value={form.media_type} onValueChange={(v) => set("media_type", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>

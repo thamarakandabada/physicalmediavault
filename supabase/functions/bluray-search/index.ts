@@ -216,6 +216,10 @@ serve(async (req) => {
       const directorMatch = html.match(/Director:\s*<a[^>]*>([^<]+)<\/a>/);
       const director = directorMatch ? directorMatch[1].trim() : '';
 
+      // Runtime (in minutes)
+      const runtimeMatch = html.match(/(\d+)\s*min/i);
+      const runtime = runtimeMatch ? parseInt(runtimeMatch[1]) : null;
+
       const result = {
         title, year, publisher,
         video_quality: videoQuality,
@@ -225,6 +229,7 @@ serve(async (req) => {
         region,
         media_type: 'Film',
         director,
+        runtime,
       };
 
       return new Response(JSON.stringify({ success: true, data: result }), {

@@ -125,6 +125,12 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
                     {child.year && <span>{child.year}</span>}
                     {child.year && child.director && <span>·</span>}
                     {child.director && <span>{child.director}</span>}
+                    {(child as any).runtime && (
+                      <>
+                        <span>·</span>
+                        <span>{(child as any).runtime} min</span>
+                      </>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-3 mt-2">
                     <MetadataTag label="Video" value={child.video_quality} />
