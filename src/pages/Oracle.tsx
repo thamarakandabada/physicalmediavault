@@ -106,14 +106,12 @@ const Oracle = () => {
 
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2 inline-flex items-center justify-center w-full gap-3">
-            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-gold" />
-            <span>
-              Consult <span className="text-gold">The Oracle</span>
-            </span>
+        <div className="mb-8">
+          <h1 className="font-display text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-gold" />
+            Consult <span className="text-gold">The Oracle</span>
           </h1>
-          <p className="text-muted-foreground text-base max-w-md mx-auto">
+          <p className="text-muted-foreground">
             Can't decide what to watch? Let fate choose for you.
           </p>
         </div>
