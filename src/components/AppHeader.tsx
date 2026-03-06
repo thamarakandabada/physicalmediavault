@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import tkLogo from "@/assets/tk-logo.png";
 
