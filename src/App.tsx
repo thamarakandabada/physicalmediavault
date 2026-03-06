@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Manage from "./pages/Manage";
 import NotFound from "./pages/NotFound";
 import Colophon from "./pages/Colophon";
+import Oracle from "./pages/Oracle";
 
 const queryClient = new QueryClient();
 
