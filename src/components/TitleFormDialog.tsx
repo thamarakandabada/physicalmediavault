@@ -201,6 +201,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
       title: form.title.trim(),
       year: form.year ? parseInt(form.year) : null,
       director: form.director || null,
+      runtime: form.runtime ? parseInt(form.runtime) : null,
       spine_number: form.spine_number ? parseInt(form.spine_number) : null,
       video_quality: form.video_quality || null,
       hdr_type: form.hdr_type || null,
