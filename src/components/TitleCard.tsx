@@ -57,6 +57,12 @@ export function TitleCard({ title, isOwner, onEdit, onDelete }: TitleCardProps) 
               {title.year && <span>{title.year}</span>}
               {title.year && title.director && <span>·</span>}
               {title.director && <span className="truncate">{title.director}</span>}
+              {(title as any).runtime && (
+                <>
+                  <span>·</span>
+                  <span>{(title as any).runtime} min</span>
+                </>
+              )}
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-1.5 mt-2.5">
