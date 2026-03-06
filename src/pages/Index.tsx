@@ -152,16 +152,16 @@ const Index = () => {
 
 
 Click tiles with "Collection" badges to expand nested titles.</p>
-          <div className="flex items-center justify-center gap-6 mt-5 text-sm text-muted-foreground flex-wrap">
-            <span className="flex items-center gap-1.5"><Disc3 className="w-4 h-4 text-gold" />{totalTitles} titles</span>
-            <span className="text-border">•</span>
-            <span>{filmCount} {filmCount === 1 ? "film" : "films"}</span>
-            <span className="text-border">•</span>
-            <span>{docCount} {docCount === 1 ? "doc" : "docs"}</span>
-            <span className="text-border">•</span>
-            <span>{concertCount} {concertCount === 1 ? "concert" : "concerts"}</span>
-            <span className="text-border">•</span>
-            <span>{tvCount} TV</span>
+          <div className="flex items-center justify-center gap-6 mt-5 text-sm flex-wrap">
+            <span className="text-muted-foreground">{totalTitles} titles</span>
+            <span className="text-border opacity-50">•</span>
+            <span className="text-muted-foreground/60">{filmCount} {filmCount === 1 ? "film" : "films"}</span>
+            <span className="text-border opacity-50">•</span>
+            <span className="text-muted-foreground/60">{docCount} {docCount === 1 ? "doc" : "docs"}</span>
+            <span className="text-border opacity-50">•</span>
+            <span className="text-muted-foreground/60">{concertCount} {concertCount === 1 ? "concert" : "concerts"}</span>
+            <span className="text-border opacity-50">•</span>
+            <span className="text-muted-foreground/60">{tvCount} TV</span>
           </div>
         </div>
 
