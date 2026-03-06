@@ -104,15 +104,15 @@ const Oracle = () => {
         path="/oracle"
       />
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto pt-16">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="font-display text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+        <div className="mb-8 text-center">
+          <h1 className="font-display text-3xl font-bold text-foreground mb-2 flex items-center justify-center gap-2">
             <Sparkles className="w-6 h-6 text-gold" />
             Consult <span className="text-gold">The Oracle</span>
           </h1>
           <p className="text-muted-foreground">
-            Can't decide what to watch? Let fate choose for you.
+            I can't decide what to watch. Choose for me.
           </p>
         </div>
 
