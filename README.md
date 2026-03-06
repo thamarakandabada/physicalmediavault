@@ -36,6 +36,10 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 
 ![Alphabetical View](docs/screenshots/alphabetical.png)
 
+### The Oracle
+
+![The Oracle](docs/screenshots/oracle.png)
+
 ## Blog Post
 
 📝 [Building a Physical Media Showcase with Lovable](https://thamara.co.uk/building-a-physical-media-showcase-with-lovable/)
@@ -46,6 +50,7 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 - 🔍 Search and browse by title, alphabetically, or by Criterion spine number
 - 📊 Collection statistics and breakdowns
 - 🎯 Wishlist management with URL scraping
+- 🔮 The Oracle — a random film picker to cure decision paralysis
 - 🖼️ Cover art via Blu-ray.com API integration
 - 🔐 Per-user authentication and row-level security
 
