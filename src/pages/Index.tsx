@@ -418,7 +418,7 @@ Click tiles with "Collection" badges to expand nested titles.</p>
             size="icon"
             className="h-8 w-8"
             disabled={currentPage >= totalPages}
-            onClick={() => setCurrentPage((p) => p + 1)}>
+            onClick={() => { setCurrentPage((p) => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             
                 <ChevronRight className="w-4 h-4" />
               </Button>
