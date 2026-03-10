@@ -47,6 +47,23 @@
         <div style="margin-top:2rem;width:20px;height:20px;border:2px solid hsl(145 100% 44%);border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;"></div>
       </div>
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+      <script>
+        (function(){
+          var q=[
+            {t:"Even the smallest person can change the course of the future.",a:"Galadriel"},
+            {t:"All we have to decide is what to do with the time that is given us.",a:"Gandalf"},
+            {t:"There is some good in this world, and it's worth fighting for.",a:"Samwise Gamgee"},
+            {t:"Not all those who wander are lost.",a:"J.R.R. Tolkien"},
+            {t:"Deeds will not be less valiant because they are unpraised.",a:"Aragorn"},
+            {t:"It is no bad thing to celebrate a simple life.",a:"Bilbo Baggins"},
+            {t:"Faithless is he that says farewell when the road darkens.",a:"Gimli"},
+            {t:"The world is indeed full of peril, and in it there are many dark places; but still there is much that is fair.",a:"Haldir"}
+          ];
+          var pick=q[Math.floor(Math.random()*q.length)];
+          document.getElementById('splash-quote').textContent='\u201C'+pick.t+'\u201D';
+          document.getElementById('splash-attr').textContent='\u2014 '+pick.a;
+        })();
+      </script>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
