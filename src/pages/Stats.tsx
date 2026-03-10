@@ -352,7 +352,65 @@ const Stats = () => {
 
             {/* Decade chart */}
             {stats.decades.length > 0 && (
-              <DecadeChart data={stats.decades} />
+              <div className="space-y-4">
+                <DecadeChart data={stats.decades} />
+                {(stats.oldest || stats.newest) && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    {stats.oldest && (
+                      <div className="bg-card border border-border rounded-lg p-5 flex items-start gap-3">
+                        <Calendar className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Oldest Title</span>
+                          <p className="text-foreground font-display text-lg leading-tight mt-1">{stats.oldest.title}</p>
+                          <span className="text-sm text-muted-foreground">{stats.oldest.year}</span>
+                        </div>
+                      </div>
+                    )}
+                    {stats.newest && (
+                      <div className="bg-card border border-border rounded-lg p-5 flex items-start gap-3">
+                        <Calendar className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Newest Title</span>
+                          <p className="text-foreground font-display text-lg leading-tight mt-1">{stats.newest.title}</p>
+                          <span className="text-sm text-muted-foreground">{stats.newest.year}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Runtime extremes */}
+            {(stats.longest || stats.shortest) && (
+              <div className="bg-card border border-border rounded-lg p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Clock className="w-4 h-4 text-gold" />
+                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Runtime Extremes</h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {stats.longest && (
+                    <div>
+                      <span className="text-xs text-muted-foreground uppercase tracking-wider">Longest</span>
+                      <p className="text-foreground font-display text-lg leading-tight mt-1">{stats.longest.title}</p>
+                      <span className="text-sm text-muted-foreground">
+                        {Math.floor(stats.longest.runtime! / 60)}h {stats.longest.runtime! % 60}m ({stats.longest.runtime} min)
+                      </span>
+                    </div>
+                  )}
+                  {stats.shortest && (
+                    <div>
+                      <span className="text-xs text-muted-foreground uppercase tracking-wider">Shortest</span>
+                      <p className="text-foreground font-display text-lg leading-tight mt-1">{stats.shortest.title}</p>
+                      <span className="text-sm text-muted-foreground">
+                        {stats.shortest.runtime! >= 60
+                          ? `${Math.floor(stats.shortest.runtime! / 60)}h ${stats.shortest.runtime! % 60}m (${stats.shortest.runtime} min)`
+                          : `${stats.shortest.runtime} min`}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
 
             {/* Director tiles */}
