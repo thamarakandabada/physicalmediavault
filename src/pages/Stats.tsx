@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 import { PageMeta } from "@/components/PageMeta";
 
-import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3 } from "lucide-react";
+import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
 import { RegionIcon } from "@/components/RegionIcon";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
