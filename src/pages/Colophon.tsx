@@ -89,17 +89,22 @@ const Colophon = () => {
         <section className="space-y-4">
           <h2 className="text-xl font-display">Typography</h2>
           <p className="text-muted-foreground leading-relaxed">
-            The entire interface is set in{" "}
-            <ExtLink href="https://fonts.adobe.com/fonts/rig-sans">Rig Sans</ExtLink>,
-            a geometric sans-serif from{" "}
-            <ExtLink href="https://fonts.adobe.com">Adobe Fonts</ExtLink>.
-            Headings use weight 700; body text uses the regular weight. The font's clean geometry
-            complements the grid-based card layouts without competing with cover imagery.
+            The interface pairs two typefaces from{" "}
+            <ExtLink href="https://fonts.adobe.com">Adobe Fonts</ExtLink>:{" "}
+            <ExtLink href="https://fonts.adobe.com/fonts/rig-sans">Rig Sans</ExtLink>{" "}
+            for all UI text and headings, and{" "}
+            <ExtLink href="https://fonts.adobe.com/fonts/big-caslon">Big Caslon</ExtLink>{" "}
+            in italics for the loading screen quote. Rig Sans's clean geometry complements the
+            grid-based card layouts, while Big Caslon adds a cinematic, literary quality to the
+            initial experience.
           </p>
           <div className="bg-card border border-border rounded-lg p-6 space-y-3">
-            <p className="font-display text-2xl">The quick brown fox — 700</p>
-            <p className="text-lg">The quick brown fox jumps over the lazy dog — 400</p>
-            <p className="text-sm text-muted-foreground font-mono">font-family: 'rig-sans', system-ui, sans-serif</p>
+            <p className="font-display text-2xl">The quick brown fox — Rig Sans 700</p>
+            <p className="text-lg">The quick brown fox jumps over the lazy dog — Rig Sans 400</p>
+            <p style={{ fontFamily: "'big-caslon-fb', Georgia, serif", fontStyle: "italic" }} className="text-xl text-muted-foreground">
+              "The quick brown fox" — Big Caslon Italic
+            </p>
+            <p className="text-sm text-muted-foreground font-mono">font-family: 'rig-sans' / 'big-caslon-fb'</p>
           </div>
         </section>
 
