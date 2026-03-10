@@ -297,6 +297,14 @@ const Stats = () => {
       )
     ).size;
 
+    const withYear = leafTitles.filter((t) => t.year != null);
+    const oldest = withYear.length ? withYear.reduce((a, b) => (a.year! < b.year! ? a : b)) : null;
+    const newest = withYear.length ? withYear.reduce((a, b) => (a.year! > b.year! ? a : b)) : null;
+
+    const withRuntime = leafTitles.filter((t) => t.runtime != null && t.runtime > 0);
+    const longest = withRuntime.length ? withRuntime.reduce((a, b) => (a.runtime! > b.runtime! ? a : b)) : null;
+    const shortest = withRuntime.length ? withRuntime.reduce((a, b) => (a.runtime! < b.runtime! ? a : b)) : null;
+
     return {
       totalDiscs,
       totalCollections,
@@ -310,6 +318,10 @@ const Stats = () => {
       mediaTypes,
       hdrTypes,
       decades,
+      oldest,
+      newest,
+      longest,
+      shortest,
     };
   }, [allTitles]);
 
