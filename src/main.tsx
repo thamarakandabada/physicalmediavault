@@ -5,7 +5,7 @@ import "./index.css";
 const root = createRoot(document.getElementById("root")!);
 
 // Show splash for at least 2.5s so users can read the quote
-const minDelay = new Promise((r) => setTimeout(r, 2500));
+const minDelay = new Promise((r) => setTimeout(r, 3500));
 
 minDelay.then(() => {
   const splash = document.getElementById("splash");
