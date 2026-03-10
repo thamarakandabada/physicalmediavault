@@ -27,7 +27,31 @@
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/QTgeDjrlX4UxA7ZtVBE2FIR2HJr2/social-images/social-1772577228174-Untitled.008.webp" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="splash" style="
+        min-height:100vh;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        background:#111827;
+        color:#d1d5db;
+        font-family:'rig-sans',system-ui,sans-serif;
+        padding:2rem;
+        text-align:center;
+        opacity:1;
+        transition:opacity .4s ease-out;
+      ">
+        <p style="font-size:1.15rem;max-width:28rem;line-height:1.7;font-style:italic;color:#9ca3af;">
+          "Even the smallest person can change the course of the future."
+        </p>
+        <p style="margin-top:.75rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:#16a34a;">
+          — Galadriel
+        </p>
+        <div style="margin-top:2rem;width:24px;height:24px;border:2px solid #16a34a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;"></div>
+      </div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
