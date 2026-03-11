@@ -425,10 +425,10 @@ const Stats = () => {
             <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} hdrData={stats.hdrTypes} />
 
             {/* Publisher Sankey */}
-            <PublisherSankey titles={allTitles || []} />
+            <PublisherSankey titles={stats.leafTitles} />
 
             {/* Region Map */}
-            <RegionMap titles={allTitles || []} />
+            <RegionMap titles={stats.leafTitles} />
 
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
