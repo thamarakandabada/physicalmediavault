@@ -50,6 +50,21 @@ function SankeyLink({ sourceX, sourceY, sourceControlX, targetX, targetY, target
 }
 
 export function PublisherSankey({ titles }: { titles: Title[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(900);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setWidth(entry.contentRect.width);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const sankeyData = useMemo(() => {
     const pairs: Record<string, number> = {};
     titles.forEach((t) => {
@@ -59,19 +74,12 @@ export function PublisherSankey({ titles }: { titles: Title[] }) {
       }
     });
 
-    const publisherSet = new Set<string>();
-    const mediaSet = new Set<string>();
-    Object.keys(pairs).forEach((k) => {
-      const [pub, media] = k.split("|||");
-      publisherSet.add(pub);
-      mediaSet.add(media);
-    });
-
-    // Limit to top publishers by total count
     const pubCounts: Record<string, number> = {};
+    const mediaSet = new Set<string>();
     Object.entries(pairs).forEach(([k, v]) => {
-      const pub = k.split("|||")[0];
+      const [pub, media] = k.split("|||");
       pubCounts[pub] = (pubCounts[pub] || 0) + v;
+      mediaSet.add(media);
     });
     const topPubs = Object.entries(pubCounts)
       .sort((a, b) => b[1] - a[1])
@@ -109,21 +117,6 @@ export function PublisherSankey({ titles }: { titles: Title[] }) {
       </div>
     );
   }
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(900);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setWidth(entry.contentRect.width);
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   return (
     <div className="bg-card border border-border rounded-lg p-5">
