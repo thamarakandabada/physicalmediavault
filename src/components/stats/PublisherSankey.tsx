@@ -110,15 +110,30 @@ export function PublisherSankey({ titles }: { titles: Title[] }) {
     );
   }
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(900);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setWidth(entry.contentRect.width);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div className="bg-card border border-border rounded-lg p-5">
       <div className="flex items-center gap-2 mb-4">
         <Building2 className="w-4 h-4 text-gold" />
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Publisher → Media Type</h3>
       </div>
-      <div className="h-[400px] w-full overflow-hidden">
+      <div ref={containerRef} className="h-[400px] w-full overflow-hidden">
         <Sankey
-          width={900}
+          width={width}
           height={380}
           data={sankeyData}
           node={<SankeyNode />}
