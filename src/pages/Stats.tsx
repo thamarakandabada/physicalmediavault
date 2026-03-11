@@ -308,6 +308,7 @@ const Stats = () => {
     const shortest = withRuntime.length ? withRuntime.reduce((a, b) => (a.runtime! < b.runtime! ? a : b)) : null;
 
     return {
+      leafTitles,
       totalDiscs,
       totalCollections,
       uniqueDirectors,
