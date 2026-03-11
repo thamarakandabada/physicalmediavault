@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 import { PageMeta } from "@/components/PageMeta";
 
-import { Film, Monitor, Volume2, Package, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
-import { PublisherSankey } from "@/components/stats/PublisherSankey";
-import { RegionMap } from "@/components/stats/RegionMap";
+import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
 import { RegionIcon } from "@/components/RegionIcon";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -308,7 +306,6 @@ const Stats = () => {
     const shortest = withRuntime.length ? withRuntime.reduce((a, b) => (a.runtime! < b.runtime! ? a : b)) : null;
 
     return {
-      leafTitles,
       totalDiscs,
       totalCollections,
       uniqueDirectors,
@@ -424,15 +421,11 @@ const Stats = () => {
             {/* Video & Audio combined */}
             <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} hdrData={stats.hdrTypes} />
 
-            {/* Publisher Sankey */}
-            <PublisherSankey titles={stats.leafTitles} />
-
-            {/* Region Map */}
-            <RegionMap titles={stats.leafTitles} />
-
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
+              <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
+              <StatCard title="Disc Region" icon={MapPin} items={stats.regions} renderItemIcon={(label) => <RegionIcon region={label} />} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
           </div>
