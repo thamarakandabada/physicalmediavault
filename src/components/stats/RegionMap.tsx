@@ -126,20 +126,11 @@ export function RegionMap({ titles }: { titles: Title[] }) {
       </div>
 
       {/* Legend */}
-      <div className="mt-4 space-y-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 px-1">
         {regionBreakdown.map((item) => (
-          <div key={item.label} className="flex items-center gap-2 sm:gap-3">
-            <span className="text-sm text-foreground w-24 sm:w-28 shrink-0 truncate">{item.label}</span>
-            <div className="flex-1 min-w-0 h-2 rounded-full bg-secondary overflow-hidden">
-              <div
-                className="h-full rounded-full bg-primary/70 transition-all duration-500"
-                style={{ width: `${item.percent}%` }}
-              />
-            </div>
-            <span className="text-xs text-muted-foreground shrink-0 text-right tabular-nums whitespace-nowrap">
-              {item.count} ({item.percent}%)
-            </span>
-          </div>
+          <span key={item.label} className="text-xs text-muted-foreground whitespace-nowrap">
+            <span className="text-foreground">{item.label}</span> {item.count} ({item.percent}%)
+          </span>
         ))}
       </div>
     </div>
