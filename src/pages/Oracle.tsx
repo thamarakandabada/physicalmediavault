@@ -21,30 +21,22 @@ const Oracle = () => {
   const [phase, setPhase] = useState<"idle" | "shuffling" | "revealed">("idle");
   const [shuffleTitle, setShuffleTitle] = useState<Title | null>(null);
 
-  // Build eligible pool: films + children of film collections, exclude TV/docs/concerts
+  // Build eligible pool: all leaf titles except TV
   const eligible = useMemo(() => {
     if (!allTitles) return [];
-    const films: Title[] = [];
 
-    for (const t of allTitles) {
-      // Include standalone films
-      if (t.media_type === "Film" && !t.parent_id) {
-        films.push(t);
-      }
-      // Include children of film collections (individual films inside a collection)
-      if (t.parent_id) {
-        const parent = allTitles.find((p) => p.id === t.parent_id);
-        if (parent?.media_type === "Film Collection") {
-          films.push(t);
-        }
-      }
-    }
+    // IDs that are parents of other titles (i.e. collection records)
+    const parentIds = new Set(
+      allTitles.filter((t) => t.parent_id).map((t) => t.parent_id!)
+    );
 
-    return films.filter((t) => {
-      if (fourKOnly && t.video_quality !== "4K") return false;
-      if (t.runtime && t.runtime > maxRuntime) return false;
-      return true;
-    });
+    return allTitles
+      .filter((t) => !parentIds.has(t.id) && t.media_type !== "TV")
+      .filter((t) => {
+        if (fourKOnly && t.video_quality !== "4K") return false;
+        if (t.runtime && t.runtime > maxRuntime) return false;
+        return true;
+      });
   }, [allTitles, maxRuntime, fourKOnly]);
 
   const pickRandom = useCallback(
