@@ -182,9 +182,16 @@ const Colophon = () => {
 
         {/* Source */}
         <section className="space-y-4">
-          <h2 className="text-xl font-display">Blog Post</h2>
+          <h2 className="text-xl font-display">Built with Lovable</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Read about how this project was built:{" "}
+            This project was built entirely with{" "}
+            <ExtLink href="https://lovable.dev">Lovable</ExtLink> — an AI-powered
+            full-stack development platform. From the UI components and database schema
+            to edge functions and authentication, every part of Physical Media Vault was
+            created through natural-language prompts in Lovable's collaborative editor.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            Read the full write-up:{" "}
             <ExtLink href="https://thamara.co.uk/building-a-physical-media-showcase-with-lovable/">
               Building a Physical Media Showcase with Lovable
             </ExtLink>
