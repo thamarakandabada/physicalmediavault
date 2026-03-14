@@ -399,7 +399,7 @@ function PublisherPackageSankey({ titles }: { titles: { publisher?: string | nul
       </div>
     </div>
   );
-
+}
 
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
