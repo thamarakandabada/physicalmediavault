@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
 import { PageMeta } from "@/components/PageMeta";
 
-import { Film, Monitor, Volume2, Package, Building2, MapPin, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
+import { Film, Monitor, Volume2, MapPin, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
 import { RegionIcon } from "@/components/RegionIcon";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Sankey } from "recharts";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 type StatBreakdown = { label: string; count: number; percent: number };
@@ -261,6 +261,146 @@ function AVTabs({ videoData, audioData, hdrData }: { videoData: StatBreakdown[];
   );
 }
 
+const SANKEY_COLORS = [
+  "hsl(145, 100%, 44%)",
+  "hsl(200, 70%, 45%)",
+  "hsl(30, 90%, 52%)",
+  "hsl(340, 65%, 50%)",
+  "hsl(270, 50%, 55%)",
+  "hsl(50, 85%, 50%)",
+  "hsl(170, 60%, 40%)",
+  "hsl(15, 75%, 50%)",
+  "hsl(220, 60%, 55%)",
+  "hsl(160, 50%, 45%)",
+];
+
+function PublisherPackageSankey({ titles }: { titles: { publisher?: string | null; package_type?: string | null }[] }) {
+  const sankeyData = useMemo(() => {
+    // Count flows from publisher → package_type
+    const flowCounts: Record<string, number> = {};
+    const publisherCounts: Record<string, number> = {};
+    const packageCounts: Record<string, number> = {};
+
+    titles.forEach((t) => {
+      const pub = t.publisher || "Unknown";
+      const pkg = t.package_type || "Unknown";
+      const key = `${pub}|||${pkg}`;
+      flowCounts[key] = (flowCounts[key] || 0) + 1;
+      publisherCounts[pub] = (publisherCounts[pub] || 0) + 1;
+      packageCounts[pkg] = (packageCounts[pkg] || 0) + 1;
+    });
+
+    // Top 10 publishers by count
+    const topPublishers = Object.entries(publisherCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([name]) => name);
+
+    const packageNames = Object.entries(packageCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name]) => name);
+
+    // Build nodes: publishers first, then package types
+    const nodes = [
+      ...topPublishers.map((name) => ({ name })),
+      ...packageNames.map((name) => ({ name })),
+    ];
+
+    // Build links
+    const links: { source: number; target: number; value: number }[] = [];
+    Object.entries(flowCounts).forEach(([key, value]) => {
+      const [pub, pkg] = key.split("|||");
+      const sourceIdx = topPublishers.indexOf(pub);
+      if (sourceIdx === -1) return;
+      const targetIdx = topPublishers.length + packageNames.indexOf(pkg);
+      if (targetIdx < topPublishers.length) return;
+      links.push({ source: sourceIdx, target: targetIdx, value });
+    });
+
+    return { nodes, links, publisherCount: topPublishers.length };
+  }, [titles]);
+
+  if (sankeyData.links.length === 0) return null;
+
+  const CustomNode = ({ x, y, width, height, index, payload }: any) => {
+    const isPublisher = index < sankeyData.publisherCount;
+    const colorIdx = isPublisher ? index : index - sankeyData.publisherCount;
+    const fill = SANKEY_COLORS[colorIdx % SANKEY_COLORS.length];
+    return (
+      <g>
+        <rect x={x} y={y} width={width} height={height} fill={fill} fillOpacity={0.85} rx={2} />
+        <text
+          x={isPublisher ? x - 6 : x + width + 6}
+          y={y + height / 2}
+          textAnchor={isPublisher ? "end" : "start"}
+          dominantBaseline="central"
+          className="text-[11px]"
+          fill="hsl(210, 10%, 88%)"
+        >
+          {payload.name}
+        </text>
+      </g>
+    );
+  };
+
+  const CustomLink = (props: any) => {
+    const { sourceX, targetX, sourceY, targetY, sourceControlX, targetControlX, linkWidth } = props;
+    return (
+      <path
+        d={`
+          M${sourceX},${sourceY + linkWidth / 2}
+          C${sourceControlX},${sourceY + linkWidth / 2}
+            ${targetControlX},${targetY + linkWidth / 2}
+            ${targetX},${targetY + linkWidth / 2}
+          L${targetX},${targetY - linkWidth / 2}
+          C${targetControlX},${targetY - linkWidth / 2}
+            ${sourceControlX},${sourceY - linkWidth / 2}
+            ${sourceX},${sourceY - linkWidth / 2}
+          Z
+        `}
+        fill="hsl(145, 100%, 44%)"
+        fillOpacity={0.15}
+        stroke="hsl(145, 100%, 44%)"
+        strokeOpacity={0.3}
+        strokeWidth={0.5}
+      />
+    );
+  };
+
+  return (
+    <div className="bg-card border border-border rounded-lg p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 className="w-4 h-4 text-gold" />
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+          Publisher → Package Type
+        </h3>
+        <span className="text-xs text-muted-foreground ml-auto">Top-level titles only</span>
+      </div>
+      <div className="h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <Sankey
+            data={sankeyData}
+            nodeWidth={10}
+            nodePadding={14}
+            margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
+            link={<CustomLink />}
+            node={<CustomNode />}
+          >
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'hsl(210, 18%, 11%)',
+                border: '1px solid hsl(210, 14%, 20%)',
+                borderRadius: 8,
+                color: 'hsl(210, 10%, 88%)',
+              }}
+            />
+          </Sankey>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
 
@@ -280,8 +420,8 @@ const Stats = () => {
     );
     const videoQualities = computeBreakdown(leafTitles.map((t) => t.video_quality));
     const audioTypes = computeBreakdown(leafTitles.map((t) => t.audio_type));
-    const packageTypes = computeBreakdown(leafTitles.map((t) => t.package_type));
-    const publishers = computeBreakdown(leafTitles.map((t) => t.publisher));
+    const packageTypes = computeBreakdown(parents.map((t) => t.package_type));
+    const publishers = computeBreakdown(parents.map((t) => t.publisher));
     const regions = computeBreakdown(leafTitles.map((t) => t.region));
     const mediaTypes = computeBreakdown(leafTitles.map((t) => t.media_type));
     const hdrTypes = computeBreakdown(leafTitles.map((t) => t.hdr_type));
@@ -421,10 +561,13 @@ const Stats = () => {
             {/* Video & Audio combined */}
             <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} hdrData={stats.hdrTypes} />
 
+            {/* Publisher → Package Sankey */}
+            {(stats.publishers.length > 0 || stats.packageTypes.length > 0) && (
+              <PublisherPackageSankey titles={allTitles?.filter((t) => !t.parent_id) ?? []} />
+            )}
+
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
-              <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
               <StatCard title="Disc Region" icon={MapPin} items={stats.regions} renderItemIcon={(label) => <RegionIcon region={label} />} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
