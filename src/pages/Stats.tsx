@@ -374,7 +374,7 @@ function PublisherPackageSankey({ titles }: { titles: { publisher?: string | nul
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
           Publisher → Package Type
         </h3>
-        <span className="text-xs text-muted-foreground ml-auto">Top-level titles only</span>
+        <span className="text-xs text-muted-foreground ml-auto">Top 10 publishers · top-level titles only</span>
       </div>
       <div className="h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
