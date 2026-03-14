@@ -421,10 +421,13 @@ const Stats = () => {
             {/* Video & Audio combined */}
             <AVTabs videoData={stats.videoQualities} audioData={stats.audioTypes} hdrData={stats.hdrTypes} />
 
+            {/* Publisher → Package Sankey */}
+            {(stats.publishers.length > 0 || stats.packageTypes.length > 0) && (
+              <PublisherPackageSankey titles={allTitles?.filter((t) => !t.parent_id) ?? []} />
+            )}
+
             {/* Detailed breakdowns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <StatCard title="Package Type" icon={Package} items={stats.packageTypes} />
-              <StatCard title="Publisher" icon={Building2} items={stats.publishers.slice(0, 8)} />
               <StatCard title="Disc Region" icon={MapPin} items={stats.regions} renderItemIcon={(label) => <RegionIcon region={label} />} />
               <StatCard title="Media Type" icon={Film} items={stats.mediaTypes} />
             </div>
