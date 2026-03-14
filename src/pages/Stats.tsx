@@ -392,7 +392,12 @@ function PublisherPackageSankey({ titles }: { titles: { publisher?: string | nul
                 border: '1px solid hsl(210, 14%, 20%)',
                 borderRadius: 8,
                 color: 'hsl(210, 10%, 88%)',
+                zIndex: 50,
               }}
+              wrapperStyle={{ zIndex: 50 }}
+              formatter={(value: number, name: string) => [`${value} title${value !== 1 ? 's' : ''}`, name]}
+              labelStyle={{ color: 'hsl(210, 10%, 88%)', fontWeight: 600 }}
+              itemStyle={{ color: 'hsl(210, 10%, 88%)' }}
             />
           </Sankey>
         </ResponsiveContainer>
