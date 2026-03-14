@@ -280,8 +280,8 @@ const Stats = () => {
     );
     const videoQualities = computeBreakdown(leafTitles.map((t) => t.video_quality));
     const audioTypes = computeBreakdown(leafTitles.map((t) => t.audio_type));
-    const packageTypes = computeBreakdown(leafTitles.map((t) => t.package_type));
-    const publishers = computeBreakdown(leafTitles.map((t) => t.publisher));
+    const packageTypes = computeBreakdown(parents.map((t) => t.package_type));
+    const publishers = computeBreakdown(parents.map((t) => t.publisher));
     const regions = computeBreakdown(leafTitles.map((t) => t.region));
     const mediaTypes = computeBreakdown(leafTitles.map((t) => t.media_type));
     const hdrTypes = computeBreakdown(leafTitles.map((t) => t.hdr_type));
