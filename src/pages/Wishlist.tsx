@@ -301,10 +301,6 @@ function WishlistCard({
   onDelete,
   isOwner,
 }: {item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;collectionTitles: string[];wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;onToggle: () => void;onDelete: () => void;isOwner: boolean;}) {
-
-
-
-}: {item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;collectionTitles: string[];wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;onToggle: () => void;onDelete: () => void;isOwner: boolean;}) {
   const collectionMatch = useMemo(
     () => item.title ? findSimilarTitles(item.title, collectionTitles) : [],
     [item.title, collectionTitles]
