@@ -221,18 +221,20 @@ const Wishlist = () => {
         <div className="space-y-8">
             {/* Active items */}
             {activeItems.length > 0 &&
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                {activeItems.map((item) =>
-            <WishlistCard
-              key={item.id}
-              item={item}
-              collectionTitles={collectionTitleNames}
-              wishlistItems={activeItems}
-              onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
-              onDelete={() => deleteItem.mutate(item.id)}
-              isOwner={!!user} />
-
-            )}
+          <div>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
+                  {pagedActive.map((item) =>
+              <WishlistCard
+                key={item.id}
+                item={item}
+                collectionTitles={collectionTitleNames}
+                wishlistItems={activeItems}
+                onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
+                onDelete={() => deleteItem.mutate(item.id)}
+                isOwner={!!user} />
+              )}
+                </div>
+                <PaginationControls pagination={activePag} label="wishlist" />
               </div>
           }
 
@@ -243,7 +245,7 @@ const Wishlist = () => {
                   Purchased ({purchasedItems.length})
                 </h2>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                  {purchasedItems.map((item) =>
+                  {pagedPurchased.map((item) =>
               <WishlistCard
                 key={item.id}
                 item={item}
@@ -252,9 +254,9 @@ const Wishlist = () => {
                 onToggle={() => togglePurchased.mutate({ id: item.id, purchased: false })}
                 onDelete={() => deleteItem.mutate(item.id)}
                 isOwner={!!user} />
-
               )}
                 </div>
+                <PaginationControls pagination={purchasedPag} label="purchased" />
               </div>
           }
           </div>
