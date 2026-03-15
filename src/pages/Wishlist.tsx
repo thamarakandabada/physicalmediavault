@@ -7,8 +7,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Loader2, Trash2, ExternalLink, Check, AlertTriangle, Download } from "lucide-react";
+import { Loader2, Trash2, ExternalLink, Check, AlertTriangle, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 24;
+
+function usePagination(totalItems: number) {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  if (safePage !== page) setPage(safePage);
+  return {
+    page: safePage,
+    totalPages,
+    setPage,
+    startIndex: (safePage - 1) * PAGE_SIZE,
+    endIndex: safePage * PAGE_SIZE,
+  };
+}
 
 function findSimilarTitles(wishlistTitle: string, collectionTitles: string[]): string[] {
   if (!wishlistTitle) return [];
@@ -127,6 +143,18 @@ const Wishlist = () => {
     [wishlist]
   );
 
+  const activePag = usePagination(activeItems.length);
+  const purchasedPag = usePagination(purchasedItems.length);
+
+  const pagedActive = useMemo(
+    () => activeItems.slice(activePag.startIndex, activePag.endIndex),
+    [activeItems, activePag.startIndex, activePag.endIndex]
+  );
+  const pagedPurchased = useMemo(
+    () => purchasedItems.slice(purchasedPag.startIndex, purchasedPag.endIndex),
+    [purchasedItems, purchasedPag.startIndex, purchasedPag.endIndex]
+  );
+
   return (
     <>
         <PageMeta
@@ -193,18 +221,20 @@ const Wishlist = () => {
         <div className="space-y-8">
             {/* Active items */}
             {activeItems.length > 0 &&
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                {activeItems.map((item) =>
-            <WishlistCard
-              key={item.id}
-              item={item}
-              collectionTitles={collectionTitleNames}
-              wishlistItems={activeItems}
-              onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
-              onDelete={() => deleteItem.mutate(item.id)}
-              isOwner={!!user} />
-
-            )}
+          <div>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
+                  {pagedActive.map((item) =>
+              <WishlistCard
+                key={item.id}
+                item={item}
+                collectionTitles={collectionTitleNames}
+                wishlistItems={activeItems}
+                onToggle={() => togglePurchased.mutate({ id: item.id, purchased: true })}
+                onDelete={() => deleteItem.mutate(item.id)}
+                isOwner={!!user} />
+              )}
+                </div>
+                <PaginationControls pagination={activePag} label="wishlist" />
               </div>
           }
 
@@ -215,7 +245,7 @@ const Wishlist = () => {
                   Purchased ({purchasedItems.length})
                 </h2>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-3">
-                  {purchasedItems.map((item) =>
+                  {pagedPurchased.map((item) =>
               <WishlistCard
                 key={item.id}
                 item={item}
@@ -224,9 +254,9 @@ const Wishlist = () => {
                 onToggle={() => togglePurchased.mutate({ id: item.id, purchased: false })}
                 onDelete={() => deleteItem.mutate(item.id)}
                 isOwner={!!user} />
-
               )}
                 </div>
+                <PaginationControls pagination={purchasedPag} label="purchased" />
               </div>
           }
           </div>
@@ -235,20 +265,41 @@ const Wishlist = () => {
 
 };
 
+function PaginationControls({ pagination, label }: { pagination: ReturnType<typeof usePagination>; label: string }) {
+  if (pagination.totalPages <= 1) return null;
+  return (
+    <div className="flex items-center justify-center gap-3 mt-4">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => pagination.setPage(pagination.page - 1)}
+        disabled={pagination.page <= 1}
+        aria-label={`Previous ${label} page`}
+      >
+        <ChevronLeft className="w-4 h-4" />
+      </Button>
+      <span className="text-sm text-muted-foreground tabular-nums">
+        {pagination.page} / {pagination.totalPages}
+      </span>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => pagination.setPage(pagination.page + 1)}
+        disabled={pagination.page >= pagination.totalPages}
+        aria-label={`Next ${label} page`}
+      >
+        <ChevronRight className="w-4 h-4" />
+      </Button>
+    </div>
+  );
+}
 function WishlistCard({
   item,
   collectionTitles,
   wishlistItems,
   onToggle,
   onDelete,
-  isOwner
-
-
-
-
-
-
-
+  isOwner,
 }: {item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;collectionTitles: string[];wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;onToggle: () => void;onDelete: () => void;isOwner: boolean;}) {
   const collectionMatch = useMemo(
     () => item.title ? findSimilarTitles(item.title, collectionTitles) : [],
