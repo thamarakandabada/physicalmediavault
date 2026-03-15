@@ -293,17 +293,14 @@ function PaginationControls({ pagination, label }: { pagination: ReturnType<type
     </div>
   );
 }
-
+function WishlistCard({
   item,
   collectionTitles,
   wishlistItems,
   onToggle,
   onDelete,
-  isOwner
-
-
-
-
+  isOwner,
+}: {item: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T : never;collectionTitles: string[];wishlistItems: ReturnType<typeof useWishlist>["data"] extends (infer T)[] | undefined ? T[] : never;onToggle: () => void;onDelete: () => void;isOwner: boolean;}) {
 
 
 
