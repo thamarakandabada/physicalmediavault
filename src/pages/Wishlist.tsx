@@ -143,6 +143,18 @@ const Wishlist = () => {
     [wishlist]
   );
 
+  const activePag = usePagination(activeItems.length);
+  const purchasedPag = usePagination(purchasedItems.length);
+
+  const pagedActive = useMemo(
+    () => activeItems.slice(activePag.startIndex, activePag.endIndex),
+    [activeItems, activePag.startIndex, activePag.endIndex]
+  );
+  const pagedPurchased = useMemo(
+    () => purchasedItems.slice(purchasedPag.startIndex, purchasedPag.endIndex),
+    [purchasedItems, purchasedPag.startIndex, purchasedPag.endIndex]
+  );
+
   return (
     <>
         <PageMeta
