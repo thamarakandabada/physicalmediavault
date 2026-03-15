@@ -7,8 +7,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Loader2, Trash2, ExternalLink, Check, AlertTriangle, Download } from "lucide-react";
+import { Loader2, Trash2, ExternalLink, Check, AlertTriangle, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 24;
+
+function usePagination(totalItems: number) {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  if (safePage !== page) setPage(safePage);
+  return {
+    page: safePage,
+    totalPages,
+    setPage,
+    startIndex: (safePage - 1) * PAGE_SIZE,
+    endIndex: safePage * PAGE_SIZE,
+  };
+}
 
 function findSimilarTitles(wishlistTitle: string, collectionTitles: string[]): string[] {
   if (!wishlistTitle) return [];
