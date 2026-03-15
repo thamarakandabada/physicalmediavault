@@ -265,7 +265,35 @@ const Wishlist = () => {
 
 };
 
-function WishlistCard({
+function PaginationControls({ pagination, label }: { pagination: ReturnType<typeof usePagination>; label: string }) {
+  if (pagination.totalPages <= 1) return null;
+  return (
+    <div className="flex items-center justify-center gap-3 mt-4">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => pagination.setPage(pagination.page - 1)}
+        disabled={pagination.page <= 1}
+        aria-label={`Previous ${label} page`}
+      >
+        <ChevronLeft className="w-4 h-4" />
+      </Button>
+      <span className="text-sm text-muted-foreground tabular-nums">
+        {pagination.page} / {pagination.totalPages}
+      </span>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => pagination.setPage(pagination.page + 1)}
+        disabled={pagination.page >= pagination.totalPages}
+        aria-label={`Next ${label} page`}
+      >
+        <ChevronRight className="w-4 h-4" />
+      </Button>
+    </div>
+  );
+}
+
   item,
   collectionTitles,
   wishlistItems,
