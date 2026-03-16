@@ -32,6 +32,12 @@ npm run dev
 
 The app will be available at `http://localhost:5173`.
 
+## Fonts
+
+The app uses **Rig Sans** via a domain-locked [Adobe Fonts](https://fonts.adobe.com/) kit. This kit only serves the font on whitelisted domains, so it **won't load** in your local dev environment or fork. The CSS falls back to `system-ui, sans-serif` automatically — no action needed.
+
+If you want Rig Sans locally, create your own Adobe Fonts account, add Rig Sans to a kit, whitelist `localhost`, and replace the kit ID in `index.html`.
+
 ## Code Style
 
 - **Language:** TypeScript — strict mode, no `any` types unless absolutely necessary
