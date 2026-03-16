@@ -124,6 +124,8 @@ The UI takes inspiration from [Letterboxd](https://letterboxd.com/) — a dark, 
 - Used for all body text, headings, and UI elements
 - Headings use `font-weight: 700`
 
+> **Note for contributors:** Rig Sans is loaded from a domain-locked Adobe Fonts kit and will **not** render for local development or forks. The app falls back gracefully to `system-ui, sans-serif`. If you'd like the same typeface locally, create your own [Adobe Fonts](https://fonts.adobe.com/) account, add Rig Sans to a kit, whitelist your dev domain, and update the kit ID in `index.html`.
+
 ### Colour Palette
 
 | Role | Hex | HSL | Usage |
