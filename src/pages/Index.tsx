@@ -163,10 +163,10 @@ const Index = () => {
             <Disc3 className="w-8 h-8 md:w-10 md:h-10 shrink-0 text-gold transition-transform duration-700 group-hover:animate-spin" />
             <span>Physical Media <span className="text-gold">Vault</span></span>
           </h1>
-          <p className="text-muted-foreground text-base max-w-lg mx-auto">A showcase for my small but growing physical media collection. Includes both films and TV.
-
-
-Click tiles with "Collection" badges to expand nested titles.</p>
+          <p className="text-muted-foreground text-base max-w-lg mx-auto">
+            This is a public showcase and a database of my small but growing physical media collection. Includes both films and TV.
+            Click tiles with "Collection" badges to expand nested titles.
+          </p>
           <div className="flex items-center justify-center gap-6 mt-5 text-sm flex-wrap">
             <span className="text-muted-foreground">{totalTitles} titles</span>
             <span className="text-border opacity-50">•</span>
