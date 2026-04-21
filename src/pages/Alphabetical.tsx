@@ -42,7 +42,7 @@ const Alphabetical = () => {
         <h1 className="font-display text-3xl font-bold text-foreground mb-2">
           Alphabetical <span className="text-gold">Index</span>
         </h1>
-        <p className="text-muted-foreground mb-8">My shelves are currently organised in alphabetical order. Criterion titles are sorted on their own shelf, in ascending order of spine number.</p>
+        <p className="text-muted-foreground mb-8">All titles in alphabetical order</p>
 
         {/* Media type filter tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
