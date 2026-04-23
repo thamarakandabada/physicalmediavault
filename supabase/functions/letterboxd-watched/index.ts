@@ -35,6 +35,10 @@ function parseRss(xml: string): WatchedEntry[] {
     const filmYearMatch = item.match(/<letterboxd:filmYear>([\s\S]*?)<\/letterboxd:filmYear>/);
     const titleTagMatch = item.match(/<title>([\s\S]*?)<\/title>/);
     const pubDateMatch = item.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+    const rewatchMatch = item.match(/<letterboxd:rewatch>([\s\S]*?)<\/letterboxd:rewatch>/);
+
+    // Skip rewatches — we only care about first-time watches
+    if (rewatchMatch && /yes/i.test(rewatchMatch[1].trim())) continue;
 
     let title = "";
     let year: number | null = null;
