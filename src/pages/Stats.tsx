@@ -412,6 +412,7 @@ function PublisherPackageSankey({ titles }: { titles: { publisher?: string | nul
 
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
+  useLetterboxdSync(allTitles);
 
   const stats = useMemo(() => {
     if (!allTitles || allTitles.length === 0) return null;
@@ -421,6 +422,8 @@ const Stats = () => {
     const parents = allTitles.filter((t) => !t.parent_id);
     const totalDiscs = leafTitles.length;
     const totalCollections = parents.length;
+    const watchedCount = leafTitles.filter((t) => (t as any).watched).length;
+    const watchedPercent = totalDiscs > 0 ? Math.round((watchedCount / totalDiscs) * 100) : 0;
 
     const directors = computeBreakdown(
       leafTitles.flatMap((t) =>
@@ -458,6 +461,8 @@ const Stats = () => {
       totalDiscs,
       totalCollections,
       uniqueDirectors,
+      watchedCount,
+      watchedPercent,
       directors,
       videoQualities,
       audioTypes,
@@ -493,10 +498,16 @@ const Stats = () => {
         ) : (
           <div className="space-y-8">
             {/* Headline numbers */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <HeadlineStat label="Total Discs" value={stats.totalDiscs} icon={Disc3} />
               <HeadlineStat label="Top-Level Titles" value={stats.totalCollections} icon={BarChart3} />
               <HeadlineStat label="Unique Directors" value={stats.uniqueDirectors} icon={Award} />
+              <HeadlineStat
+                label="Watched"
+                value={`${stats.watchedPercent}%`}
+                icon={Eye}
+                sublabel={`${stats.watchedCount} of ${stats.totalDiscs}`}
+              />
             </div>
 
             {/* Decade chart */}
