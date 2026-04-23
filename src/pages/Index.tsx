@@ -22,6 +22,7 @@ const Index = () => {
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editTitle, setEditTitle] = useState<Title | null>(null);
+  const [editHasChildren, setEditHasChildren] = useState(false);
   const [parentId, setParentId] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -131,6 +132,7 @@ const Index = () => {
 
   const handleEdit = (title: TitleWithChildren) => {
     setEditTitle(title);
+    setEditHasChildren((title.children?.length ?? 0) > 0);
     setParentId(title.parent_id ?? null);
     setFormOpen(true);
   };
@@ -146,6 +148,7 @@ const Index = () => {
 
   const handleAddChild = (parentId: string) => {
     setEditTitle(null);
+    setEditHasChildren(false);
     setParentId(parentId);
     setFormOpen(true);
   };
@@ -431,7 +434,8 @@ const Index = () => {
         open={formOpen}
         onOpenChange={setFormOpen}
         editTitle={editTitle}
-        parentId={parentId} />
+        parentId={parentId}
+        hasChildren={editHasChildren} />
       
     </>);
 
