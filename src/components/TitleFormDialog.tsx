@@ -91,7 +91,8 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
 
       const detail = await getBlurayDetail(trimmed);
       if (detail) {
-        setForm({
+        setForm((p) => ({
+          ...p,
           title: detail.title || "",
           year: detail.year?.toString() ?? "",
           director: detail.director ?? "",
@@ -105,7 +106,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           media_type: detail.media_type ?? "Film",
           region: detail.region ?? "",
           cover_url: coverUrl,
-        });
+        }));
         toast.success("Imported from blu-ray.com — review and save");
       } else {
         toast.error("Couldn't extract details from that page");
@@ -151,7 +152,8 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
     try {
       const detail = await getBlurayDetail(result.url);
       if (detail) {
-        setForm({
+        setForm((p) => ({
+          ...p,
           title: detail.title || result.title,
           year: detail.year?.toString() ?? result.year ?? "",
           director: detail.director ?? "",
@@ -165,7 +167,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           media_type: detail.media_type ?? "Film",
           region: detail.region ?? searchCountry,
           cover_url: result.coverUrl ?? "",
-        });
+        }));
         toast.success("Data imported — review and edit as needed");
       } else {
         setForm((prev) => ({
