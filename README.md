@@ -179,7 +179,7 @@ src/
 ├── lib/             # Utilities and API helpers
 ├── pages/           # Route-level page components
 supabase/
-├── functions/       # Edge Functions (bluray-search, scrape-wishlist-url)
+├── functions/       # Edge Functions (bluray-search, scrape-wishlist-url, letterboxd-watched, backfill-runtime)
 ├── migrations/      # Database schema migrations
 ```
 
