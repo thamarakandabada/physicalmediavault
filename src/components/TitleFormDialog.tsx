@@ -37,7 +37,7 @@ const EMPTY_FORM = {
   watched: false,
 };
 
-export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: TitleFormDialogProps) {
+export function TitleFormDialog({ open, onOpenChange, editTitle, parentId, hasChildren }: TitleFormDialogProps) {
   const { user } = useAuth();
   const insertTitle = useInsertTitle();
   const updateTitle = useUpdateTitle();
@@ -427,21 +427,23 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
                 />
               )}
             </div>
-            <div className="col-span-2 flex items-center gap-3 pt-1">
-              <input
-                id="watched-toggle"
-                type="checkbox"
-                checked={form.watched}
-                onChange={(e) => setForm((p) => ({ ...p, watched: e.target.checked }))}
-                className="h-4 w-4 accent-gold cursor-pointer"
-              />
-              <Label htmlFor="watched-toggle" className="cursor-pointer">
-                Watched
-                <span className="text-xs text-muted-foreground ml-2 font-normal">
-                  (also auto-synced from Letterboxd)
-                </span>
-              </Label>
-            </div>
+            {!hasChildren && (
+              <div className="col-span-2 flex items-center gap-3 pt-1">
+                <input
+                  id="watched-toggle"
+                  type="checkbox"
+                  checked={form.watched}
+                  onChange={(e) => setForm((p) => ({ ...p, watched: e.target.checked }))}
+                  className="h-4 w-4 accent-gold cursor-pointer"
+                />
+                <Label htmlFor="watched-toggle" className="cursor-pointer">
+                  Watched
+                  <span className="text-xs text-muted-foreground ml-2 font-normal">
+                    (also auto-synced from Letterboxd)
+                  </span>
+                </Label>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end gap-2 pt-2">
