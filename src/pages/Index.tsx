@@ -242,7 +242,7 @@ const Index = () => {
                 <RefreshCw className={`w-4 h-4 ${backfilling ? 'animate-spin' : ''}`} />
               </Button>
               <Button
-            onClick={() => {setEditTitle(null);setParentId(null);setFormOpen(true);}}
+            onClick={() => {setEditTitle(null);setEditHasChildren(false);setParentId(null);setFormOpen(true);}}
             className="shrink-0">
             
                 <Plus className="w-4 h-4 mr-1" /> Add
