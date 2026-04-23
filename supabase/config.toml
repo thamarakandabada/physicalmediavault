@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.backfill-runtime]
 verify_jwt = false
+
+[functions.letterboxd-watched]
+verify_jwt = false

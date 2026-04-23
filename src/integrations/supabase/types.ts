@@ -34,6 +34,7 @@ export type Database = {
           updated_at: string
           user_id: string
           video_quality: string | null
+          watched: boolean
           year: number | null
         }
         Insert: {
@@ -55,6 +56,7 @@ export type Database = {
           updated_at?: string
           user_id: string
           video_quality?: string | null
+          watched?: boolean
           year?: number | null
         }
         Update: {
@@ -76,6 +78,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
           video_quality?: string | null
+          watched?: boolean
           year?: number | null
         }
         Relationships: [

@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { useTitles } from "@/hooks/useTitles";
+import { useLetterboxdSync } from "@/hooks/useLetterboxdSync";
 import { PageMeta } from "@/components/PageMeta";
 
-import { Film, Monitor, Volume2, MapPin, Award, BarChart3, Disc3, Clock, Calendar } from "lucide-react";
+import { Film, Monitor, Volume2, MapPin, Award, BarChart3, Disc3, Clock, Calendar, Eye } from "lucide-react";
 import { RegionIcon } from "@/components/RegionIcon";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Sankey } from "recharts";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -133,12 +134,15 @@ function DirectorTiles({ items }: { items: StatBreakdown[] }) {
   );
 }
 
-function HeadlineStat({ label, value, icon: Icon }: { label: string; value: string | number; icon: React.ElementType }) {
+function HeadlineStat({ label, value, icon: Icon, sublabel }: { label: string; value: string | number; icon: React.ElementType; sublabel?: string }) {
   return (
     <div className="bg-card border border-border rounded-lg p-5 flex flex-col items-center text-center gap-2">
       <Icon className="w-5 h-5 text-gold" />
       <span className="text-3xl font-display text-foreground tabular-nums">{value}</span>
       <span className="text-xs text-muted-foreground uppercase tracking-wider">{label}</span>
+      {sublabel && (
+        <span className="text-[11px] text-muted-foreground/80 tabular-nums">{sublabel}</span>
+      )}
     </div>
   );
 }
@@ -408,6 +412,7 @@ function PublisherPackageSankey({ titles }: { titles: { publisher?: string | nul
 
 const Stats = () => {
   const { data: allTitles, isLoading } = useTitles();
+  useLetterboxdSync(allTitles);
 
   const stats = useMemo(() => {
     if (!allTitles || allTitles.length === 0) return null;
@@ -417,6 +422,8 @@ const Stats = () => {
     const parents = allTitles.filter((t) => !t.parent_id);
     const totalDiscs = leafTitles.length;
     const totalCollections = parents.length;
+    const watchedCount = leafTitles.filter((t) => (t as any).watched).length;
+    const watchedPercent = totalDiscs > 0 ? Math.round((watchedCount / totalDiscs) * 100) : 0;
 
     const directors = computeBreakdown(
       leafTitles.flatMap((t) =>
@@ -454,6 +461,8 @@ const Stats = () => {
       totalDiscs,
       totalCollections,
       uniqueDirectors,
+      watchedCount,
+      watchedPercent,
       directors,
       videoQualities,
       audioTypes,
@@ -489,10 +498,16 @@ const Stats = () => {
         ) : (
           <div className="space-y-8">
             {/* Headline numbers */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <HeadlineStat label="Total Discs" value={stats.totalDiscs} icon={Disc3} />
               <HeadlineStat label="Top-Level Titles" value={stats.totalCollections} icon={BarChart3} />
               <HeadlineStat label="Unique Directors" value={stats.uniqueDirectors} icon={Award} />
+              <HeadlineStat
+                label="Watched"
+                value={`${stats.watchedPercent}%`}
+                icon={Eye}
+                sublabel={`${stats.watchedCount} of ${stats.totalDiscs}`}
+              />
             </div>
 
             {/* Decade chart */}

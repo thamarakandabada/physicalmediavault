@@ -33,6 +33,7 @@ const EMPTY_FORM = {
   media_type: "Film",
   region: "",
   cover_url: "",
+  watched: false,
 };
 
 export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: TitleFormDialogProps) {
@@ -64,6 +65,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         media_type: editTitle.media_type,
         region: editTitle.region ?? "",
         cover_url: (editTitle as any).cover_url ?? "",
+        watched: (editTitle as any).watched ?? false,
       });
     } else {
       setForm(EMPTY_FORM);
@@ -89,7 +91,8 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
 
       const detail = await getBlurayDetail(trimmed);
       if (detail) {
-        setForm({
+        setForm((p) => ({
+          ...p,
           title: detail.title || "",
           year: detail.year?.toString() ?? "",
           director: detail.director ?? "",
@@ -103,7 +106,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           media_type: detail.media_type ?? "Film",
           region: detail.region ?? "",
           cover_url: coverUrl,
-        });
+        }));
         toast.success("Imported from blu-ray.com — review and save");
       } else {
         toast.error("Couldn't extract details from that page");
@@ -149,7 +152,8 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
     try {
       const detail = await getBlurayDetail(result.url);
       if (detail) {
-        setForm({
+        setForm((p) => ({
+          ...p,
           title: detail.title || result.title,
           year: detail.year?.toString() ?? result.year ?? "",
           director: detail.director ?? "",
@@ -163,7 +167,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
           media_type: detail.media_type ?? "Film",
           region: detail.region ?? searchCountry,
           cover_url: result.coverUrl ?? "",
-        });
+        }));
         toast.success("Data imported — review and edit as needed");
       } else {
         setForm((prev) => ({
@@ -211,6 +215,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
       media_type: form.media_type,
       region: form.region || null,
       cover_url: form.cover_url || null,
+      watched: !!form.watched,
       parent_id: parentId ?? null,
     };
 
@@ -420,6 +425,21 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
                   userId={user.id}
                 />
               )}
+            </div>
+            <div className="col-span-2 flex items-center gap-3 pt-1">
+              <input
+                id="watched-toggle"
+                type="checkbox"
+                checked={form.watched}
+                onChange={(e) => setForm((p) => ({ ...p, watched: e.target.checked }))}
+                className="h-4 w-4 accent-gold cursor-pointer"
+              />
+              <Label htmlFor="watched-toggle" className="cursor-pointer">
+                Watched
+                <span className="text-xs text-muted-foreground ml-2 font-normal">
+                  (also auto-synced from Letterboxd)
+                </span>
+              </Label>
             </div>
           </div>
 
