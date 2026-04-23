@@ -49,6 +49,7 @@ A personal catalogue app for tracking physical media collections — Blu-ray, 4K
 - 📀 Track your physical media collection with rich metadata (director, year, audio, HDR, region, etc.)
 - 🔍 Search and browse by title, alphabetically, or by Criterion spine number
 - 📊 Collection statistics and breakdowns
+- 👁️ Watched tracking — auto-synced from your [Letterboxd](https://letterboxd.com/) RSS feed (first-time watches only; rewatches ignored), with a manual override per title
 - 🎯 Wishlist management with URL scraping
 - 🔮 The Oracle — a random film picker to cure decision paralysis
 - 🖼️ Cover art via Blu-ray.com API integration
