@@ -33,6 +33,7 @@ const EMPTY_FORM = {
   media_type: "Film",
   region: "",
   cover_url: "",
+  watched: false,
 };
 
 export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: TitleFormDialogProps) {
@@ -64,6 +65,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
         media_type: editTitle.media_type,
         region: editTitle.region ?? "",
         cover_url: (editTitle as any).cover_url ?? "",
+        watched: (editTitle as any).watched ?? false,
       });
     } else {
       setForm(EMPTY_FORM);
@@ -211,6 +213,7 @@ export function TitleFormDialog({ open, onOpenChange, editTitle, parentId }: Tit
       media_type: form.media_type,
       region: form.region || null,
       cover_url: form.cover_url || null,
+      watched: !!form.watched,
       parent_id: parentId ?? null,
     };
 
