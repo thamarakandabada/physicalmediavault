@@ -17,6 +17,7 @@ type TitleFormDialogProps = {
   onOpenChange: (open: boolean) => void;
   editTitle?: Title | null;
   parentId?: string | null;
+  hasChildren?: boolean;
 };
 
 const EMPTY_FORM = {
